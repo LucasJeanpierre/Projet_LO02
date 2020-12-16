@@ -1,4 +1,4 @@
-package PackageMoteur;
+package Model;
 
 public class CarteCachee extends Carte {
 	

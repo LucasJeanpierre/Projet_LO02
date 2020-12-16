@@ -1,4 +1,4 @@
-package PackageMoteur;
+package Model;
 
 public class CarteVictoire extends Carte{
 	

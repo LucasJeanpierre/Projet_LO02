@@ -1,4 +1,4 @@
-package PackageMoteur;
+package Model;
 
 import java.util.ArrayList;
 
@@ -68,6 +68,10 @@ public class Plateau implements ObjetVisite{
 
 	public ArrayList<Coordonee> getListeCoord() {
 		return this.listeCoord;
+	}
+
+	public Queue<Joueur> getListJoueur() {
+		return this.listeJoueur;
 	}
 
 	public boolean peutPoserUneCarte(Carte carte, int x, int y) {
@@ -274,7 +278,7 @@ public class Plateau implements ObjetVisite{
 	}
 
 	//permet de r�cup�rer un objet coordon�e a partir de sa position
-	private Coordonee recupererCoord(int x, int y) {
+	public Coordonee recupererCoord(int x, int y) {
 		Iterator<Coordonee> it = listeCoord.iterator();
 
 		//parcour les coordonee jusqu'a ce qu'il trouve celle correspondante
@@ -509,6 +513,10 @@ public class Plateau implements ObjetVisite{
 		}
 
 		return nombre;
+	}
+
+	public Paquet getPaquet() {
+		return this.paquet;
 	}
 
 

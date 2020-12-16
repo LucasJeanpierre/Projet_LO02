@@ -1,4 +1,4 @@
-package PackageMoteur;
+package Model;
 
 public interface ComportementJoueur {
 	public String choisirCarteABouger();

@@ -1,4 +1,9 @@
-package PackageMoteur;
+/*
+*
+*
+*/
+
+package Model;
 
 public class Carte {
 	
@@ -6,8 +11,6 @@ public class Carte {
 	private String forme;
 	private boolean rempli;
 	private String couleur;
-	
-	
  
 	
 	public void poser() {

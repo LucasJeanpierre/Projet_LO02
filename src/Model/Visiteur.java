@@ -1,4 +1,4 @@
-package PackageMoteur;
+package Model;
 
 import java.util.*;
 
