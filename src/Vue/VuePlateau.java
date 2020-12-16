@@ -1,74 +1,28 @@
 package Vue;
 
-import javax.swing.*;
-import java.awt.EventQueue;
+import Model.Carte;
+import Model.Coordonee;
+import Model.Plateau;
+import Controler.ControleurPlateau;
+import Controler.*;
 
-public class VuePlateau {
+public class VuePlateau implements Observer {
+    public void update(Observable o) {
+        if (o instanceof ControleurPlateau) {
+            System.out.println("Les cartes cachee ont été posées----");
+        } else if (o instanceof Coordonee) {
+            System.out.println("Une carte a été placée sur une coordonnee");
+        }
+    }
 
-    private JFrame frame;
-
-    private JCheckBox checkBoxLampe1;
-    private JCheckBox checkBoxLampe2;
-    private JCheckBox checkBoxLampe3;
-    private JLabel labelCommutateur;
-    private JButton bouttonInterrupteur;
-
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
+        VuePlateau vuePlat = new VuePlateau();
+        Plateau plat = new Plateau(vuePlat);
 
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VuePlateau window = new VuePlateau();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        new ControleurPlateau(plat, vuePlat);
 
+        plat.placerCarteCachee();
+
+        plat.jouerModeNormal();
     }
-
-    /**
-     * Create the application.
-     */
-    public VuePlateau() {
-        initialize();
-    }
-
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() {
-        frame = new JFrame();
-        frame.setBounds(100, 100, 450, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(null);
-
-        checkBoxLampe1 = new JCheckBox("Lampe1");
-        checkBoxLampe1.setBounds(26, 39, 93, 21);
-        frame.getContentPane().add(checkBoxLampe1);
-
-        checkBoxLampe2 = new JCheckBox("Lampe2");
-        checkBoxLampe2.setBounds(26, 106, 93, 21);
-        frame.getContentPane().add(checkBoxLampe2);
-
-        checkBoxLampe3 = new JCheckBox("Lampe3");
-        checkBoxLampe3.setBounds(26, 164, 93, 21);
-        frame.getContentPane().add(checkBoxLampe3);
-
-        labelCommutateur = new JLabel("Commutateur");
-        labelCommutateur.setBounds(190, 97, 159, 13);
-        frame.getContentPane().add(labelCommutateur);
-
-        bouttonInterrupteur = new JButton("Interrupteur");
-        bouttonInterrupteur.setBounds(260, 177, 128, 21);
-        frame.getContentPane().add(bouttonInterrupteur);
-
-        new Tempo(checkBoxLampe1);
-    }
-
-
 }

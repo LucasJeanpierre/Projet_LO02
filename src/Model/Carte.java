@@ -5,7 +5,9 @@
 
 package Model;
 
-public class Carte {
+import Vue.Observable;
+
+public class Carte extends Observable{
 	
 	
 	private String forme;

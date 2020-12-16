@@ -1,5 +1,6 @@
 package Model;
 
+
 public class CarteCachee extends Carte {
 	
 	public CarteCachee(String forme, String couleur, boolean rempli) {

@@ -3,19 +3,22 @@ package Controler;
 import java.util.Scanner;
 
 import Model.*;
+import Vue.Observable;
+import Vue.Observer;
 
 import java.util.Iterator;
 
-public class ControleurPlateau {
+public class ControleurPlateau extends Observable{
 
     private Scanner scanner;
     private Plateau plateau;
     private Paquet paquet;
 
-    public ControleurPlateau(Plateau plateau) {
+    public ControleurPlateau(Plateau plateau, Observer o) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
+        super.addObserver(o);
     }
 
     public void demanderString() {
@@ -134,57 +137,6 @@ public class ControleurPlateau {
             // joueur.getCarteVictoire().toString() + " " +
             // this.compterLesPoints(joueur.getCarteVictoire()));
         }
-
-    }
-
-    public static void main(String[] args) {
-
-        @SuppressWarnings("resource")
-        Plateau plat = new Plateau();
-
-        // on place les carte cachées
-        Iterator<Joueur> it = plat.getListJoueur().iterator();
-
-        while (it.hasNext()) {
-            Joueur joueur = it.next();
-            // chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
-            // aura donc le choix entre 3 cartes a chaque tours
-
-            CarteCachee carteCachee = new CarteCachee(plat.getPaquet().getRandomCarte());
-            joueur.piocherUneCarte(carteCachee);
-
-            System.out.println(joueur.toString() + " vous avez pioché une carte cachée");
-            carteCachee.reveler();
-
-            boolean joue = false;
-
-            while (!joue) {
-
-                System.out.println("Ou voulez vous la poser ?");
-                // String positionPoser = scanner.nextLine();
-                String positionPoser = joueur.choisirCoordoneeAPlacer(carteCachee);
-                // System.out.println("Bonsoir a tous");
-
-                try {
-                    int x = Integer.parseInt(positionPoser.split(",")[0]);
-                    int y = Integer.parseInt(positionPoser.split(",")[1]);
-                    joue = plat.poserUneCarte(carteCachee, x, y);
-                } catch (Exception Error) {
-                    System.out.println("Veuillez saisir des coordonee valides");
-                }
-
-                if (!joue) {
-                    System.out.println("L'emplacement n'�tait pas vide");
-                } else {
-                    joueur.poserUneCarte(carteCachee);
-                }
-            }
-        }
-
-        plat.changementDeTour();
-
-        plat.jouerModeNormal();
-        // plat.jouerModeAvance();
 
     }
 
