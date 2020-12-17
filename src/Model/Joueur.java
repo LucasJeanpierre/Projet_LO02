@@ -2,9 +2,12 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import Vue.Observable;
+
 import java.util.Iterator;
 
-public class Joueur implements ObjetVisite {
+public class Joueur extends Observable implements ObjetVisite {
 
 	private String nom;
 	//temporaire
@@ -61,6 +64,11 @@ public class Joueur implements ObjetVisite {
 		System.out.print("> ");
 		String positionPoser = scanner.nextLine();
 		return positionPoser;
+
+		//test pour MVC
+		/*super.setChanged();
+		super.notifyObservers(null);
+		return "";*/
 	}
 	
 	public String choisirCoordoneeCarteABouger() {

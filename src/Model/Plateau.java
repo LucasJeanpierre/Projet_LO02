@@ -957,6 +957,17 @@ public class Plateau implements ObjetVisite {
 		this.changementDeTour();
 	}
 
+	public void donnerCarteVictoire() {
+        // on donne les cartes victoire des joueurs
+        Iterator<Joueur> it = this.getListJoueur().iterator();
+
+        while (it.hasNext()) {
+            Joueur joueur = it.next();
+            joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
+            System.out.println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
+        }
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// Scanner scanner = new Scanner(System.in);

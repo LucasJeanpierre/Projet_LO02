@@ -18,7 +18,7 @@ public class Coordonee extends Observable{
 	public void poserUneCarte(Carte c) {
 		this.carte = c;
 		super.setChanged();
-		super.notifyObservers();
+		super.notifyObservers(null);
 	}
 
 	public boolean enleverLaCarte() {

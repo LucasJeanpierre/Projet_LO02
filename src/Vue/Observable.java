@@ -41,21 +41,21 @@ public class Observable {
 		return true;
 	}
 
-	public void notifyObservers() {
+	public void notifyObservers(Object arg) {
 		if (this.hasChanged){
 			Iterator<Observer> it = this.listObserver.iterator();
 			while (it.hasNext()) {
 				Observer o = it.next();
-				o.update(this);
+				o.update(this, arg);
 			}
 			this.hasChanged=false;
 		}
 	}
 	
 
-	public void notifyObserver(Observer o) {
+	public void notifyObserver(Observer o, Object arg) {
         if (this.hasChanged) {
-            o.update(this);
+            o.update(this, arg);
             this.hasChanged = false;
         }
 	}
