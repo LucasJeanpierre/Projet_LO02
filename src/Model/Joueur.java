@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Vue.Observable;
+import View.Observable;
 
 import java.util.Iterator;
 

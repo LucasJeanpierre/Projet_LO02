@@ -1,18 +1,9 @@
 package Model;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.beans.*;
 
-//import java.util.Scanner;
-
-import java.util.Iterator;
-
-import java.util.Queue;
-
-import Vue.Observer;
-
-import java.util.LinkedList;
-
-public class Plateau implements ObjetVisite {
+public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	// private String aQuiLeTour;
 
@@ -22,6 +13,22 @@ public class Plateau implements ObjetVisite {
 	private ArrayList<Coordonee> listeCoord;
 	private Queue<Joueur> listeJoueur;
 	private Paquet paquet;
+
+	private PropertyChangeSupport pcs;
+
+	public void addObserver(PropertyChangeListener l) {
+		this.pcs.addPropertyChangeListener(l);
+	}
+
+	public void setProperty(String name) {
+		this.pcs.firePropertyChange(name, 0, 1);
+	}
+	
+
+	public void propertyChange(PropertyChangeEvent evt) {
+
+	}
+
 
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
@@ -506,7 +513,7 @@ public class Plateau implements ObjetVisite {
 		return this.paquet;
 	}
 
-	public Plateau(Observer o) {
+	public Plateau() {
 		// cr�ation du paquet
 		this.paquet = new Paquet();
 		this.listeJoueur = new LinkedList<Joueur>();
@@ -518,6 +525,9 @@ public class Plateau implements ObjetVisite {
 		// System.out.println(listeJoueur.element().toString());
 
 		this.listeCoord = new ArrayList<Coordonee>();
+
+		//le pcs
+		this.pcs = new PropertyChangeSupport(this);
 
 		// Cr�ation du plateau
 		int nblong;
@@ -531,7 +541,7 @@ public class Plateau implements ObjetVisite {
 		}
 		for (int x = 0; x < nblong; x++) {
 			for (int y = 0; y < nblarge; y++) {
-				listeCoord.add(new Coordonee(x, y, o));
+				listeCoord.add(new Coordonee(x, y));
 			}
 		}
 
@@ -920,14 +930,19 @@ public class Plateau implements ObjetVisite {
 
 		while (it.hasNext()) {
 			Joueur joueur = it.next();
-			// chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
+			// chaque joueur prend 2  carte puis a chaque tour il en pioche une nouvelle il
 			// aura donc le choix entre 3 cartes a chaque tours
 
 			CarteCachee carteCachee = new CarteCachee(this.paquet.getRandomCarte());
 			joueur.piocherUneCarte(carteCachee);
 
 			System.out.println(joueur.toString() + " vous avez pioché une carte cachée");
+
 			carteCachee.reveler();
+			//on notifie la vue que l'on vien de placer une carte cachee
+			this.setProperty("revelerCarte");
+			System.out.println("fin du test");
+			
 
 			boolean joue = false;
 

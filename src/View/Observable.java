@@ -1,4 +1,4 @@
-package Vue;
+package View;
 
 import java.util.Set;
 import java.util.HashSet;

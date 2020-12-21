@@ -1,4 +1,4 @@
-package Vue;
+package View;
 
 import javax.swing.JCheckBox;
 

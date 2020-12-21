@@ -1,20 +1,36 @@
-package Controler;
+package Controller;
 
 import java.util.Scanner;
 
 import Model.*;
-import Vue.Observable;
-import Vue.Observer;
-import Vue.VuePlateau;
+import View.Observable;
+import View.Observer;
+import View.VuePlateau;
 
 import java.util.Iterator;
+import java.beans.*;
 
-public class ControleurPlateau extends Observable implements Observer {
+public class ControleurPlateau implements PropertyChangeListener{
 
     private Scanner scanner;
     private Plateau plateau;
     private Paquet paquet;
-    private VuePlateau vue;
+    private VuePlateau view;
+
+    private PropertyChangeSupport pcs;
+
+    public void addObserver(PropertyChangeListener l) {
+        this.pcs.addPropertyChangeListener(l);
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Ceci est un test ---------");
+    }
+
+    public void setProperty(String name) {
+        this.pcs.firePropertyChange(name, 0, 1);
+    }
+
 
     private enum etatDuJeu {
         PLACER_CARTE, CHOIX_BOUGER_CARTE, BOUGER_CARTE
@@ -22,19 +38,16 @@ public class ControleurPlateau extends Observable implements Observer {
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau, Observer o) {
+    public ControleurPlateau(Plateau plateau) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
-        super.addObserver(o);
+        this.pcs = new PropertyChangeSupport(this);
+        
     }
 
-    public void demanderString() {
-        System.out.print("> ");
-        String positionBouger = this.scanner.nextLine();
-    }
 
-    public void controlerJeu2() {
+    public void ControllerJeu2() {
         boolean joue = false;
 
         // on donne les cartes victoire des joueurs
@@ -169,7 +182,7 @@ public class ControleurPlateau extends Observable implements Observer {
         }
     }
 
-    public void controlerJeu() {
+    public void controllerJeu() {
         boolean joue = false;
         this.intEtatDuJeu = 0;
 
@@ -196,23 +209,12 @@ public class ControleurPlateau extends Observable implements Observer {
 
                 //System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
-                super.setChanged();
-                super.notifyObservers(null);
-
                 carteJoue = this.plateau.getListJoueur().element().choisirCarteAPlacer(false);
                 
 
-                //System.out.println("Ou voulez vous la poser ? ");
-                // String positionPoser = scanner.nextLine();
+                System.out.println("Ou voulez vous la poser ? ");
+                positionPoser = this.scanner.nextLine();
 
-                super.setChanged();
-
-                //on notifie l'observer avec un obet indiqquat l'état du changement
-                super.notifyObservers( new Object (){
-                    public String toString() {
-                        return "choisirCoord";
-                    }
-                });
 
                 positionPoser = this.plateau.getListJoueur().element().choisirCoordoneeAPlacer(carteJoue);
 
@@ -286,5 +288,10 @@ public class ControleurPlateau extends Observable implements Observer {
                 }
             }
         }
+    }
+
+    public void jouer() {
+        this.plateau.placerCarteCachee();
+        this.plateau.jouerModeNormal();
     }
 }

@@ -1,8 +1,8 @@
 package Model;
 
-import Vue.*;
+import View.*;
 
-public class Coordonee extends Observable{
+public class Coordonee {
 	
 	private int positionX;
 	private int positionY;
@@ -17,8 +17,6 @@ public class Coordonee extends Observable{
 	
 	public void poserUneCarte(Carte c) {
 		this.carte = c;
-		super.setChanged();
-		super.notifyObservers(null);
 	}
 
 	public boolean enleverLaCarte() {
@@ -51,11 +49,10 @@ public class Coordonee extends Observable{
 		this.positionY = positionY;
 	}
 
-	public Coordonee(int x, int y, Observer o) {
+	public Coordonee(int x, int y) {
 		this.positionX = x;
 		this.positionY = y;
 		this.carte = null;
-		super.addObserver(o);
 	}
 	
 	public String toString() {

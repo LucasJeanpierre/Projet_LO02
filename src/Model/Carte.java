@@ -5,7 +5,7 @@
 
 package Model;
 
-import Vue.Observable;
+import View.Observable;
 
 public class Carte extends Observable{
 	
