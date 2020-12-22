@@ -3,11 +3,13 @@ package Model;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Shared.Shared;
 import View.Observable;
 
 import java.util.Iterator;
+import java.beans.*;
 
-public class Joueur extends Observable implements ObjetVisite {
+public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	private String nom;
 	//temporaire
@@ -15,6 +17,8 @@ public class Joueur extends Observable implements ObjetVisite {
 	//private Carte carteVictoire;
 	private Scanner scanner;
 	private ArrayList<Carte> main;
+	private PropertyChangeSupport pcs;
+	private Shared shared;
 
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
@@ -24,10 +28,12 @@ public class Joueur extends Observable implements ObjetVisite {
 		return "Joueur : " + this.nom;
 	}
 
-	public Joueur(String nom) {
+	public Joueur(String nom, Shared shared) {
 		this.nom = nom;
 		this.scanner = new Scanner(System.in);
 		this.main = new ArrayList<Carte>();
+		this.shared = shared;
+		this.pcs = new PropertyChangeSupport(this);
 	}
 
 	public void piocherUneCarte(Carte carte) {
@@ -61,14 +67,11 @@ public class Joueur extends Observable implements ObjetVisite {
 
 
 	public String choisirCoordoneeAPlacer(Carte carte) {
-		System.out.print("> ");
+		/*System.out.print("> ");
 		String positionPoser = scanner.nextLine();
-		return positionPoser;
-
-		//test pour MVC
-		/*super.setChanged();
-		super.notifyObservers(null);
-		return "";*/
+		return positionPoser;*/
+		this.setProperty("joueur-demande-coord");
+		return this.shared.getString();
 	}
 	
 	public String choisirCoordoneeCarteABouger() {
@@ -137,9 +140,21 @@ public class Joueur extends Observable implements ObjetVisite {
 			System.out.println(carte.toString());
 		}
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+	public Shared getShared() {
+		return this.shared;
 	}
+	
+	public void propertyChange(PropertyChangeEvent evt) {
+	}
+
+	public void addObserver(PropertyChangeListener l) {
+		this.pcs.addPropertyChangeListener(l);
+	}
+
+	public void setProperty(String name) {
+		this.pcs.firePropertyChange(name, 0, 1);
+	}
+
 
 }

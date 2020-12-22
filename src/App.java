@@ -1,12 +1,18 @@
 import Model.*;
+
+import java.util.Queue;
+import java.util.Iterator;
+
 import Controller.*;
 import View.*;
+import Shared.Shared;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Plateau plateau = new Plateau();
-        VuePlateau vuePlateau = new VuePlateau();
-        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau);
+        Shared shared = new Shared();
+        Plateau plateau = new Plateau(shared);
+        VuePlateau vuePlateau = new VuePlateau(shared);
+        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared);
 
         plateau.addObserver(controleurPlateau);
         plateau.addObserver(vuePlateau);
@@ -16,6 +22,15 @@ public class App {
 
         controleurPlateau.addObserver(vuePlateau);
         controleurPlateau.addObserver(plateau);
+
+        Queue<Joueur> list = plateau.getListJoueur();
+        Iterator<Joueur> it = list.iterator();
+
+        while (it.hasNext()) {
+            Joueur j = it.next();
+            j.addObserver(vuePlateau);
+            j.addObserver(controleurPlateau);
+        }
         
         controleurPlateau.jouer();
 

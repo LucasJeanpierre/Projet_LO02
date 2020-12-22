@@ -2,6 +2,7 @@ package Model;
 
 import java.util.*;
 import java.beans.*;
+import Shared.Shared;
 
 public class Plateau implements ObjetVisite, PropertyChangeListener {
 
@@ -15,6 +16,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	private Paquet paquet;
 
 	private PropertyChangeSupport pcs;
+	private Shared shared;
 
 	public void addObserver(PropertyChangeListener l) {
 		this.pcs.addPropertyChangeListener(l);
@@ -513,14 +515,22 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return this.paquet;
 	}
 
-	public Plateau() {
+	public Plateau(Shared shared) {
 		// cr�ation du paquet
+		this.shared = shared;
 		this.paquet = new Paquet();
 		this.listeJoueur = new LinkedList<Joueur>();
 
 		// listeJoueur.add(new Joueur("Patrick"));
-		listeJoueur.add(new Joueur("Julien"));
-		listeJoueur.add(new JoueurIA(this));
+		//listeJoueur.add(new Joueur("Julien", this.shared));
+		//listeJoueur.add(new JoueurIA(this, this.shared));
+
+		Joueur julien = new Joueur("Julien", this.shared);
+		JoueurIA ordinateur = new JoueurIA(this, this.shared);
+
+
+		listeJoueur.add(julien);
+		listeJoueur.add(ordinateur);
 
 		// System.out.println(listeJoueur.element().toString());
 
@@ -938,20 +948,30 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 			System.out.println(joueur.toString() + " vous avez pioché une carte cachée");
 
-			carteCachee.reveler();
+			//carteCachee.reveler();
+			this.shared.setCarteCachee(carteCachee);
 			//on notifie la vue que l'on vien de placer une carte cachee
-			this.setProperty("revelerCarte");
-			System.out.println("fin du test");
+			this.setProperty("plateau-revelerCarte");
 			
 
 			boolean joue = false;
 
 			while (!joue) {
 
-				System.out.println("Ou voulez vous la poser ?");
+				//System.out.println("Ou voulez vous la poser ?");
+				//remplacent mvc
+
+				this.setProperty("plateau-question-ou-poser-carte-cachee");
 				// String positionPoser = scanner.nextLine();
-				String positionPoser = joueur.choisirCoordoneeAPlacer(carteCachee);
+
+				//String positionPoser = joueur.choisirCoordoneeAPlacer(carteCachee);
 				// System.out.println("Bonsoir a tous");
+				//remplacent mvc
+
+				//this.setProperty("plateau-demande-joueur-coord-carte-cachee");
+				joueur.choisirCoordoneeAPlacer(carteCachee);
+
+				String positionPoser = this.shared.getString();
 
 				try {
 					int x = Integer.parseInt(positionPoser.split(",")[0]);

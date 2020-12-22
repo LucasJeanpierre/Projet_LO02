@@ -2,12 +2,13 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import Shared.Shared;
 public class JoueurIA extends Joueur implements ComportementJoueur{
 
 	private Plateau plat;
 
-	public JoueurIA(Plateau plat) {
-		super("Ordinateur");
+	public JoueurIA(Plateau plat, Shared shared) {
+		super("Ordinateur", shared);
 		this.plat = plat;
 	}
 
@@ -22,6 +23,7 @@ public class JoueurIA extends Joueur implements ComportementJoueur{
 			//System.out.println(coord.getPositionX() + "," + coord.getPositionY());
 			if (coord.getCarte() == null) {
 				if (this.plat.peutPoserUneCarte(carte, coord.getPositionX(), coord.getPositionY())) {
+					super.getShared().setString(coord.getPositionX() + "," + coord.getPositionY());
 					return coord.getPositionX() + "," + coord.getPositionY();
 				}
 			}

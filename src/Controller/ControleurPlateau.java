@@ -6,6 +6,7 @@ import Model.*;
 import View.Observable;
 import View.Observer;
 import View.VuePlateau;
+import Shared.Shared;
 
 import java.util.Iterator;
 import java.beans.*;
@@ -16,6 +17,7 @@ public class ControleurPlateau implements PropertyChangeListener{
     private Plateau plateau;
     private Paquet paquet;
     private VuePlateau view;
+    private Shared shared;
 
     private PropertyChangeSupport pcs;
 
@@ -24,7 +26,6 @@ public class ControleurPlateau implements PropertyChangeListener{
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("Ceci est un test ---------");
     }
 
     public void setProperty(String name) {
@@ -38,12 +39,12 @@ public class ControleurPlateau implements PropertyChangeListener{
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau) {
+    public ControleurPlateau(Plateau plateau, Shared shared) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
         this.pcs = new PropertyChangeSupport(this);
-        
+        this.shared = shared;
     }
 
 
