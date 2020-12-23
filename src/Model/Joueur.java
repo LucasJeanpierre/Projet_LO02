@@ -42,9 +42,11 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 
 	public String bougerUneCarte() {
-		System.out.print("> ");
+		/*System.out.print("> ");
 		String positionBouger = scanner.nextLine();
-		return positionBouger;
+		return positionBouger;*/
+		this.setProperty("joueur-demande-coord");
+		return this.shared.getString();
 	}
 
 	public String choisirCarteABouger() {
@@ -75,9 +77,11 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 	
 	public String choisirCoordoneeCarteABouger() {
-		System.out.print("> ");
+		/*System.out.print("> ");
 		String positionPoser = scanner.nextLine();
-		return positionPoser;
+		return positionPoser;*/
+		this.setProperty("joueur-demande-coord");
+		return this.shared.getString();
 	}
 
 
@@ -127,9 +131,11 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 	public String decisionBougerCarte() {
-		System.out.print("> ");
+		/*System.out.print("> ");
 		String decision = scanner.nextLine();
-		return decision;
+		return decision;*/
+		this.setProperty("joueur-demande-bouger");
+		return this.shared.getString();
 	}
 
 	public void montrerLaMain() {
