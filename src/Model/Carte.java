@@ -56,6 +56,8 @@ public class Carte extends Observable{
 	public void afficher() {
 		System.out.println(this.toString());
 	}
+
+
 	
 	public Carte(String forme, String couleur, boolean rempli) {
 		this.forme = forme;

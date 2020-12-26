@@ -8,11 +8,17 @@ import Shared.Shared;
 import java.util.Scanner;
 
 import java.beans.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 
 public class VuePlateau extends Observable implements Observer, PropertyChangeListener {
 
     private JFrame frame;
+    private ImagePanel panel;
 
     private Scanner scanner;
     private PropertyChangeSupport pcs;
@@ -75,15 +81,39 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
 
     public void initialize() {
         this.frame = new JFrame();
-        this.frame.setBounds(50, 50, 100, 100);
+        this.frame.setBounds(50, 50, 500, 500);
+
+        panel = new ImagePanel("carre_bleu_plein");
+        panel.setBounds(20,20,500,700);
+        panel.setVisible(true);
+        this.frame.getContentPane().add(panel);
+
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.getContentPane().setLayout(null);
+
+
+
+
     }
+
+
 
 
     public String demanderString() {
         System.out.print("> ");
         return this.scanner.nextLine();
+    }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VuePlateau vuePlateau = new VuePlateau(new Shared());
+                    //start(plateau, shared, vuePlateau);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
