@@ -5,7 +5,9 @@
 
 package Model;
 
-import View.Observable;
+import View.*;
+
+import javax.swing.*;
 
 public class Carte extends Observable{
 	
@@ -13,6 +15,7 @@ public class Carte extends Observable{
 	private String forme;
 	private boolean rempli;
 	private String couleur;
+	private ImagePanel image;
  
 	
 	public void poser() {
@@ -57,13 +60,49 @@ public class Carte extends Observable{
 		System.out.println(this.toString());
 	}
 
+	public ImagePanel getImage() {
+		return this.image;
+	}
+
+	public void setImageCoord(int x, int y) {
+		//this.image.setBounds(x,y,50,50);
+	}
+
 
 	
 	public Carte(String forme, String couleur, boolean rempli) {
 		this.forme = forme;
 		this.rempli = rempli;
 		this.couleur = couleur;
+		String tempnom;
+		if (this.rempli) {
+			tempnom = "plein";
+		} else {
+			tempnom = "vide";
+		}
+		String name = forme + "_" + couleur + "_" + tempnom;
+		this.image = new ImagePanel(name);
+        this.image.setBounds(20,(int) Math.random()*20,500,700);
+        this.image.setVisible(true);
 		
+	}
+
+	public Carte(String forme, String couleur, boolean rempli, JFrame frame) {
+		this.forme = forme;
+		this.rempli = rempli;
+		this.couleur = couleur;
+		String tempnom;
+		if (this.rempli) {
+			tempnom = "plein";
+		} else {
+			tempnom = "vide";
+		}
+		String name = forme + "_" + couleur + "_" + tempnom;
+		this.image = new ImagePanel(name);
+        this.image.setBounds(20,(int) Math.random()*20,500,700);
+        this.image.setVisible(true);
+		frame.getContentPane().add(this.image);
+		System.out.println("Yo tout le monde");
 	}
 
 	

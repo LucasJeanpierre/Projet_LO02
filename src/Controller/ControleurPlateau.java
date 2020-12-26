@@ -290,7 +290,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
         if (arg != null) {
             if (o instanceof VuePlateau) {
                 if (arg.toString().equals("positionCoordPlacerCarte")) {
-                    this.placerLaCarte("0,0", new Carte("a", "a", false));
+                    this.placerLaCarte("0,0", new Carte("a", "a", false, null));
                 }
             }
         }

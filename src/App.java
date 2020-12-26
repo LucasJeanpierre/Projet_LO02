@@ -11,7 +11,8 @@ import javax.swing.*;
 
 public class App {
 
-    public static void start(Plateau plateau, Shared shared, VuePlateau vuePlateau) {
+    public static void start(Shared shared, VuePlateau vuePlateau) {
+        Plateau plateau = new Plateau(shared, vuePlateau);
         ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame());
 
         plateau.addObserver(controleurPlateau);
@@ -32,19 +33,21 @@ public class App {
             j.addObserver(controleurPlateau);
         }
 
+
+        System.out.println(vuePlateau.getFrame().countComponents());
+
         controleurPlateau.jouer();
     }
 
     public static void main(String[] args) throws Exception {
         Shared shared = new Shared();
-        Plateau plateau = new Plateau(shared);
 
         // VuePlateau vuePlateau = new VuePlateau(shared);
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     VuePlateau vuePlateau = new VuePlateau(shared);
-                    start(plateau, shared, vuePlateau);
+                    start(shared, vuePlateau);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package Model;
 import java.util.*;
 import java.beans.*;
 import Shared.Shared;
+import View.VuePlateau;
 
 public class Plateau implements ObjetVisite, PropertyChangeListener {
 
@@ -517,10 +518,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return this.paquet;
 	}
 
-	public Plateau(Shared shared) {
+	public Plateau(Shared shared, VuePlateau vuePlateau) {
 		// cr�ation du paquet
 		this.shared = shared;
-		this.paquet = new Paquet();
+		this.paquet = new Paquet(vuePlateau);
 		this.listeJoueur = new LinkedList<Joueur>();
 
 		// listeJoueur.add(new Joueur("Patrick"));

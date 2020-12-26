@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import View.VuePlateau;
+
 
 public class Paquet {
 
@@ -12,14 +14,14 @@ public class Paquet {
 	public String[] listeForme = {"rond", "triangle", "carre"};
 
 
-	public Paquet() {
+	public Paquet(VuePlateau vuePlateau) {
 		this.paquetDeCarte = new ArrayList<Carte>();
 
 		//cr�ation des cartes
 		for (int icouleur = 0; icouleur < listeCouleur.length; icouleur ++) {
 			for (int iforme = 0; iforme < listeForme.length; iforme ++) {
-				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], true));
-				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], false));
+				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], true, vuePlateau.getFrame()));
+				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], false, vuePlateau.getFrame()));
 			}
 		}
 	}

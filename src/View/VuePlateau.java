@@ -66,6 +66,11 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             this.shared.getCoordonee().afficher();
             this.shared.getCoordonee().getCarte().afficher();
             System.out.println("------");
+            this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX()*50, this.shared.getCoordonee().getPositionX()*50);
+            this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
+            //this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
+            //this.frame.pack();
+            SwingUtilities.updateComponentTreeUI(frame);
         } else if (evt.getPropertyName().equals("plateau-demande-bouger-carte")) {
             System.out.println("Voulez vous bouger une carte ?");
         } else if (evt.getPropertyName().equals("joueur-demande-bouger")) {
@@ -83,10 +88,10 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 500);
 
-        panel = new ImagePanel("carre_bleu_plein");
+        /*panel = new ImagePanel("carre_rouge_plein");
         panel.setBounds(20,20,500,700);
         panel.setVisible(true);
-        this.frame.getContentPane().add(panel);
+        this.frame.getContentPane().add(panel);*/
 
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.getContentPane().setLayout(null);
