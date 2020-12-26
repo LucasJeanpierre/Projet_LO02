@@ -6,13 +6,13 @@ import java.util.Iterator;
 import Controller.*;
 import View.*;
 import Shared.Shared;
+import java.awt.EventQueue;
+import javax.swing.*;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        Shared shared = new Shared();
-        Plateau plateau = new Plateau(shared);
-        VuePlateau vuePlateau = new VuePlateau(shared);
-        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared);
+
+    public static void start(Plateau plateau, Shared shared, VuePlateau vuePlateau) {
+        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame());
 
         plateau.addObserver(controleurPlateau);
         plateau.addObserver(vuePlateau);
@@ -31,8 +31,25 @@ public class App {
             j.addObserver(vuePlateau);
             j.addObserver(controleurPlateau);
         }
-        
+
         controleurPlateau.jouer();
+    }
+
+    public static void main(String[] args) throws Exception {
+        Shared shared = new Shared();
+        Plateau plateau = new Plateau(shared);
+
+        // VuePlateau vuePlateau = new VuePlateau(shared);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VuePlateau vuePlateau = new VuePlateau(shared);
+                    start(plateau, shared, vuePlateau);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 }

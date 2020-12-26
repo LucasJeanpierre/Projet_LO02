@@ -10,14 +10,17 @@ import Shared.Shared;
 
 import java.util.Iterator;
 import java.beans.*;
+import javax.swing.*;
 
-public class ControleurPlateau implements PropertyChangeListener{
+public class ControleurPlateau implements PropertyChangeListener, Runnable{
 
     private Scanner scanner;
     private Plateau plateau;
     private Paquet paquet;
     private VuePlateau view;
     private Shared shared;
+    private JFrame frame;
+    private Thread t;
 
     private PropertyChangeSupport pcs;
 
@@ -39,12 +42,14 @@ public class ControleurPlateau implements PropertyChangeListener{
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau, Shared shared) {
+    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
+        this.frame = frame;
+        this.t = new Thread(this);
     }
 
 
@@ -292,6 +297,10 @@ public class ControleurPlateau implements PropertyChangeListener{
     }
 
     public void jouer() {
+        this.t.start();
+    }
+
+    public void run() {
         this.plateau.placerCarteCachee();
         this.plateau.jouerModeNormal();
     }

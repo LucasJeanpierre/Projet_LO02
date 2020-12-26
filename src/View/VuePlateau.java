@@ -8,8 +8,11 @@ import Shared.Shared;
 import java.util.Scanner;
 
 import java.beans.*;
+import javax.swing.*;
 
 public class VuePlateau extends Observable implements Observer, PropertyChangeListener {
+
+    private JFrame frame;
 
     private Scanner scanner;
     private PropertyChangeSupport pcs;
@@ -19,6 +22,12 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.scanner = new Scanner(System.in);
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
+        initialize();
+        this.frame.setVisible(true);
+    }
+
+    public JFrame getFrame() {
+        return this.frame;
     }
 
     public void addObserver(PropertyChangeListener l) {
@@ -63,6 +72,14 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             System.out.println(this.shared.getJoueur().toString() + " " + this.shared.getJoueur().getCarteVictoire().toString() + " "+ this.shared.getIntShared());
         }
     }
+
+    public void initialize() {
+        this.frame = new JFrame();
+        this.frame.setBounds(50, 50, 100, 100);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.getContentPane().setLayout(null);
+    }
+
 
     public String demanderString() {
         System.out.print("> ");
