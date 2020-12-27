@@ -8,6 +8,7 @@ package Model;
 import View.*;
 
 import javax.swing.*;
+import java.util.Random;
 
 public class Carte extends Observable{
 	
@@ -71,6 +72,7 @@ public class Carte extends Observable{
 
 	
 	public Carte(String forme, String couleur, boolean rempli) {
+		Random rand = new Random();
 		this.forme = forme;
 		this.rempli = rempli;
 		this.couleur = couleur;
@@ -82,12 +84,14 @@ public class Carte extends Observable{
 		}
 		String name = forme + "_" + couleur + "_" + tempnom;
 		this.image = new ImagePanel(name);
-        this.image.setBounds(20,(int) Math.random()*20,500,700);
+		System.out.println(rand.nextInt(500));
+        this.image.setBounds(rand.nextInt(500), rand.nextInt(500),500, 700);
         this.image.setVisible(true);
 		
 	}
 
 	public Carte(String forme, String couleur, boolean rempli, JFrame frame) {
+		Random rand = new Random();
 		this.forme = forme;
 		this.rempli = rempli;
 		this.couleur = couleur;
@@ -99,7 +103,8 @@ public class Carte extends Observable{
 		}
 		String name = forme + "_" + couleur + "_" + tempnom;
 		this.image = new ImagePanel(name);
-        this.image.setBounds(20,(int) Math.random()*20,500,700);
+        System.out.println(rand.nextInt(500));
+        this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
         this.image.setVisible(true);
 		frame.getContentPane().add(this.image);
 		System.out.println("Yo tout le monde");

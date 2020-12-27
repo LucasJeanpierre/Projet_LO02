@@ -34,7 +34,7 @@ public class App {
         }
 
 
-        System.out.println(vuePlateau.getFrame().countComponents());
+        //System.out.println(vuePlateau.getFrame().countComponents());
 
         controleurPlateau.jouer();
     }
