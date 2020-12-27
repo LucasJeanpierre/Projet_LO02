@@ -24,6 +24,10 @@ public class App {
         controleurPlateau.addObserver(vuePlateau);
         controleurPlateau.addObserver(plateau);
 
+        /*ImagePanel panel = new ImagePanel("vide");
+        panel.setVisible(true);
+        vuePlateau.getFrame().getContentPane().add(panel);*/
+
         Queue<Joueur> list = plateau.getListJoueur();
         Iterator<Joueur> it = list.iterator();
 

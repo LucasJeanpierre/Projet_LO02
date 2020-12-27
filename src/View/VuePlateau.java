@@ -82,6 +82,8 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             System.out.println("Donnez la coordonee ou vous voulez placer cette carte");
         } else if (evt.getPropertyName().equals("plateau-montrer-score-joueur")) {
             System.out.println(this.shared.getJoueur().toString() + " " + this.shared.getJoueur().getCarteVictoire().toString() + " "+ this.shared.getIntShared());
+        } else if (evt.getPropertyName().equals("plateau-montrer-le-emplacement")) {
+            
         }
     }
 
@@ -90,17 +92,18 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.frame.setBounds(50, 50, 500, 500);
 
         /*panel = new ImagePanel("carre_rouge_plein");
-        panel.setBounds(20,20,500,700);
+        panel.setBounds(0,700,50,50);
         panel.setVisible(true);
-        this.frame.getContentPane().add(panel);
+        this.frame.getContentPane().add(panel);*/
 
-        panel2 = new ImagePanel("carre_bleu_plein");
-        panel2.setBounds(70,70,500,700);
+        /*panel2 = new ImagePanel("carre_bleu_plein");
+        panel2.setBounds(10,250,50,50);
         panel2.setVisible(true);
         this.frame.getContentPane().add(panel2);*/
 
+
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.frame.getContentPane().setLayout(null);
+        this.frame.getContentPane().setLayout(null);
 
 
 

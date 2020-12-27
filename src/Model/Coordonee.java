@@ -1,6 +1,8 @@
 package Model;
 
 import View.*;
+import View.ImagePanel;
+import javax.swing.*;
 
 public class Coordonee {
 	
@@ -8,6 +10,8 @@ public class Coordonee {
 	private int positionY;
 	
 	private Carte carte;
+	private JFrame frame;
+	private ImagePanel panel;
 	
 	
 	
@@ -53,6 +57,17 @@ public class Coordonee {
 		this.positionX = x;
 		this.positionY = y;
 		this.carte = null;
+	}
+
+	public Coordonee(int x, int y, JFrame frame) {
+		this.positionX = x;
+		this.positionY = y;
+		this.carte = null;
+		this.frame = frame;
+		this.panel = new ImagePanel("vide");
+		this.panel.setBounds(x * 100, y * 100 ,50, 50);
+		this.panel.setVisible(true);
+		this.frame.getContentPane().add(this.panel);
 	}
 	
 	public String toString() {

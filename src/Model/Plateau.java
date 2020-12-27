@@ -269,6 +269,8 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				//System.out.println("--------------");
 				this.shared.setCoordonee(coord);
 				this.setProperty("plateau-montrer-la-carte");
+			} else {
+				this.setProperty("plateau-montrer-le-emplacement");
 			}
 		}
 
@@ -556,9 +558,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		}
 		for (int x = 0; x < nblong; x++) {
 			for (int y = 0; y < nblarge; y++) {
-				listeCoord.add(new Coordonee(x, y));
+				listeCoord.add(new Coordonee(x, y, vuePlateau.getFrame()));
 			}
 		}
+
 
 	}
 

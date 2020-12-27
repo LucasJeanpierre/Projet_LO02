@@ -91,7 +91,6 @@ public class Carte extends Observable{
 		System.out.println(rand.nextInt(500));
         this.image.setBounds(rand.nextInt(500), rand.nextInt(500),500, 700);
 		//this.image.setVisible(true);
-		System.out.println("WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOW !");
 	}
 
 	public Carte(String forme, String couleur, boolean rempli, JFrame frame) {
@@ -110,9 +109,9 @@ public class Carte extends Observable{
 		this.image = new ImagePanel(name);
 		//System.out.println(rand.nextInt(500));
 		//int x = rand.nextInt(500);
-		//this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
-		this.image.setBounds(250,250,50,50);
-        this.image.setVisible(true);
+		this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
+		//this.image.setBounds(250,250,50,50);
+        this.image.setVisible(false);
 		this.frame.getContentPane().add(this.image);
 	}
 
