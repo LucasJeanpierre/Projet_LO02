@@ -986,15 +986,16 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			// chaque joueur prend 2  carte puis a chaque tour il en pioche une nouvelle il
 			// aura donc le choix entre 3 cartes a chaque tours
 
-			CarteCachee carteCachee = new CarteCachee(this.paquet.getRandomCarte());
+			//CarteCachee carteCachee = new CarteCachee(this.paquet.getRandomCarte());
+			Carte carteCachee = this.paquet.getRandomCarte();
 			joueur.piocherUneCarte(carteCachee);
 
 			System.out.println(joueur.toString() + " vous avez pioché une carte cachée");
 
 			//carteCachee.reveler();
-			this.shared.setCarteCachee(carteCachee);
+			//this.shared.setCarteCachee(carteCachee);
 			//on notifie la vue que l'on vien de placer une carte cachee
-			this.setProperty("plateau-revelerCarte");
+			//this.setProperty("plateau-revelerCarte");
 
 			this.montrerLesCartesPosees();
 			
