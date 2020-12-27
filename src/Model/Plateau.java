@@ -529,11 +529,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		//listeJoueur.add(new JoueurIA(this, this.shared));
 
 		Joueur julien = new Joueur("Julien", this.shared);
-		JoueurIA ordinateur = new JoueurIA(this, this.shared);
+		Joueur mathieu = new Joueur("Mathieu", this.shared);
+		//JoueurIA ordinateur = new JoueurIA(this, this.shared);
 
 
 		listeJoueur.add(julien);
-		listeJoueur.add(ordinateur);
+		//listeJoueur.add(ordinateur);
+		listeJoueur.add(mathieu);
 
 		// System.out.println(listeJoueur.element().toString());
 
@@ -719,6 +721,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			joue = false;
 
 			Carte cartePioche = this.paquet.getRandomCarte();
+			this.montrerLesCartesPosees();
 			// poser une carte
 			while (!joue) {
 
@@ -730,13 +733,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				}
 				// System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
-				this.montrerLesCartesPosees();
+				//this.montrerLesCartesPosees();
 
 				//System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
 				//remplacent mvc
 				this.shared.setCarte(cartePioche);
-				this.setProperty("plateau-montrer-carte-poser");
+				//this.setProperty("plateau-montrer-carte-poser");
 
 				this.listeJoueur.element().choisirCarteAPlacer(false);
 				carteJoue = this.shared.getCarte();
@@ -830,6 +833,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					joue = true;
 				}
 			}
+			this.montrerLesCartesPosees();
 		}
 
 		// calcul des scores
@@ -991,6 +995,8 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			this.shared.setCarteCachee(carteCachee);
 			//on notifie la vue que l'on vien de placer une carte cachee
 			this.setProperty("plateau-revelerCarte");
+
+			this.montrerLesCartesPosees();
 			
 
 			boolean joue = false;
@@ -999,7 +1005,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 				//System.out.println("Ou voulez vous la poser ?");
 				//remplacent mvc
-
+				//this.shared.setCarteCachee(carteCachee);
 				this.setProperty("plateau-question-ou-poser-carte-cachee");
 				// String positionPoser = scanner.nextLine();
 
@@ -1027,7 +1033,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				}
 			}
 		}
-
+		//this.setProperty("plateau-revelerCarte");
 		this.changementDeTour();
 	}
 

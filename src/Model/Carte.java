@@ -17,7 +17,7 @@ public class Carte extends Observable{
 	private boolean rempli;
 	private String couleur;
 	private ImagePanel image;
- 
+	private JFrame frame;
 	
 	public void poser() {
 		
@@ -25,6 +25,10 @@ public class Carte extends Observable{
 	
 	public void estPosee() {
 		
+	}
+
+	public JFrame getFrame() {
+		return this.frame;
 	}
 	
 
@@ -66,7 +70,7 @@ public class Carte extends Observable{
 	}
 
 	public void setImageCoord(int x, int y) {
-		//this.image.setBounds(x,y,50,50);
+		this.image.setBounds(x,y,50,50);
 	}
 
 
@@ -86,11 +90,12 @@ public class Carte extends Observable{
 		this.image = new ImagePanel(name);
 		System.out.println(rand.nextInt(500));
         this.image.setBounds(rand.nextInt(500), rand.nextInt(500),500, 700);
-        this.image.setVisible(true);
-		
+		//this.image.setVisible(true);
+		System.out.println("WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOW !");
 	}
 
 	public Carte(String forme, String couleur, boolean rempli, JFrame frame) {
+		this.frame = frame;
 		Random rand = new Random();
 		this.forme = forme;
 		this.rempli = rempli;
@@ -105,9 +110,8 @@ public class Carte extends Observable{
 		this.image = new ImagePanel(name);
         System.out.println(rand.nextInt(500));
         this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
-        this.image.setVisible(true);
-		frame.getContentPane().add(this.image);
-		System.out.println("Yo tout le monde");
+        this.image.setVisible(false);
+		this.frame.getContentPane().add(this.image);
 	}
 
 	
