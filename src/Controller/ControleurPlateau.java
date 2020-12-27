@@ -11,6 +11,8 @@ import Shared.Shared;
 import java.util.Iterator;
 import java.beans.*;
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.*;
 
 public class ControleurPlateau implements PropertyChangeListener, Runnable{
 
@@ -21,6 +23,14 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
     private Shared shared;
     private JFrame frame;
     private Thread t;
+    private String saisie;
+    private String[] commande;
+    private boolean quitter;
+
+    public static String PROMPT = "> ";
+    public static String PLACER = "placer";
+    public static String QUITTER = "quitter";
+    public static String PIOCHER = "piocher";
 
     private PropertyChangeSupport pcs;
 
@@ -301,7 +311,41 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
     }
 
     public void run() {
-        this.plateau.placerCarteCachee();
-        this.plateau.jouerModeNormal();
+        //this.plateau.placerCarteCachee();
+        //this.plateau.jouerModeNormal();
+
+        do {
+			saisie = this.lireChaine();
+			if (saisie != null) {
+                commande = saisie.split("\\s+");
+				if (commande[0].equals(ControleurPlateau.PLACER)) {
+                    //this.inter.appuyer();
+                    this.plateau.poserUneCarte(this.shared.getCarte(), Integer.parseInt(commande[1]), Integer.parseInt(commande[2]));
+                    //this.setProperty("controleur-montrer-les-cartes");
+				} else if (commande[0].equals(ControleurPlateau.PIOCHER)) {
+                    Carte carte = this.plateau.getPaquet().getRandomCarte();
+                    this.shared.setJoueur(plateau.getListJoueur().element());
+                    this.shared.getJoueur().piocherUneCarte(carte);
+                    this.shared.setCarte(carte);
+                    this.setProperty("controleur-montrer-carte-pioche");
+                } else if (commande[0].equals(ControleurPlateau.QUITTER)) {
+					quitter = true;
+				}
+			}
+		} while (quitter == false);
+		System.exit(0);
+
     }
+
+    private String lireChaine() {
+		BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
+		String resultat = null;
+		try {
+			System.out.print(ControleurPlateau.PROMPT);
+			resultat = br.readLine();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+		return resultat;
+	}
 }

@@ -82,8 +82,12 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             System.out.println("Donnez la coordonee ou vous voulez placer cette carte");
         } else if (evt.getPropertyName().equals("plateau-montrer-score-joueur")) {
             System.out.println(this.shared.getJoueur().toString() + " " + this.shared.getJoueur().getCarteVictoire().toString() + " "+ this.shared.getIntShared());
-        } else if (evt.getPropertyName().equals("plateau-montrer-le-emplacement")) {
+        } else if (evt.getPropertyName().equals("controleur-montrer-carte-pioche")) {
+            System.out.println("Vous avez pioche une carte");
+            System.out.println(this.shared.getCarte().toString());
             
+            this.shared.getCarte().setImageCoord(200, 300);
+            this.shared.getCarte().getImage().setVisible(true);
         }
     }
 
@@ -117,7 +121,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         System.out.print("> ");
         return this.scanner.nextLine();
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -128,6 +132,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 }
             }
         });
-    }
+    }*/
 
 }

@@ -50,6 +50,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				// si l'emplacement ou pose la carte est vide
 				if (coord.getCarte() == null) {
 					coord.poserUneCarte(carte);
+					this.montrerLesCartesPosees();
 					return true;
 				} else {
 					return false;
@@ -66,6 +67,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				// si l'emplacement ou pose la carte est vide
 				if (coord.getCarte() == null) {
 					coord.poserUneCarte(carte);
+					this.montrerLesCartesPosees();
 					return true;
 				} else {
 					return false;
