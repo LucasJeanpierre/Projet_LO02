@@ -6,6 +6,10 @@ import Model.*;
 import View.Observable;
 import View.Observer;
 import View.VuePlateau;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 import java.awt.event.MouseEvent;
 import Shared.Shared;
 
@@ -18,7 +22,7 @@ import javax.swing.event.MouseInputListener;
 import java.io.BufferedReader;
 import java.io.*;
 
-public class ControleurPlateau implements PropertyChangeListener, Runnable{
+public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private Scanner scanner;
     private Plateau plateau;
@@ -30,6 +34,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
     private String saisie;
     private String[] commande;
     private boolean quitter;
+    private JButton bouttonPiocher;
 
     public static String PROMPT = "> ";
     public static String PLACER = "placer";
@@ -49,14 +54,13 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
         this.pcs.firePropertyChange(name, 0, 1);
     }
 
-
     private enum etatDuJeu {
         PLACER_CARTE, CHOIX_BOUGER_CARTE, BOUGER_CARTE
     };
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame) {
+    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
@@ -68,18 +72,26 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
 
         while (it.hasNext()) {
             Coordonee coord = it.next();
-            coord.getPanel().addMouseListener(new MouseInputAdapter(){
+            coord.getPanel().addMouseListener(new MouseInputAdapter() {
 
                 public void mousePressed(MouseEvent e) {
-                    //System.out.println("touche");
+                    // System.out.println("touche");
                     JPanel panel = (JPanel) e.getSource();
-                    //System.out.println(panel.getY());
-                    ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(), panel.getX() / 100, panel.getY() / 100);
+                    // System.out.println(panel.getY());
+                    ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(),
+                            panel.getX() / 100, panel.getY() / 100);
                 }
             });
         }
-    }
 
+        this.bouttonPiocher = vuePlateau.getButtonPiocher();
+
+        this.bouttonPiocher.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                ControleurPlateau.this.piocher();
+            }
+        });
+    }
 
     public void ControllerJeu2() {
         boolean joue = false;
@@ -239,16 +251,14 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
                 }
                 // System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
-                //this.plateau.montrerLesCartesPosees();
+                // this.plateau.montrerLesCartesPosees();
 
-                //System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
+                // System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
                 carteJoue = this.plateau.getListJoueur().element().choisirCarteAPlacer(false);
-                
 
                 System.out.println("Ou voulez vous la poser ? ");
                 positionPoser = this.scanner.nextLine();
-
 
                 positionPoser = this.plateau.getListJoueur().element().choisirCoordoneeAPlacer(carteJoue);
 
@@ -329,41 +339,49 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
     }
 
     public void run() {
-        //this.plateau.placerCarteCachee();
-        //this.plateau.jouerModeNormal();
+        // this.plateau.placerCarteCachee();
+        // this.plateau.jouerModeNormal();
 
         do {
-			saisie = this.lireChaine();
-			if (saisie != null) {
+            saisie = this.lireChaine();
+            if (saisie != null) {
                 commande = saisie.split("\\s+");
-				if (commande[0].equals(ControleurPlateau.PLACER)) {
-                    //this.inter.appuyer();
-                    this.plateau.poserUneCarte(this.shared.getCarte(), Integer.parseInt(commande[1]), Integer.parseInt(commande[2]));
-                    //this.setProperty("controleur-montrer-les-cartes");
-				} else if (commande[0].equals(ControleurPlateau.PIOCHER)) {
-                    Carte carte = this.plateau.getPaquet().getRandomCarte();
-                    this.shared.setJoueur(plateau.getListJoueur().element());
-                    this.shared.getJoueur().piocherUneCarte(carte);
-                    this.shared.setCarte(carte);
-                    this.setProperty("controleur-montrer-carte-pioche");
+                if (commande[0].equals(ControleurPlateau.PLACER)) {
+                    this.placer();
+                } else if (commande[0].equals(ControleurPlateau.PIOCHER)) {
+                    this.piocher();
                 } else if (commande[0].equals(ControleurPlateau.QUITTER)) {
-					quitter = true;
-				}
-			}
-		} while (quitter == false);
-		System.exit(0);
+                    quitter = true;
+                }
+            }
+        } while (quitter == false);
+        System.exit(0);
 
     }
 
+    private void piocher() {
+        Carte carte = this.plateau.getPaquet().getRandomCarte();
+        this.shared.setJoueur(plateau.getListJoueur().element());
+        this.shared.getJoueur().piocherUneCarte(carte);
+        this.shared.setCarte(carte);
+        this.setProperty("controleur-montrer-carte-pioche");
+    }
+
+    private void placer() {
+        // this.inter.appuyer();
+        this.plateau.poserUneCarte(this.shared.getCarte(), Integer.parseInt(commande[1]), Integer.parseInt(commande[2]));
+        // this.setProperty("controleur-montrer-les-cartes");
+    }
+
     private String lireChaine() {
-		BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
-		String resultat = null;
-		try {
-			System.out.print(ControleurPlateau.PROMPT);
-			resultat = br.readLine();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		return resultat;
-	}
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String resultat = null;
+        try {
+            System.out.print(ControleurPlateau.PROMPT);
+            resultat = br.readLine();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return resultat;
+    }
 }

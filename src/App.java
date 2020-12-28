@@ -13,7 +13,7 @@ public class App {
 
     public static void start(Shared shared, VuePlateau vuePlateau) {
         Plateau plateau = new Plateau(shared, vuePlateau);
-        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame());
+        ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame(), vuePlateau);
 
         plateau.addObserver(controleurPlateau);
         plateau.addObserver(vuePlateau);

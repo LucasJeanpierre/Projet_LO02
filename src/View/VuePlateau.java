@@ -18,8 +18,7 @@ import java.awt.*;
 public class VuePlateau extends Observable implements Observer, PropertyChangeListener {
 
     private JFrame frame;
-    private ImagePanel panel;
-    private ImagePanel panel2;
+    private JButton boutton_piocher;
 
     private Scanner scanner;
     private PropertyChangeSupport pcs;
@@ -91,9 +90,17 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         }
     }
 
+    public JButton getButtonPiocher() {
+        return this.boutton_piocher;
+    }
+
     public void initialize() {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 500);
+
+        this.boutton_piocher = new JButton("Piocher");
+		this.boutton_piocher.setBounds(20, 300, 125, 25);
+		this.frame.getContentPane().add(boutton_piocher);
 
         /*panel = new ImagePanel("carre_rouge_plein");
         panel.setBounds(0,700,50,50);
