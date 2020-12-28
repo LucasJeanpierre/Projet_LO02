@@ -6,11 +6,15 @@ import Model.*;
 import View.Observable;
 import View.Observer;
 import View.VuePlateau;
+import java.awt.event.MouseEvent;
 import Shared.Shared;
 
 import java.util.Iterator;
 import java.beans.*;
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
+
 import java.io.BufferedReader;
 import java.io.*;
 
@@ -60,6 +64,20 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable{
         this.shared = shared;
         this.frame = frame;
         this.t = new Thread(this);
+        Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
+
+        while (it.hasNext()) {
+            Coordonee coord = it.next();
+            coord.getPanel().addMouseListener(new MouseInputAdapter(){
+
+                public void mousePressed(MouseEvent e) {
+                    //System.out.println("touche");
+                    JPanel panel = (JPanel) e.getSource();
+                    //System.out.println(panel.getY());
+                    ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(), panel.getX() / 100, panel.getY() / 100);
+                }
+            });
+        }
     }
 
 
