@@ -21,6 +21,15 @@ public class ImagePanel extends JPanel{
        }
     }
 
+    public void changeImage(String nom) {
+        try {                
+            image = ImageIO.read(new File("data/" + nom + ".png"));
+            image = image.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+         } catch (IOException ex) {
+              // handle exception...
+         }
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {

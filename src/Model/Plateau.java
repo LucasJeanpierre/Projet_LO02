@@ -730,9 +730,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			// System.out.println(joueur.toString() + " votre carte victoire est : " +
 			// joueur.getCarteVictoire().toString());
 			// remplacent mvc
-			this.shared.setJoueur(joueur);
-			this.setProperty("plateau-donner-carte-victoire");
+			//this.shared.setJoueur(joueur);
 		}
+
+		this.shared.setListJoueur(this.listeJoueur);
+		this.setProperty("plateau-donner-carte-victoire");
 
 		// tant qu'il reste des cartes a placer et que le plateau n'est pas rempli
 		while ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli())) {
@@ -1067,9 +1069,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		while (it.hasNext()) {
 			Joueur joueur = it.next();
 			joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
-			System.out
-					.println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
 		}
+
+		this.changementDeTour();
+		this.shared.setListJoueur(this.listeJoueur);
+		this.setProperty("plateau-donner-carte-victoire");
 	}
 
 	public static void main(String[] args) {

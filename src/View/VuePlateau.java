@@ -27,6 +27,12 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private PropertyChangeSupport pcs;
     private Shared shared;
 
+    private ImagePanel panel1;
+    private ImagePanel panel2;
+
+    private JLabel label_panel1;
+    private JLabel label_panel2;
+
     public VuePlateau(Shared shared) {
         this.scanner = new Scanner(System.in);
         this.pcs = new PropertyChangeSupport(this);
@@ -60,8 +66,34 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         } else if (evt.getPropertyName().equals("joueur-demande-coord")) {
             this.shared.setString(this.demanderString());
         } else if (evt.getPropertyName().equals("plateau-donner-carte-victoire")) {
-            System.out.println(this.shared.getJoueur().toString() + " votre carte victoire est : "
-                    + this.shared.getJoueur().getCarteVictoire().toString());
+            // System.out.println(this.shared.getJoueur().toString() + " votre carte
+            // victoire est : "
+            // + this.shared.getJoueur().getCarteVictoire().toString());
+            Iterator<Joueur> it = this.shared.getListJoueur().iterator();
+            int i = 0;
+
+            while (it.hasNext()) {
+                Joueur j = it.next();
+                System.out.println(j.toString() + " votre carte victoire est : " + j.getCarteVictoire().toString());
+
+                String tempnom;
+                if (j.getCarteVictoire().isRempli()) {
+                    tempnom = "plein";
+                } else {
+                    tempnom = "vide";
+                }
+
+                String name = j.getCarteVictoire().getForme() + "_" + j.getCarteVictoire().getCouleur() + "_" + tempnom;
+                if (i==0) {
+                    this.panel1.changeImage(name);
+                    i++;
+                } else {
+                    this.panel2.changeImage(name);
+    
+                }
+                
+            }
+
         } else if (evt.getPropertyName().equals("plateau-montrer-carte-poser")) {
             System.out.println("vous avez piocher la carte " + this.shared.getCarte());
         } else if (evt.getPropertyName().equals("plateau-demande-ou-poser")) {
@@ -118,8 +150,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                     Carte carte = coord.getCarte();
                     if (carte instanceof CarteCachee) {
                         CarteCachee carteCachee = (CarteCachee) carte;
-                        carteCachee.setImageDevoileCoord(coord.getPositionX() * 100,
-                                coord.getPositionY() * 100);
+                        carteCachee.setImageDevoileCoord(coord.getPositionX() * 100, coord.getPositionY() * 100);
                         carteCachee.getImageDevoile().setVisible(true);
                         carteCachee.getImage().setVisible(false);
                         coord.getPanel().setVisible(false);
@@ -127,8 +158,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                         coord.afficher();
                         carteCachee.reveler();
                     } else {
-                       carte.setImageCoord(coord.getPositionX() * 100,
-                                coord.getPositionY() * 100);
+                        carte.setImageCoord(coord.getPositionX() * 100, coord.getPositionY() * 100);
                         carte.getImage().setVisible(true);
                         coord.getPanel().setVisible(false);
 
@@ -151,7 +181,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
 
     public void initialize() {
         this.frame = new JFrame();
-        this.frame.setBounds(50, 50, 500, 500);
+        this.frame.setBounds(50, 50, 500, 700);
 
         this.boutton_piocher = new JButton("Piocher");
         this.boutton_piocher.setBounds(20, 300, 125, 25);
@@ -165,6 +195,21 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.changer_joueur.setBounds(300, 300, 125, 25);
         this.frame.getContentPane().add(this.changer_joueur);
 
+        this.panel1 = new ImagePanel("vide");
+        this.panel1.setBounds(20, 500, 50, 50);
+        this.frame.getContentPane().add(this.panel1);
+
+        this.panel2 = new ImagePanel("vide");
+        this.panel2.setBounds(300, 500, 50, 50);
+        this.frame.getContentPane().add(this.panel2);
+
+        this.label_panel1 = new JLabel("Joueur1");
+        this.label_panel1.setBounds(20, 480, 125, 25);
+        this.frame.getContentPane().add(this.label_panel1);
+
+        this.label_panel2 = new JLabel("Joueur2");
+        this.label_panel2.setBounds(300, 480, 125, 25);
+        this.frame.getContentPane().add(this.label_panel2);
         /*
          * panel = new ImagePanel("carre_rouge_plein"); panel.setBounds(0,700,50,50);
          * panel.setVisible(true); this.frame.getContentPane().add(panel);

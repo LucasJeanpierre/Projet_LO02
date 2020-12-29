@@ -13,6 +13,7 @@ public class Shared {
     private ArrayList<Coordonee> listCoord;
     private String string;
     private int intShared;
+    private Queue<Joueur> listJoueur;
 
 
     public Shared() {
@@ -89,6 +90,14 @@ public class Shared {
 
     public void setListCoord(ArrayList<Coordonee> listCoord) {
         this.listCoord = listCoord;
+    }
+
+    public Queue<Joueur> getListJoueur() {
+        return this.listJoueur;
+    }
+
+    public void setListJoueur(Queue<Joueur> listJoueur) {
+        this.listJoueur = listJoueur;
     }
 
 }
