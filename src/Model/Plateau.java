@@ -26,12 +26,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	public void setProperty(String name) {
 		this.pcs.firePropertyChange(name, 0, 1);
 	}
-	
 
 	public void propertyChange(PropertyChangeEvent evt) {
 
 	}
-
 
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
@@ -42,41 +40,34 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		// appel la m�thode poser une carte de la coordonee qui va associ� l'attribut
 		// carte de la coordonne a l'objet carte donn� en argument
 
-		/*if (carte instanceof CarteCachee) {
-			// si la coordonee est valide on cherche l'objet coordonee qui correspond
-			if ((recupererCoord(x, y) != null)) {
-				Coordonee coord = recupererCoord(x, y);
+		/*
+		 * if (carte instanceof CarteCachee) { // si la coordonee est valide on cherche
+		 * l'objet coordonee qui correspond if ((recupererCoord(x, y) != null)) {
+		 * Coordonee coord = recupererCoord(x, y);
+		 * 
+		 * // si l'emplacement ou pose la carte est vide if (coord.getCarte() == null) {
+		 * coord.poserUneCarte(carte); this.montrerLesCartesPosees(); return true; }
+		 * else { return false; } } else { // sinon on revoie false pour que la fonction
+		 * ne s'est terminier coorectement return false; } } else {
+		 */
 
-				// si l'emplacement ou pose la carte est vide
-				if (coord.getCarte() == null) {
-					coord.poserUneCarte(carte);
-					this.montrerLesCartesPosees();
-					return true;
-				} else {
-					return false;
-				}
-			} else { // sinon on revoie false pour que la fonction ne s'est terminier coorectement
+		// si la coordonee est valide on cherche l'objet coordonee qui correspond
+		if ((recupererCoord(x, y) != null) && (isAdjacent(x, y))) {
+			Coordonee coord = recupererCoord(x, y);
+
+			// si l'emplacement ou pose la carte est vide
+			if (coord.getCarte() == null) {
+				coord.poserUneCarte(carte);
+				listeJoueur.element().poserUneCarte(carte);
+				this.montrerLesCartesPosees();
+				return true;
+			} else {
 				return false;
 			}
-		} else {*/
-
-			// si la coordonee est valide on cherche l'objet coordonee qui correspond
-			if ((recupererCoord(x, y) != null) && (isAdjacent(x, y))) {
-				Coordonee coord = recupererCoord(x, y);
-
-				// si l'emplacement ou pose la carte est vide
-				if (coord.getCarte() == null) {
-					coord.poserUneCarte(carte);
-					listeJoueur.element().poserUneCarte(carte);
-					this.montrerLesCartesPosees();
-					return true;
-				} else {
-					return false;
-				}
-			} else { // sinon on revoie false pour que la fonction ne s'est terminier coorectement
-				return false;
-			}
-		//}
+		} else { // sinon on revoie false pour que la fonction ne s'est terminier coorectement
+			return false;
+		}
+		// }
 
 	}
 
@@ -267,14 +258,14 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			if (coord.getCarte() != null) {
 				// System.out.println(coord.getCarte().toString());
 				// System.out.println(coord.toString());
-				//coord.getCarte().afficher();
-				//coord.afficher();
-				//System.out.println("--------------");
+				// coord.getCarte().afficher();
+				// coord.afficher();
+				// System.out.println("--------------");
 				this.shared.setCoordonee(coord);
 				this.shared.setCarte(coord.getCarte());
 				this.setProperty("plateau-montrer-la-carte");
 			} else {
-				//this.setProperty("plateau-montrer-le-emplacement");
+				// this.setProperty("plateau-montrer-le-emplacement");
 			}
 		}
 
@@ -499,8 +490,6 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		listeJoueur.remove();
 		listeJoueur.add(dernierJoueur);
 
-		
-
 		this.shared.setJoueur(this.listeJoueur.element());
 		this.shared.setIntShared(this.paquet.getNombreDeCarte());
 		this.setProperty("plateau-changement-de-tour");
@@ -531,23 +520,22 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		this.listeJoueur = new LinkedList<Joueur>();
 
 		// listeJoueur.add(new Joueur("Patrick"));
-		//listeJoueur.add(new Joueur("Julien", this.shared));
-		//listeJoueur.add(new JoueurIA(this, this.shared));
+		// listeJoueur.add(new Joueur("Julien", this.shared));
+		// listeJoueur.add(new JoueurIA(this, this.shared));
 
 		Joueur julien = new Joueur("Julien", this.shared);
 		Joueur mathieu = new Joueur("Mathieu", this.shared);
-		//JoueurIA ordinateur = new JoueurIA(this, this.shared);
-
+		// JoueurIA ordinateur = new JoueurIA(this, this.shared);
 
 		listeJoueur.add(julien);
-		//listeJoueur.add(ordinateur);
+		// listeJoueur.add(ordinateur);
 		listeJoueur.add(mathieu);
 
 		// System.out.println(listeJoueur.element().toString());
 
 		this.listeCoord = new ArrayList<Coordonee>();
 
-		//le pcs
+		// le pcs
 		this.pcs = new PropertyChangeSupport(this);
 
 		// Cr�ation du plateau
@@ -565,7 +553,6 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				listeCoord.add(new Coordonee(x, y, vuePlateau.getFrame()));
 			}
 		}
-
 
 	}
 
@@ -708,18 +695,25 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	}
 
 	public boolean isFini() {
-		//System.out.println(this.isPlateauRempli());
-		if  ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli()) ) {
+		// System.out.println(this.isPlateauRempli());
+		if ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli())) {
 			return false;
 		} else {
+
+			// devoiler les cartes cachee
+			this.shared.setListCoord(this.getListeCoord());
+			this.setProperty("plateau-devoiler-cartes");
+
 			Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
 
-		while (itjoueur.hasNext()) {
-			Joueur joueur = itjoueur.next();
-			this.shared.setJoueur(joueur);
-			this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
-			this.setProperty("plateau-montrer-score-joueur");
-		}
+			while (itjoueur.hasNext()) {
+				// montrer les scores
+				Joueur joueur = itjoueur.next();
+				this.shared.setJoueur(joueur);
+				this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+				this.setProperty("plateau-montrer-score-joueur");
+			}
+
 			return true;
 		}
 	}
@@ -733,8 +727,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		while (it.hasNext()) {
 			Joueur joueur = it.next();
 			joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
-			//System.out.println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
-			//remplacent mvc
+			// System.out.println(joueur.toString() + " votre carte victoire est : " +
+			// joueur.getCarteVictoire().toString());
+			// remplacent mvc
 			this.shared.setJoueur(joueur);
 			this.setProperty("plateau-donner-carte-victoire");
 		}
@@ -757,20 +752,20 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				}
 				// System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
-				//this.montrerLesCartesPosees();
+				// this.montrerLesCartesPosees();
 
-				//System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
+				// System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
 
-				//remplacent mvc
+				// remplacent mvc
 				this.shared.setCarte(cartePioche);
-				//this.setProperty("plateau-montrer-carte-poser");
+				// this.setProperty("plateau-montrer-carte-poser");
 
 				this.listeJoueur.element().choisirCarteAPlacer(false);
 				carteJoue = this.shared.getCarte();
-				//remplacent mvc
+				// remplacent mvc
 
-				//System.out.println("Ou voulez vous la poser ? ");
-				//remplacent mvc
+				// System.out.println("Ou voulez vous la poser ? ");
+				// remplacent mvc
 
 				this.setProperty("plateau-demande-ou-poser");
 				// String positionPoser = scanner.nextLine();
@@ -806,26 +801,27 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 			// bouger une carte
 			while ((!joue) && (!this.isPlateauRempli())) {
-				//System.out.println("Voulez vous bouger une carte?");
+				// System.out.println("Voulez vous bouger une carte?");
 				// String bouger = scanner.nextLine();
 
-				//remplacent mvc
+				// remplacent mvc
 				this.setProperty("plateau-demande-bouger-carte");
 
-
-				//String bouger = this.listeJoueur.element().decisionBougerCarte();
-				//remplacent mvc
+				// String bouger = this.listeJoueur.element().decisionBougerCarte();
+				// remplacent mvc
 
 				this.listeJoueur.element().decisionBougerCarte();
 
 				String bouger = this.shared.getString();
 
 				if (bouger.equals("oui")) {
-					//System.out.println("Donnez les coordonn� de la carte que vous voulez bouger");
+					// System.out.println("Donnez les coordonn� de la carte que vous voulez
+					// bouger");
 					// String positioneCarte = scanner.nextLine();
 					this.setProperty("plateau-demande-coord-carte-bouger-1");
 
-					//String positionCarte = this.listeJoueur.element().choisirCoordoneeCarteABouger();
+					// String positionCarte =
+					// this.listeJoueur.element().choisirCoordoneeCarteABouger();
 					this.listeJoueur.element().choisirCoordoneeCarteABouger();
 					String positionCarte = this.shared.getString();
 
@@ -834,9 +830,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 					Carte carteABouger = this.recupererCoord(xPremiere, yPremiere).getCarte();
 
-					//System.out.println("Donnez les coordonn� de l'emplacement ou vous voulez la bouger");
+					// System.out.println("Donnez les coordonn� de l'emplacement ou vous voulez la
+					// bouger");
 					// String positionFinal = scanner.nextLine();
-					//String positionFinal = this.listeJoueur.element().bougerUneCarte();
+					// String positionFinal = this.listeJoueur.element().bougerUneCarte();
 
 					this.setProperty("plateau-demande-coord-carte-bouger-2");
 					this.listeJoueur.element().bougerUneCarte();
@@ -867,7 +864,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			Joueur joueur = itjoueur.next();
 			// chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
 			// aura donc le choix entre 3 cartes a chaque tours
-			//System.out.println(joueur.toString() + " " + joueur.getCarteVictoire().toString() + " "+ this.compterLesPoints(joueur.getCarteVictoire()));
+			// System.out.println(joueur.toString() + " " +
+			// joueur.getCarteVictoire().toString() + " "+
+			// this.compterLesPoints(joueur.getCarteVictoire()));
 			this.shared.setJoueur(joueur);
 			this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
 			this.setProperty("plateau-montrer-score-joueur");
@@ -1007,38 +1006,37 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 		while (it.hasNext()) {
 			Joueur joueur = it.next();
-			// chaque joueur prend 2  carte puis a chaque tour il en pioche une nouvelle il
+			// chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
 			// aura donc le choix entre 3 cartes a chaque tours
 
-			//CarteCachee carteCachee = new CarteCachee(this.paquet.getRandomCarte());
+			// CarteCachee carteCachee = new CarteCachee(this.paquet.getRandomCarte());
 			Carte carteCachee = this.paquet.getRandomCarte();
 			joueur.piocherUneCarte(carteCachee);
 
 			System.out.println(joueur.toString() + " vous avez pioché une carte cachée");
 
-			//carteCachee.reveler();
-			//this.shared.setCarteCachee(carteCachee);
-			//on notifie la vue que l'on vien de placer une carte cachee
-			//this.setProperty("plateau-revelerCarte");
+			// carteCachee.reveler();
+			// this.shared.setCarteCachee(carteCachee);
+			// on notifie la vue que l'on vien de placer une carte cachee
+			// this.setProperty("plateau-revelerCarte");
 
 			this.montrerLesCartesPosees();
-			
 
 			boolean joue = false;
 
 			while (!joue) {
 
-				//System.out.println("Ou voulez vous la poser ?");
-				//remplacent mvc
-				//this.shared.setCarteCachee(carteCachee);
+				// System.out.println("Ou voulez vous la poser ?");
+				// remplacent mvc
+				// this.shared.setCarteCachee(carteCachee);
 				this.setProperty("plateau-question-ou-poser-carte-cachee");
 				// String positionPoser = scanner.nextLine();
 
-				//String positionPoser = joueur.choisirCoordoneeAPlacer(carteCachee);
+				// String positionPoser = joueur.choisirCoordoneeAPlacer(carteCachee);
 				// System.out.println("Bonsoir a tous");
-				//remplacent mvc
+				// remplacent mvc
 
-				//this.setProperty("plateau-demande-joueur-coord-carte-cachee");
+				// this.setProperty("plateau-demande-joueur-coord-carte-cachee");
 				joueur.choisirCoordoneeAPlacer(carteCachee);
 
 				String positionPoser = this.shared.getString();
@@ -1058,27 +1056,28 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				}
 			}
 		}
-		//this.setProperty("plateau-revelerCarte");
+		// this.setProperty("plateau-revelerCarte");
 		this.changementDeTour();
 	}
 
 	public void donnerCarteVictoire() {
-        // on donne les cartes victoire des joueurs
-        Iterator<Joueur> it = this.getListJoueur().iterator();
+		// on donne les cartes victoire des joueurs
+		Iterator<Joueur> it = this.getListJoueur().iterator();
 
-        while (it.hasNext()) {
-            Joueur joueur = it.next();
-            joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
-            System.out.println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
-        }
+		while (it.hasNext()) {
+			Joueur joueur = it.next();
+			joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
+			System.out
+					.println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
+		}
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// Scanner scanner = new Scanner(System.in);
-		//Plateau plat = new Plateau();
-		//plat.placerCarteCachee();
-		//plat.jouerModeNormal();
+		// Plateau plat = new Plateau();
+		// plat.placerCarteCachee();
+		// plat.jouerModeNormal();
 
 		// CarteCachee carteCachee = new CarteCachee(plat.paquet.getRandomCarte());
 		// plat.poserUneCarte(carteCachee, 2, 2);

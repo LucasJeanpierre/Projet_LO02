@@ -381,7 +381,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             this.fini = this.plateau.isFini();
             //System.out.println("&&&&&&&&&&&&");
         } while ( (quitter == false) || (fini = true) );
-        this.setProperty("plateau-montrer-score-joueurs");
+        //this.shared.setListCoord(this.plateau.getListeCoord());
+        //System.out.println("Bientot la revelation");
+        //this.setProperty("controleur-devoiler-cartes");
+        //this.setProperty("plateau-montrer-score-joueurs");
         System.exit(0);
 
     }

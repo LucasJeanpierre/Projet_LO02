@@ -31,6 +31,14 @@ public class CarteCachee extends Carte {
 	public void setImageCoord(int x, int y) {
 		this.dos.setBounds(x,y,50,50);
 	}
+
+	public ImagePanel getImageDevoile() {
+		return super.image;
+	}
+
+	public void setImageDevoileCoord(int x, int y) {
+		super.image.setBounds(x,y,50,50);
+	}
 	
 	public void reveler() {
 		System.out.println("<carte:forme="+super.getForme() +",couleur="+ super.getCouleur() + ",rempli=" + super.isRempli() + ">");

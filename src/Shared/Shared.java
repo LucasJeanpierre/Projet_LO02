@@ -1,7 +1,7 @@
 package Shared;
 
 import Model.*;
-
+import java.util.*;
 
 public class Shared {
     private Carte carte;
@@ -10,8 +10,7 @@ public class Shared {
     private CarteVictoire cartreVictoire;
     private Joueur joueur;
     private Coordonee coordonee;
-
-
+    private ArrayList<Coordonee> listCoord;
     private String string;
     private int intShared;
 
@@ -82,6 +81,14 @@ public class Shared {
 
     public void setCarteNormal(CarteNormal carteNormal) {
         this.carteNormal = carteNormal;
+    }
+
+    public ArrayList<Coordonee> getListCoord() {
+        return this.listCoord;
+    }
+
+    public void setListCoord(ArrayList<Coordonee> listCoord) {
+        this.listCoord = listCoord;
     }
 
 }

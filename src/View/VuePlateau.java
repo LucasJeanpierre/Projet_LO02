@@ -6,6 +6,7 @@ import Model.*;
 import Shared.Shared;
 
 import java.util.Scanner;
+import java.util.Iterator;
 
 import java.beans.*;
 import java.io.File;
@@ -69,11 +70,13 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             this.shared.getCoordonee().afficher();
             this.shared.getCoordonee().getCarte().afficher();
             System.out.println("------");
-           // this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100,
-                    //this.shared.getCoordonee().getPositionY() * 100);
-            //this.shared.getCarte().getImage().setVisible(false);
-            this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100, this.shared.getCoordonee().getPositionY() * 100);
-            //this.shared.getCarte().setImageCoord(20, 20);
+            // this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX()
+            // * 100,
+            // this.shared.getCoordonee().getPositionY() * 100);
+            // this.shared.getCarte().getImage().setVisible(false);
+            this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100,
+                    this.shared.getCoordonee().getPositionY() * 100);
+            // this.shared.getCarte().setImageCoord(20, 20);
             this.shared.getCarte().getImage().setVisible(true);
             this.shared.getCoordonee().getPanel().setVisible(false);
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
@@ -104,6 +107,37 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             System.out.println("C'est au tour de " + this.shared.getJoueur());
 
             this.nom_joueur.setText(this.shared.getJoueur().toString());
+        } else if (evt.getPropertyName().equals("plateau-devoiler-cartes")) {
+            System.out.println("Revelation---------------");
+
+            Iterator<Coordonee> it = this.shared.getListCoord().iterator();
+
+            while (it.hasNext()) {
+                Coordonee coord = it.next();
+                if (coord.getCarte() != null) {
+                    Carte carte = coord.getCarte();
+                    if (carte instanceof CarteCachee) {
+                        CarteCachee carteCachee = (CarteCachee) carte;
+                        carteCachee.setImageDevoileCoord(coord.getPositionX() * 100,
+                                coord.getPositionY() * 100);
+                        carteCachee.getImageDevoile().setVisible(true);
+                        carteCachee.getImage().setVisible(false);
+                        coord.getPanel().setVisible(false);
+
+                        coord.afficher();
+                        carteCachee.reveler();
+                    } else {
+                       carte.setImageCoord(coord.getPositionX() * 100,
+                                coord.getPositionY() * 100);
+                        carte.getImage().setVisible(true);
+                        coord.getPanel().setVisible(false);
+
+                        coord.afficher();
+                        carte.afficher();
+                    }
+                }
+            }
+
         }
     }
 
@@ -128,7 +162,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.frame.getContentPane().add(this.nom_joueur);
 
         this.changer_joueur = new JButton("Fin du tour");
-        this.changer_joueur.setBounds(300,300,125,25);
+        this.changer_joueur.setBounds(300, 300, 125, 25);
         this.frame.getContentPane().add(this.changer_joueur);
 
         /*
