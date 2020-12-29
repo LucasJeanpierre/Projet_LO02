@@ -16,7 +16,7 @@ public class Carte extends Observable{
 	private String forme;
 	private boolean rempli;
 	private String couleur;
-	private ImagePanel image;
+	public ImagePanel image;
 	private JFrame frame;
 	
 	public void poser() {
@@ -109,18 +109,13 @@ public class Carte extends Observable{
 		this.image = new ImagePanel(name);
 		//System.out.println(rand.nextInt(500));
 		//int x = rand.nextInt(500);
-		this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
-		//this.image.setBounds(250,250,50,50);
+		//this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
+		this.image.setBounds(250,250,50,50);
         this.image.setVisible(false);
-		this.frame.getContentPane().add(this.image);
+		this.frame.getContentPane().add(this.image, new Integer(2));
 	}
 
 	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 }

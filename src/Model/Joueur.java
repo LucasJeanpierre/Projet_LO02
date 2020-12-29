@@ -19,6 +19,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	private ArrayList<Carte> main;
 	private PropertyChangeSupport pcs;
 	private Shared shared;
+	private int nbCarteJoue;
 
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
@@ -34,6 +35,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		this.main = new ArrayList<Carte>();
 		this.shared = shared;
 		this.pcs = new PropertyChangeSupport(this);
+		this.nbCarteJoue = 0;
 	}
 
 	public void piocherUneCarte(Carte carte) {
@@ -57,6 +59,11 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	public void poserUneCarte(Carte carte) {
 		main.remove(carte);
+		this.nbCarteJoue++;
+	}
+
+	public int getNbCarteJoue() {
+		return this.nbCarteJoue;
 	}
 
 	public void piocherUneCarteVictoire(Carte carte) {

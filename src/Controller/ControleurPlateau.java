@@ -388,7 +388,18 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private void piocher() {
         if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
-            Carte carte = this.plateau.getPaquet().getRandomCarte();
+            //Carte carte = (this.plateau.getPaquet().getRandomCarte());
+            //CarteNormal carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
+            //CarteCachee carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
+            //Carte carte = (Carte) carteCachee;
+            System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
+            Carte carte;
+            if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
+            } else {
+                carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
+            }
+
             this.shared.setJoueur(plateau.getListJoueur().element());
             this.shared.getJoueur().piocherUneCarte(carte);
             this.shared.setCarte(carte);

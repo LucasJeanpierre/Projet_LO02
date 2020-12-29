@@ -5,6 +5,7 @@ import Model.*;
 
 public class Shared {
     private Carte carte;
+    private CarteNormal carteNormal;
     private CarteCachee carteCachee;
     private CarteVictoire cartreVictoire;
     private Joueur joueur;
@@ -73,6 +74,14 @@ public class Shared {
 
     public void setIntShared(int intSharerd) {
         this.intShared = intSharerd;
+    }
+
+    public CarteNormal getCarteNormal() {
+        return this.carteNormal;
+    }
+
+    public void setCarteNormal(CarteNormal carteNormal) {
+        this.carteNormal = carteNormal;
     }
 
 }

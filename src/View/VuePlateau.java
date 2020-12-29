@@ -69,9 +69,13 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             this.shared.getCoordonee().afficher();
             this.shared.getCoordonee().getCarte().afficher();
             System.out.println("------");
-            this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100,
-                    this.shared.getCoordonee().getPositionY() * 100);
-            this.shared.getCoordonee().getCarte().getImage().setVisible(true);
+           // this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100,
+                    //this.shared.getCoordonee().getPositionY() * 100);
+            //this.shared.getCarte().getImage().setVisible(false);
+            this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100, this.shared.getCoordonee().getPositionY() * 100);
+            //this.shared.getCarte().setImageCoord(20, 20);
+            this.shared.getCarte().getImage().setVisible(true);
+            this.shared.getCoordonee().getPanel().setVisible(false);
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());;
             // SwingUtilities.updateComponentTreeUI(frame);

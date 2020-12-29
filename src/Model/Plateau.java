@@ -42,7 +42,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		// appel la m�thode poser une carte de la coordonee qui va associ� l'attribut
 		// carte de la coordonne a l'objet carte donn� en argument
 
-		if (carte instanceof CarteCachee) {
+		/*if (carte instanceof CarteCachee) {
 			// si la coordonee est valide on cherche l'objet coordonee qui correspond
 			if ((recupererCoord(x, y) != null)) {
 				Coordonee coord = recupererCoord(x, y);
@@ -58,7 +58,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			} else { // sinon on revoie false pour que la fonction ne s'est terminier coorectement
 				return false;
 			}
-		} else {
+		} else {*/
 
 			// si la coordonee est valide on cherche l'objet coordonee qui correspond
 			if ((recupererCoord(x, y) != null) && (isAdjacent(x, y))) {
@@ -67,6 +67,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				// si l'emplacement ou pose la carte est vide
 				if (coord.getCarte() == null) {
 					coord.poserUneCarte(carte);
+					listeJoueur.element().poserUneCarte(carte);
 					this.montrerLesCartesPosees();
 					return true;
 				} else {
@@ -75,7 +76,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			} else { // sinon on revoie false pour que la fonction ne s'est terminier coorectement
 				return false;
 			}
-		}
+		//}
 
 	}
 
@@ -270,9 +271,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 				//coord.afficher();
 				//System.out.println("--------------");
 				this.shared.setCoordonee(coord);
+				this.shared.setCarte(coord.getCarte());
 				this.setProperty("plateau-montrer-la-carte");
 			} else {
-				this.setProperty("plateau-montrer-le-emplacement");
+				//this.setProperty("plateau-montrer-le-emplacement");
 			}
 		}
 
