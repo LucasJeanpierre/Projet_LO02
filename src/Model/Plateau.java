@@ -497,11 +497,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		listeJoueur.remove();
 		listeJoueur.add(dernierJoueur);
 
-		System.out.println("---------------------");
-		System.out.println("Changement de tour");
-		System.out.println("Il reste : " + this.paquet.getNombreDeCarte() + " cartes dans le paquet");
-		System.out.println("---------------------");
-		System.out.println("C'est au tour de " + this.listeJoueur.element());
+		
+
+		this.shared.setJoueur(this.listeJoueur.element());
+		this.shared.setIntShared(this.paquet.getNombreDeCarte());
+		this.setProperty("plateau-changement-de-tour");
 	}
 
 	public int nombreDeCarteDansMains() {
@@ -703,6 +703,23 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					+ this.compterLesPoints(joueur.getCarteVictoire()));
 		}
 
+	}
+
+	public boolean isFini() {
+		//System.out.println(this.isPlateauRempli());
+		if  ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli()) ) {
+			return false;
+		} else {
+			Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
+
+		while (itjoueur.hasNext()) {
+			Joueur joueur = itjoueur.next();
+			this.shared.setJoueur(joueur);
+			this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+			this.setProperty("plateau-montrer-score-joueur");
+		}
+			return true;
+		}
 	}
 
 	public void jouerModeNormal() {

@@ -34,12 +34,18 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private String saisie;
     private String[] commande;
     private boolean quitter;
+    private boolean fini;
     private JButton bouttonPiocher;
+    private JButton bouttonChanger;
 
     public static String PROMPT = "> ";
     public static String PLACER = "placer";
     public static String QUITTER = "quitter";
     public static String PIOCHER = "piocher";
+    public static String CHANGEMENT_JOUEUR = "changer_de_joueur";
+
+    private boolean aUneCarteEnMain;
+    private boolean aJoue;
 
     private PropertyChangeSupport pcs;
 
@@ -67,6 +73,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
         this.frame = frame;
+        this.aJoue = true;
+        this.fini = false;
         this.t = new Thread(this);
         Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
 
@@ -78,8 +86,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     // System.out.println("touche");
                     JPanel panel = (JPanel) e.getSource();
                     // System.out.println(panel.getY());
-                    ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(),
-                            panel.getX() / 100, panel.getY() / 100);
+                    // ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(),panel.getX()
+                    // / 100, panel.getY() / 100);
+                    ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
+                    ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
                 }
             });
         }
@@ -89,6 +99,16 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonPiocher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.piocher();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+            }
+        });
+
+        this.bouttonChanger = vuePlateau.getButtonChanger();
+
+        this.bouttonChanger.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                ControleurPlateau.this.changerDeJoueur();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
             }
         });
     }
@@ -335,6 +355,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     public void jouer() {
+        this.plateau.donnerCarteVictoire();
+        this.changerDeJoueur();
         this.t.start();
     }
 
@@ -347,30 +369,56 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             if (saisie != null) {
                 commande = saisie.split("\\s+");
                 if (commande[0].equals(ControleurPlateau.PLACER)) {
-                    this.placer();
+                    this.placer(Integer.parseInt(commande[1]), Integer.parseInt(commande[2]));
                 } else if (commande[0].equals(ControleurPlateau.PIOCHER)) {
                     this.piocher();
                 } else if (commande[0].equals(ControleurPlateau.QUITTER)) {
                     quitter = true;
+                } else if (commande[0].equals(ControleurPlateau.CHANGEMENT_JOUEUR)) {
+                    this.changerDeJoueur();
                 }
             }
-        } while (quitter == false);
+            this.fini = this.plateau.isFini();
+            //System.out.println("&&&&&&&&&&&&");
+        } while ( (quitter == false) || (fini = true) );
+        this.setProperty("plateau-montrer-score-joueurs");
         System.exit(0);
 
     }
 
     private void piocher() {
-        Carte carte = this.plateau.getPaquet().getRandomCarte();
-        this.shared.setJoueur(plateau.getListJoueur().element());
-        this.shared.getJoueur().piocherUneCarte(carte);
-        this.shared.setCarte(carte);
-        this.setProperty("controleur-montrer-carte-pioche");
+        if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
+            Carte carte = this.plateau.getPaquet().getRandomCarte();
+            this.shared.setJoueur(plateau.getListJoueur().element());
+            this.shared.getJoueur().piocherUneCarte(carte);
+            this.shared.setCarte(carte);
+            this.setProperty("controleur-montrer-carte-pioche");
+            this.aUneCarteEnMain = true;
+        }
     }
 
-    private void placer() {
-        // this.inter.appuyer();
-        this.plateau.poserUneCarte(this.shared.getCarte(), Integer.parseInt(commande[1]), Integer.parseInt(commande[2]));
-        // this.setProperty("controleur-montrer-les-cartes");
+    private void placer(int x, int y) {
+        if ((this.aUneCarteEnMain) && (!this.aJoue)) {
+            // this.inter.appuyer();
+            // Si la carte a pu être poser on ne peut plus poser de carte durant ce tour
+            if (this.plateau.poserUneCarte(this.shared.getCarte(), /* Integer.parseInt(commande[1]) */ x,
+                    /* Integer.parseInt(commande[2]) */y)) {
+                this.aUneCarteEnMain = false;
+                this.aJoue = true;
+            }
+
+            // this.setProperty("controleur-montrer-les-cartes");
+
+        }
+
+    }
+
+    private void changerDeJoueur() {
+        if (this.aJoue) {
+            this.plateau.changementDeTour();
+            this.aUneCarteEnMain = false;
+            this.aJoue = false;
+        }
     }
 
     private String lireChaine() {
