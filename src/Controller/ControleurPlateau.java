@@ -37,15 +37,22 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private boolean fini;
     private JButton bouttonPiocher;
     private JButton bouttonChanger;
+    private JButton bouttonBouger;
 
     public static String PROMPT = "> ";
     public static String PLACER = "placer";
     public static String QUITTER = "quitter";
     public static String PIOCHER = "piocher";
+    public static String BOUGER = "bouger";
     public static String CHANGEMENT_JOUEUR = "changer_de_joueur";
 
     private boolean aUneCarteEnMain;
     private boolean aJoue;
+    private boolean aBouger;
+
+    private boolean bougerChoixCarte;
+    private boolean bougerChoixCoord;
+    private Coordonee coordCarteABouger;
 
     private PropertyChangeSupport pcs;
 
@@ -75,6 +82,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.frame = frame;
         this.aJoue = true;
         this.fini = false;
+        this.bougerChoixCarte = false;
+        this.bougerChoixCoord = false;
         this.t = new Thread(this);
         Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
 
@@ -83,13 +92,18 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             coord.getPanel().addMouseListener(new MouseInputAdapter() {
 
                 public void mousePressed(MouseEvent e) {
-                    // System.out.println("touche");
                     JPanel panel = (JPanel) e.getSource();
-                    // System.out.println(panel.getY());
-                    // ControleurPlateau.this.plateau.poserUneCarte(ControleurPlateau.this.shared.getCarte(),panel.getX()
-                    // / 100, panel.getY() / 100);
-                    ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
-                    ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                    if (!ControleurPlateau.this.bougerChoixCarte) {
+                        ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
+                        ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                    } else if ( (ControleurPlateau.this.bougerChoixCarte) && (!ControleurPlateau.this.bougerChoixCoord) ) {
+                        ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau.recupererCoord(panel.getX() / 100, panel.getY() / 100);
+                        ControleurPlateau.this.bougerChoixCoord = true;
+                    } else if ( (ControleurPlateau.this.bougerChoixCarte) && (ControleurPlateau.this.bougerChoixCoord) ) {
+                        ControleurPlateau.this.bouger(ControleurPlateau.this.coordCarteABouger.getPositionX(), ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / 100, panel.getY() / 100);
+                        ControleurPlateau.this.bougerChoixCarte = false;
+                        ControleurPlateau.this.bougerChoixCoord = false;
+                    }
                 }
             });
         }
@@ -108,6 +122,15 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonChanger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.changerDeJoueur();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+            }
+        });
+
+        this.bouttonBouger = vuePlateau.getButtonBouger();
+
+        this.bouttonBouger.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                ControleurPlateau.this.bougerChoixCarte = true;
                 ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
             }
         });
@@ -376,25 +399,31 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     quitter = true;
                 } else if (commande[0].equals(ControleurPlateau.CHANGEMENT_JOUEUR)) {
                     this.changerDeJoueur();
+                } else if (commande[0].equals(ControleurPlateau.BOUGER)) {
+                    if (commande[4] != null) {
+                        this.bouger(Integer.parseInt(commande[1]), Integer.parseInt(commande[2]),
+                                Integer.parseInt(commande[3]), Integer.parseInt(commande[4]));
+                    }
                 }
             }
             this.fini = this.plateau.isFini();
-            //System.out.println("&&&&&&&&&&&&");
-        } while ( (quitter == false) || (fini = true) );
-        //this.shared.setListCoord(this.plateau.getListeCoord());
-        //System.out.println("Bientot la revelation");
-        //this.setProperty("controleur-devoiler-cartes");
-        //this.setProperty("plateau-montrer-score-joueurs");
+        } while ((quitter == false));
+        // this.shared.setListCoord(this.plateau.getListeCoord());
+        // System.out.println("Bientot la revelation");
+        // this.setProperty("controleur-devoiler-cartes");
+        // this.setProperty("plateau-montrer-score-joueurs");
         System.exit(0);
 
     }
 
     private void piocher() {
         if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
-            //Carte carte = (this.plateau.getPaquet().getRandomCarte());
-            //CarteNormal carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
-            //CarteCachee carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
-            //Carte carte = (Carte) carteCachee;
+            // Carte carte = (this.plateau.getPaquet().getRandomCarte());
+            // CarteNormal carte = new
+            // CarteNormal(this.plateau.getPaquet().getRandomCarte());
+            // CarteCachee carte = new
+            // CarteCachee(this.plateau.getPaquet().getRandomCarte());
+            // Carte carte = (Carte) carteCachee;
             System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
             Carte carte;
             if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
@@ -427,11 +456,23 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     }
 
+    private void bouger(int x1, int y1, int x2, int y2) {
+        if ((this.aJoue) && (!this.aBouger)) {
+            System.out.println("bouger");
+            Carte carte = this.plateau.recupererCoord(x1, y1).getCarte();
+            if (this.plateau.bougerUneCarte(carte, x2, y2)) {
+                this.aBouger = true;
+            }
+
+        }
+    }
+
     private void changerDeJoueur() {
         if (this.aJoue) {
             this.plateau.changementDeTour();
             this.aUneCarteEnMain = false;
             this.aJoue = false;
+            this.aBouger = false;
         }
     }
 

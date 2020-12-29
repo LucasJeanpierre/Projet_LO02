@@ -2,6 +2,9 @@ package Model;
 
 import View.*;
 import View.ImagePanel;
+
+import java.awt.Color;
+
 import javax.swing.*;
 
 public class Coordonee {
@@ -11,7 +14,8 @@ public class Coordonee {
 
 	private Carte carte;
 	private JFrame frame;
-	private ImagePanel panel;
+	//private ImagePanel panel;
+	private JPanel panel;
 
 	public int getPositionX() {
 		return this.positionX;
@@ -58,9 +62,11 @@ public class Coordonee {
 		this.positionY = y;
 		this.carte = null;
 		this.frame = frame;
-		this.panel = new ImagePanel("vide");
+		//this.panel = new ImagePanel("vide");
+		this.panel = new JPanel();
 		this.panel.setBounds(x * 100, y * 100, 50, 50);
 		this.panel.setVisible(true);
+		this.panel.setBackground(new Color(0,0,0,64));
 		this.frame.getContentPane().add(this.panel);
 		// this.panel.addMouseListener();
 	}
@@ -79,9 +85,5 @@ public class Coordonee {
 		System.out.println(this.toString());
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

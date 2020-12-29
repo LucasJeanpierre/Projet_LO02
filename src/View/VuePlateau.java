@@ -22,6 +22,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private JButton boutton_piocher;
     private JLabel nom_joueur;
     private JButton changer_joueur;
+    private JButton boutton_bouger;
 
     private Scanner scanner;
     private PropertyChangeSupport pcs;
@@ -84,14 +85,14 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 }
 
                 String name = j.getCarteVictoire().getForme() + "_" + j.getCarteVictoire().getCouleur() + "_" + tempnom;
-                if (i==0) {
+                if (i == 0) {
                     this.panel1.changeImage(name);
                     i++;
                 } else {
                     this.panel2.changeImage(name);
-    
+
                 }
-                
+
             }
 
         } else if (evt.getPropertyName().equals("plateau-montrer-carte-poser")) {
@@ -110,7 +111,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                     this.shared.getCoordonee().getPositionY() * 100);
             // this.shared.getCarte().setImageCoord(20, 20);
             this.shared.getCarte().getImage().setVisible(true);
-            this.shared.getCoordonee().getPanel().setVisible(false);
+            //this.shared.getCoordonee().getPanel().setVisible(false);
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());;
             // SwingUtilities.updateComponentTreeUI(frame);
@@ -179,6 +180,10 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         return this.changer_joueur;
     }
 
+    public JButton getButtonBouger() {
+        return this.boutton_bouger;
+    }
+
     public void initialize() {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 700);
@@ -210,6 +215,10 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.label_panel2 = new JLabel("Joueur2");
         this.label_panel2.setBounds(300, 480, 125, 25);
         this.frame.getContentPane().add(this.label_panel2);
+
+        this.boutton_bouger = new JButton("Bouger");
+        this.boutton_bouger.setBounds(20, 330, 125, 25);
+        this.frame.getContentPane().add(this.boutton_bouger);
         /*
          * panel = new ImagePanel("carre_rouge_plein"); panel.setBounds(0,700,50,50);
          * panel.setVisible(true); this.frame.getContentPane().add(panel);

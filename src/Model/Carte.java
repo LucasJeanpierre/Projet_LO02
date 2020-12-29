@@ -112,7 +112,7 @@ public class Carte extends Observable{
 		//this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
 		this.image.setBounds(250,250,50,50);
         this.image.setVisible(false);
-		this.frame.getContentPane().add(this.image, new Integer(2));
+		this.frame.getContentPane().add(this.image);
 	}
 
 	

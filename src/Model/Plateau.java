@@ -229,25 +229,22 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		// on enleve d'abord la carte de la ou elle �tait
 		if (trouverCoordoneeDUneDarte(carte) != null) {
 			Coordonee oldCoord = trouverCoordoneeDUneDarte(carte);
-			if (oldCoord.enleverLaCarte()) {
-
-				// puis on la place au nouvelle endroit
-				Coordonee coord = recupererCoord(x, y);
+			// puis on la place au nouvelle endroit
+			Coordonee coord = recupererCoord(x, y);
+			if (oldCoord.enleverLaCarte() && (coord.getCarte() == null)) {
 
 				// si l'emplacement ou bouge la carte est vide
-				if (coord.getCarte() == null) {
-					coord.poserUneCarte(carte);
-					return true;
-				} else {
-					return false;
-				}
+				coord.poserUneCarte(carte);
+				this.montrerLesCartesPosees();
+				oldCoord.getPanel().setVisible(true);
+				return true;
 			} else {
 				return false;
 			}
-
 		} else {
 			return false;
 		}
+
 	}
 
 	public void montrerLesCartesPosees() {
@@ -730,7 +727,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			// System.out.println(joueur.toString() + " votre carte victoire est : " +
 			// joueur.getCarteVictoire().toString());
 			// remplacent mvc
-			//this.shared.setJoueur(joueur);
+			// this.shared.setJoueur(joueur);
 		}
 
 		this.shared.setListJoueur(this.listeJoueur);

@@ -8,7 +8,6 @@ import View.*;
 import Shared.Shared;
 import java.awt.EventQueue;
 
-import javax.swing.*;
 
 public class App {
 
