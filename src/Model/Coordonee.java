@@ -66,7 +66,7 @@ public class Coordonee {
 		this.panel = new JPanel();
 		this.panel.setBounds(x * 100, y * 100, 50, 50);
 		this.panel.setVisible(true);
-		this.panel.setBackground(new Color(0,0,0,64));
+		this.panel.setBackground(new Color(0,0,0,25));
 		this.frame.getContentPane().add(this.panel);
 		// this.panel.addMouseListener();
 	}

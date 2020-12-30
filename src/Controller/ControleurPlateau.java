@@ -54,6 +54,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private boolean bougerChoixCoord;
     private Coordonee coordCarteABouger;
 
+    private boolean tourOrdinateur;
+
     private PropertyChangeSupport pcs;
 
     public void addObserver(PropertyChangeListener l) {
@@ -84,6 +86,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.fini = false;
         this.bougerChoixCarte = false;
         this.bougerChoixCoord = false;
+        this.tourOrdinateur = false;
         this.t = new Thread(this);
         Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
 
@@ -473,6 +476,22 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             this.aUneCarteEnMain = false;
             this.aJoue = false;
             this.aBouger = false;
+
+            if (this.plateau.getListJoueur().element() instanceof JoueurIA) {
+                this.tourOrdinateur = true;
+                this.faireJouerOrdi();
+            }
+        }
+    }
+
+    private void faireJouerOrdi() {
+        if (this.tourOrdinateur) {
+            Joueur j = this.plateau.getListJoueur().element();
+            this.piocher();
+            String coord = j.choisirCoordoneeAPlacer(this.shared.getCarte());
+            this.placer(Integer.parseInt(coord.split(",")[0]),Integer.parseInt(coord.split(",")[1]));
+            this.tourOrdinateur = false;
+            this.changerDeJoueur();
         }
     }
 

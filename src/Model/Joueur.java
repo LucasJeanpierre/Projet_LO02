@@ -42,6 +42,10 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		this.main.add(carte);
 	}
 
+	public String getNom() {
+		return this.nom;
+	}
+
 
 	public String bougerUneCarte() {
 		/*System.out.print("> ");

@@ -522,11 +522,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 		Joueur julien = new Joueur("Julien", this.shared);
 		Joueur mathieu = new Joueur("Mathieu", this.shared);
-		// JoueurIA ordinateur = new JoueurIA(this, this.shared);
+		//Joueur thierry = new Joueur("Thierry", this.shared);
+		JoueurIA ordinateur = new JoueurIA(this, this.shared);
 
 		listeJoueur.add(julien);
-		// listeJoueur.add(ordinateur);
-		listeJoueur.add(mathieu);
+		listeJoueur.add(ordinateur);
+		//listeJoueur.add(mathieu);
+		//listeJoueur.add(thierry);
 
 		// System.out.println(listeJoueur.element().toString());
 
