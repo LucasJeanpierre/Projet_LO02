@@ -511,10 +511,6 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private void changerDeJoueur() {
         if (this.aJoue) {
-            this.plateau.changementDeTour();
-            this.aUneCarteEnMain = false;
-            this.aJoue = false;
-            this.aBouger = false;
 
             //rendre non visible les cartes de la main du joueur
             Joueur j = this.plateau.getListJoueur().element();
@@ -524,6 +520,11 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 Carte carte = it.next();
                 carte.getImage().setVisible(false);
             }
+            
+            this.plateau.changementDeTour();
+            this.aUneCarteEnMain = false;
+            this.aJoue = false;
+            this.aBouger = false;
 
             if (this.plateau.getListJoueur().element() instanceof JoueurIA) {
                 this.tourOrdinateur = true;
