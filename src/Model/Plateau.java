@@ -522,13 +522,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 		Joueur julien = new Joueur("Julien", this.shared);
 		Joueur mathieu = new Joueur("Mathieu", this.shared);
-		//Joueur thierry = new Joueur("Thierry", this.shared);
+		// Joueur thierry = new Joueur("Thierry", this.shared);
 		JoueurIA ordinateur = new JoueurIA(this, this.shared);
 
 		listeJoueur.add(julien);
-		listeJoueur.add(ordinateur);
-		//listeJoueur.add(mathieu);
-		//listeJoueur.add(thierry);
+		listeJoueur.add(mathieu);
+		// listeJoueur.add(mathieu);
+		// listeJoueur.add(thierry);
 
 		// System.out.println(listeJoueur.element().toString());
 
@@ -553,6 +553,26 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			}
 		}
 
+	}
+
+	public void donnerDeuxCarteAuxJoueurs() {
+		// distribution des cartes pour le mode avance
+		Iterator<Joueur> it = this.listeJoueur.iterator();
+
+		while (it.hasNext()) {
+			Joueur joueur = it.next();
+			// chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
+			// aura donc le choix entre 3 cartes a chaque tours
+			for (int i = 0; i < 2; i++) {
+				joueur.piocherUneCarte(this.paquet.getRandomCarte());
+			}
+		}
+	}
+
+	public void donnerDeuxCarteAuJoueur(Joueur joueur) {
+		for (int i = 0; i < 2; i++) {
+			joueur.piocherUneCarte(new CarteNormal(this.paquet.getRandomCarte()));
+		}
 	}
 
 	public void jouer(boolean modeAvance) {

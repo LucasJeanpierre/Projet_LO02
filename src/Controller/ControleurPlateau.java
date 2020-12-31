@@ -55,6 +55,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private Coordonee coordCarteABouger;
 
     private boolean tourOrdinateur;
+    private boolean modeAvance;
 
     private PropertyChangeSupport pcs;
 
@@ -75,7 +76,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau) {
+    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau, boolean modeAvance) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
@@ -87,6 +88,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bougerChoixCarte = false;
         this.bougerChoixCoord = false;
         this.tourOrdinateur = false;
+        this.modeAvance = modeAvance;
         this.t = new Thread(this);
         Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
 
@@ -99,11 +101,15 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     if (!ControleurPlateau.this.bougerChoixCarte) {
                         ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
                         ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
-                    } else if ( (ControleurPlateau.this.bougerChoixCarte) && (!ControleurPlateau.this.bougerChoixCoord) ) {
-                        ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau.recupererCoord(panel.getX() / 100, panel.getY() / 100);
+                    } else if ((ControleurPlateau.this.bougerChoixCarte)
+                            && (!ControleurPlateau.this.bougerChoixCoord)) {
+                        ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau
+                                .recupererCoord(panel.getX() / 100, panel.getY() / 100);
                         ControleurPlateau.this.bougerChoixCoord = true;
-                    } else if ( (ControleurPlateau.this.bougerChoixCarte) && (ControleurPlateau.this.bougerChoixCoord) ) {
-                        ControleurPlateau.this.bouger(ControleurPlateau.this.coordCarteABouger.getPositionX(), ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / 100, panel.getY() / 100);
+                    } else if ((ControleurPlateau.this.bougerChoixCarte) && (ControleurPlateau.this.bougerChoixCoord)) {
+                        ControleurPlateau.this.bouger(ControleurPlateau.this.coordCarteABouger.getPositionX(),
+                                ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / 100,
+                                panel.getY() / 100);
                         ControleurPlateau.this.bougerChoixCarte = false;
                         ControleurPlateau.this.bougerChoixCoord = false;
                     }
@@ -381,9 +387,15 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     public void jouer() {
-        this.plateau.donnerCarteVictoire();
-        this.changerDeJoueur();
-        this.t.start();
+        if (!this.modeAvance) {
+            this.plateau.donnerCarteVictoire();
+            this.changerDeJoueur();
+            this.t.start();
+        } else {
+            // this.plateau.donnerDeuxCarteAuxJoueurs();
+            this.changerDeJoueur();
+            this.t.start();
+        }
     }
 
     public void run() {
@@ -420,26 +432,53 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     private void piocher() {
-        if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
-            // Carte carte = (this.plateau.getPaquet().getRandomCarte());
-            // CarteNormal carte = new
-            // CarteNormal(this.plateau.getPaquet().getRandomCarte());
-            // CarteCachee carte = new
-            // CarteCachee(this.plateau.getPaquet().getRandomCarte());
-            // Carte carte = (Carte) carteCachee;
-            System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
-            Carte carte;
-            if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
-                carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
-            } else {
-                carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
-            }
+        if (!this.modeAvance) {
+            if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
+                // Carte carte = (this.plateau.getPaquet().getRandomCarte());
+                // CarteNormal carte = new
+                // CarteNormal(this.plateau.getPaquet().getRandomCarte());
+                // CarteCachee carte = new
+                // CarteCachee(this.plateau.getPaquet().getRandomCarte());
+                // Carte carte = (Carte) carteCachee;
+                System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
+                Carte carte;
+                if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                    carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
+                } else {
+                    carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
+                }
 
-            this.shared.setJoueur(plateau.getListJoueur().element());
-            this.shared.getJoueur().piocherUneCarte(carte);
-            this.shared.setCarte(carte);
-            this.setProperty("controleur-montrer-carte-pioche");
-            this.aUneCarteEnMain = true;
+                this.shared.setJoueur(plateau.getListJoueur().element());
+                this.shared.getJoueur().piocherUneCarte(carte);
+                this.shared.setCarte(carte);
+                this.setProperty("controleur-montrer-carte-pioche");
+                this.aUneCarteEnMain = true;
+            }
+        } else {
+            if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
+                Carte carte;
+                if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                    if (plateau.getListJoueur().element().getNbCarteJoue() == 1) {
+                        this.plateau.donnerDeuxCarteAuJoueur(plateau.getListJoueur().element());
+                        carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
+                    } else {
+                        carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
+                    }
+                } else {
+                    carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
+
+                }
+
+                /*
+                 * this.shared.setCarte(carte);
+                 * this.setProperty("controleur-montrer-carte-pioche");
+                 */
+                this.shared.setJoueur(plateau.getListJoueur().element());
+                this.shared.getJoueur().piocherUneCarte(carte);
+                this.shared.getJoueur().montrerLaMain();
+                this.shared.setCarte(this.shared.getJoueur().getMain().get(0));
+                this.aUneCarteEnMain = true;
+            }
         }
     }
 
@@ -477,6 +516,15 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             this.aJoue = false;
             this.aBouger = false;
 
+            //rendre non visible les cartes de la main du joueur
+            Joueur j = this.plateau.getListJoueur().element();
+            Iterator<Carte> it = j.getMain().iterator();
+
+            while (it.hasNext()) {
+                Carte carte = it.next();
+                carte.getImage().setVisible(false);
+            }
+
             if (this.plateau.getListJoueur().element() instanceof JoueurIA) {
                 this.tourOrdinateur = true;
                 this.faireJouerOrdi();
@@ -489,7 +537,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             Joueur j = this.plateau.getListJoueur().element();
             this.piocher();
             String coord = j.choisirCoordoneeAPlacer(this.shared.getCarte());
-            this.placer(Integer.parseInt(coord.split(",")[0]),Integer.parseInt(coord.split(",")[1]));
+            this.placer(Integer.parseInt(coord.split(",")[0]), Integer.parseInt(coord.split(",")[1]));
             this.tourOrdinateur = false;
             this.changerDeJoueur();
         }

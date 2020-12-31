@@ -34,11 +34,11 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private JLabel label_panel1;
     private JLabel label_panel2;
 
-    public VuePlateau(Shared shared) {
+    public VuePlateau(Shared shared, boolean modeAvance) {
         this.scanner = new Scanner(System.in);
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
-        initialize();
+        initialize(modeAvance);
         this.frame.setVisible(true);
     }
 
@@ -111,7 +111,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                     this.shared.getCoordonee().getPositionY() * 100);
             // this.shared.getCarte().setImageCoord(20, 20);
             this.shared.getCarte().getImage().setVisible(true);
-            //this.shared.getCoordonee().getPanel().setVisible(false);
+            // this.shared.getCoordonee().getPanel().setVisible(false);
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
             // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());;
             // SwingUtilities.updateComponentTreeUI(frame);
@@ -169,6 +169,19 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 }
             }
 
+        } else if (evt.getPropertyName().equals("joueur-montrer-la-main")) {
+            Iterator<Carte> it = this.shared.getListCarte().iterator();
+            int y = 300;
+
+            while (it.hasNext()) {
+                Carte carte = it.next();
+                System.out.println(carte);
+
+                carte.setImageCoord(200, y);
+                carte.getImage().setVisible(true);
+                y+=50;
+            }
+
         }
     }
 
@@ -184,7 +197,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         return this.boutton_bouger;
     }
 
-    public void initialize() {
+    public void initialize(boolean modeAvance) {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 700);
 

@@ -14,6 +14,7 @@ public class Shared {
     private String string;
     private int intShared;
     private Queue<Joueur> listJoueur;
+    private ArrayList<Carte> listCarte;
 
 
     public Shared() {
@@ -98,6 +99,14 @@ public class Shared {
 
     public void setListJoueur(Queue<Joueur> listJoueur) {
         this.listJoueur = listJoueur;
+    }
+
+    public ArrayList<Carte> getListCarte() {
+        return this.listCarte;
+    }
+
+    public void setListCarte(ArrayList<Carte> listCarte) {
+        this.listCarte = listCarte;
     }
 
 }

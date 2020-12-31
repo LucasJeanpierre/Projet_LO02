@@ -150,12 +150,19 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 	public void montrerLaMain() {
-		Iterator<Carte> it = main.iterator();
+		/*Iterator<Carte> it = main.iterator();
 
 		while (it.hasNext()) {
 			Carte carte = it.next();
 			System.out.println(carte.toString());
-		}
+
+			//MVC 
+			this.shared.setCarte(it.next());
+			this.setProperty("joueur-montrer-la-carte-de-la-main");
+		}*/
+
+		this.shared.setListCarte(main);
+		this.setProperty("joueur-montrer-la-main");
 	}
 
 	public Shared getShared() {
