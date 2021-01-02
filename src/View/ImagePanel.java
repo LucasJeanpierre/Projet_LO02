@@ -25,6 +25,7 @@ public class ImagePanel extends JPanel{
         try {                
             image = ImageIO.read(new File("data/" + nom + ".png"));
             image = image.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+            repaint();
          } catch (IOException ex) {
               // handle exception...
          }
