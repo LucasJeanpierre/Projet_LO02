@@ -281,6 +281,21 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return true;
 	}
 
+	public int nbCartePosee() {
+		int nb = 0;
+
+		Iterator<Coordonee> it = listeCoord.iterator();
+
+		// parcour les coordonee jusqu'a ce qu'il trouve celle correspondante
+		while (it.hasNext()) {
+			Coordonee coord = it.next();
+			if (coord.getCarte() != null) {
+				nb++;
+			}
+		}
+		return nb;
+	}
+
 	// permet de r�cup�rer un objet coordon�e a partir de sa position
 	public Coordonee recupererCoord(int x, int y) {
 		Iterator<Coordonee> it = listeCoord.iterator();
@@ -713,27 +728,65 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
-	public boolean isFini() {
-		// System.out.println(this.isPlateauRempli());
-		if ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli())) {
-			return false;
-		} else {
+	public boolean isFini(boolean modeAvance) {
+		if (!modeAvance) {
+			// System.out.println(this.isPlateauRempli());
+			if ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli())) {
+				return false;
+			} else {
 
-			// devoiler les cartes cachee
-			this.shared.setListCoord(this.getListeCoord());
-			this.setProperty("plateau-devoiler-cartes");
+				// devoiler les cartes cachee
+				this.shared.setListCoord(this.getListeCoord());
+				this.setProperty("plateau-devoiler-cartes");
 
-			Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
+				Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
 
-			while (itjoueur.hasNext()) {
-				// montrer les scores
-				Joueur joueur = itjoueur.next();
-				this.shared.setJoueur(joueur);
-				this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
-				this.setProperty("plateau-montrer-score-joueur");
+				while (itjoueur.hasNext()) {
+					// montrer les scores
+					Joueur joueur = itjoueur.next();
+					this.shared.setJoueur(joueur);
+					this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					this.setProperty("plateau-montrer-score-joueur");
+				}
+
+				return true;
 			}
+		} else {
+			//si il reste des carte dans les mains de joueurs ou si la partie vien de commence (pour eviter le moment on l'on pose les carte cache et que les main sont vide)
+			//quand 5 cartes sont posée c'est que toutes les cartes caché sont posée et que les mains des joueur sont pleines
+			if ( ( ((this.nombreDeCarteDansMains() > 0) && (!this.isPlateauRempli())) ) || (this.nbCartePosee() < 5) ) {
+				return false;
+			} else {
+				//on donne les carte victoire -> la denière carte de la leur main
+				Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
 
-			return true;
+				while (itjoueur.hasNext()) {
+					// montrer les scores
+					Joueur joueur = itjoueur.next();
+					joueur.choisirCarteVictoire();
+					
+				}
+
+				this.shared.setListJoueur(this.listeJoueur);
+				this.setProperty("plateau-donner-carte-victoire");
+
+
+				// devoiler les cartes cachee
+				this.shared.setListCoord(this.getListeCoord());
+				this.setProperty("plateau-devoiler-cartes");
+
+				itjoueur = this.listeJoueur.iterator();
+
+				while (itjoueur.hasNext()) {
+					// montrer les scores
+					Joueur joueur = itjoueur.next();
+					this.shared.setJoueur(joueur);
+					this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					this.setProperty("plateau-montrer-score-joueur");
+				}
+
+				return true;
+			}
 		}
 	}
 

@@ -45,7 +45,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         Shared shared = new Shared();
-        boolean modeAvance = true;
+        boolean modeAvance = false;
 
         // VuePlateau vuePlateau = new VuePlateau(shared);
         EventQueue.invokeLater(new Runnable() {

@@ -31,8 +31,13 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private ImagePanel panel1;
     private ImagePanel panel2;
 
+
     private JLabel label_panel1;
     private JLabel label_panel2;
+
+    private JPanel cartepioche1;
+    private JPanel cartepioche2;
+    private JPanel cartepioche3;
 
     public VuePlateau(Shared shared, boolean modeAvance) {
         this.scanner = new Scanner(System.in);
@@ -197,6 +202,18 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         return this.boutton_bouger;
     }
 
+    public JPanel getCartePioche1() {
+        return this.cartepioche1;
+    }
+
+    public JPanel getCartePioche2() {
+        return this.cartepioche2;
+    }
+
+    public JPanel getCartePioche3() {
+        return this.cartepioche3;
+    }
+
     public void initialize(boolean modeAvance) {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 700);
@@ -241,6 +258,26 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
          * panel2 = new ImagePanel("carre_bleu_plein"); panel2.setBounds(10,250,50,50);
          * panel2.setVisible(true); this.frame.getContentPane().add(panel2);
          */
+
+         //emplacement pour le choix des carte dans le mode avance
+        if (modeAvance){
+            this.cartepioche1 = new JPanel();
+            this.cartepioche1.setBounds(200,300,50,50);
+            this.cartepioche1.setBackground(new Color(0,0,0,25));
+            this.frame.getContentPane().add(this.cartepioche1);
+
+            
+            this.cartepioche2 = new JPanel();
+            this.cartepioche2.setBounds(200,350,50,50);
+            this.cartepioche2.setBackground(new Color(0,0,0,25));
+            this.frame.getContentPane().add(this.cartepioche2);
+
+            
+            this.cartepioche3 = new JPanel();
+            this.cartepioche3.setBounds(200,400,50,50);
+            this.cartepioche3.setBackground(new Color(0,0,0,25));
+            this.frame.getContentPane().add(this.cartepioche3);
+        }
 
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.getContentPane().setLayout(null);

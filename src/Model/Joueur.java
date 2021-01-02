@@ -117,7 +117,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 
 	public Carte choisirCarteVictoire() {
-		boolean bonneValeur = false;
+		/*boolean bonneValeur = false;
 		while (!bonneValeur) {
 			System.out.print("> ");
 			String carteVictoireString = scanner.nextLine();
@@ -130,7 +130,9 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 			}
 
 		}
-		return null;
+		return null;*/
+		Carte carte = this.carteVictoire = this.main.get(0);
+		return carte;
 	}
 
 	public ArrayList<Carte> getMain() {

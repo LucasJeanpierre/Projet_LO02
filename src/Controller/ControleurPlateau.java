@@ -38,6 +38,9 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private JButton bouttonPiocher;
     private JButton bouttonChanger;
     private JButton bouttonBouger;
+    private JPanel cartePioche1;
+    private JPanel cartePioche2;
+    private JPanel cartePioche3;
 
     public static String PROMPT = "> ";
     public static String PLACER = "placer";
@@ -100,7 +103,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     JPanel panel = (JPanel) e.getSource();
                     if (!ControleurPlateau.this.bougerChoixCarte) {
                         ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
-                        ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                        ControleurPlateau.this.fini = ControleurPlateau.this.plateau
+                                .isFini(ControleurPlateau.this.modeAvance);
                     } else if ((ControleurPlateau.this.bougerChoixCarte)
                             && (!ControleurPlateau.this.bougerChoixCoord)) {
                         ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau
@@ -122,7 +126,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonPiocher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.piocher();
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -131,7 +135,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonChanger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.changerDeJoueur();
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -140,9 +144,37 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonBouger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.bougerChoixCarte = true;
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini();
+                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
+        if (this.modeAvance) {
+            this.cartePioche1 = vuePlateau.getCartePioche1();
+
+            this.cartePioche1.addMouseListener(new MouseInputAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    JPanel panel = (JPanel) e.getSource();
+                    ControleurPlateau.this.choisirCarteAPlacer(panel.getY());
+                }
+            });
+
+            this.cartePioche2 = vuePlateau.getCartePioche2();
+
+            this.cartePioche2.addMouseListener(new MouseInputAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    JPanel panel = (JPanel) e.getSource();
+                    ControleurPlateau.this.choisirCarteAPlacer(panel.getY());
+                }
+            });
+
+            this.cartePioche3 = vuePlateau.getCartePioche3();
+
+            this.cartePioche3.addMouseListener(new MouseInputAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    JPanel panel = (JPanel) e.getSource();
+                    ControleurPlateau.this.choisirCarteAPlacer(panel.getY());
+                }
+            });
+        }
     }
 
     public void ControllerJeu2() {
@@ -421,7 +453,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     }
                 }
             }
-            this.fini = this.plateau.isFini();
+            this.fini = this.plateau.isFini(this.modeAvance);
         } while ((quitter == false));
         // this.shared.setListCoord(this.plateau.getListeCoord());
         // System.out.println("Bientot la revelation");
@@ -455,7 +487,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 this.aUneCarteEnMain = true;
             }
         } else {
-            if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
+            if ((!this.aUneCarteEnMain) && (!this.aJoue) && (this.plateau.getPaquet().getNombreDeCarte() > 0)) {
                 Carte carte;
                 if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
                     if (plateau.getListJoueur().element().getNbCarteJoue() == 1) {
@@ -478,6 +510,12 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 this.shared.getJoueur().montrerLaMain();
                 this.shared.setCarte(this.shared.getJoueur().getMain().get(0));
                 this.aUneCarteEnMain = true;
+            } else {
+                this.shared.setJoueur(plateau.getListJoueur().element());
+                this.shared.getJoueur().montrerLaMain();
+                this.shared.setCarte(this.shared.getJoueur().getMain().get(0));
+                this.aUneCarteEnMain = true;
+
             }
         }
     }
@@ -512,7 +550,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private void changerDeJoueur() {
         if (this.aJoue) {
 
-            //rendre non visible les cartes de la main du joueur
+            // rendre non visible les cartes de la main du joueur
             Joueur j = this.plateau.getListJoueur().element();
             Iterator<Carte> it = j.getMain().iterator();
 
@@ -520,7 +558,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 Carte carte = it.next();
                 carte.getImage().setVisible(false);
             }
-            
+
             this.plateau.changementDeTour();
             this.aUneCarteEnMain = false;
             this.aJoue = false;
@@ -530,6 +568,16 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 this.tourOrdinateur = true;
                 this.faireJouerOrdi();
             }
+        }
+    }
+
+    private void choisirCarteAPlacer(int y) {
+        if (y == 300) {
+            this.shared.setCarte(this.plateau.getListJoueur().element().getMain().get(0));
+        } else if (y == 350) {
+            this.shared.setCarte(this.plateau.getListJoueur().element().getMain().get(1));
+        } else if (y == 400) {
+            this.shared.setCarte(this.plateau.getListJoueur().element().getMain().get(2));
         }
     }
 
