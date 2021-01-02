@@ -12,10 +12,15 @@ public class ImagePanel extends JPanel{
     //private BufferedImage image;
     private Image image;
 
-    public ImagePanel(String nom) {
+    public ImagePanel(String nom, boolean modePlateauLibre) {
        try {                
           image = ImageIO.read(new File("data/" + nom + ".png"));
-          image = image.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+          if (modePlateauLibre) {
+            image = image.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+          } else {
+            image = image.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+          }
+          
        } catch (IOException ex) {
             // handle exception...
        }

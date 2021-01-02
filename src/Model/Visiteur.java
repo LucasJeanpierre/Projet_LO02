@@ -25,6 +25,7 @@ public class Visiteur {
                 return coord;
             }
         }
+        System.out.println(x +"  "+y);
         return null;
     }
 
@@ -190,7 +191,7 @@ public class Visiteur {
     }
 
     public int compterLesPointsAlternatif(Joueur j) {
-        int nbcartes = 16;
+        int nbcartes = 10;
 
         this.getCarteVictoire(j);
 

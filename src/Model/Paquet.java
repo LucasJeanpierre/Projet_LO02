@@ -13,15 +13,17 @@ public class Paquet {
 	public String[] listeCouleur = {"rouge", "bleu", "vert"};
 	public String[] listeForme = {"rond", "triangle", "carre"};
 
+	
 
-	public Paquet(VuePlateau vuePlateau) {
+
+	public Paquet(VuePlateau vuePlateau, boolean modePlateauLibre) {
 		this.paquetDeCarte = new ArrayList<Carte>();
 
 		//cr�ation des cartes
 		for (int icouleur = 0; icouleur < listeCouleur.length; icouleur ++) {
 			for (int iforme = 0; iforme < listeForme.length; iforme ++) {
-				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], true, vuePlateau.getFrame()));
-				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], false, vuePlateau.getFrame()));
+				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], true, vuePlateau.getFrame(),modePlateauLibre));
+				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], false, vuePlateau.getFrame(),modePlateauLibre));
 			}
 		}
 	}

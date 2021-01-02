@@ -31,7 +31,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private ImagePanel panel1;
     private ImagePanel panel2;
 
-
     private JLabel label_panel1;
     private JLabel label_panel2;
 
@@ -39,11 +38,22 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private JPanel cartepioche2;
     private JPanel cartepioche3;
 
-    public VuePlateau(Shared shared, boolean modeAvance) {
+    private int delta;
+    private int size;
+
+    private boolean modePlateauLibre;
+
+    public VuePlateau(Shared shared, boolean modeAvance, boolean modePlateauLibre) {
         this.scanner = new Scanner(System.in);
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
-        initialize(modeAvance);
+        this.modePlateauLibre = modePlateauLibre;
+        if (modePlateauLibre) {
+            size = 50;
+        } else {
+            size = 100;
+        }
+        initialize(modeAvance, modePlateauLibre);
         this.frame.setVisible(true);
     }
 
@@ -112,8 +122,9 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             // * 100,
             // this.shared.getCoordonee().getPositionY() * 100);
             // this.shared.getCarte().getImage().setVisible(false);
-            this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * 100,
-                    this.shared.getCoordonee().getPositionY() * 100);
+                this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * this.size,
+                this.shared.getCoordonee().getPositionY() * this.size);
+           
             // this.shared.getCarte().setImageCoord(20, 20);
             this.shared.getCarte().getImage().setVisible(true);
             // this.shared.getCoordonee().getPanel().setVisible(false);
@@ -135,7 +146,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             System.out.println("Vous avez pioche une carte");
             System.out.println(this.shared.getCarte().toString());
 
-            this.shared.getCarte().setImageCoord(200, 300);
+            this.shared.getCarte().setImageCoord(200, 300+this.delta);
             this.shared.getCarte().getImage().setVisible(true);
         } else if (evt.getPropertyName().equals("plateau-changement-de-tour")) {
             System.out.println("---------------------");
@@ -156,7 +167,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                     Carte carte = coord.getCarte();
                     if (carte instanceof CarteCachee) {
                         CarteCachee carteCachee = (CarteCachee) carte;
-                        carteCachee.setImageDevoileCoord(coord.getPositionX() * 100, coord.getPositionY() * 100);
+                        carteCachee.setImageDevoileCoord(coord.getPositionX() * this.size, coord.getPositionY() * this.size);
                         carteCachee.getImageDevoile().setVisible(true);
                         carteCachee.getImage().setVisible(false);
                         coord.getPanel().setVisible(false);
@@ -164,7 +175,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                         coord.afficher();
                         carteCachee.reveler();
                     } else {
-                        carte.setImageCoord(coord.getPositionX() * 100, coord.getPositionY() * 100);
+                        carte.setImageCoord(coord.getPositionX() * this.size, coord.getPositionY() * this.size);
                         carte.getImage().setVisible(true);
                         coord.getPanel().setVisible(false);
 
@@ -184,7 +195,7 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
 
                 carte.setImageCoord(200, y);
                 carte.getImage().setVisible(true);
-                y+=50;
+                y += 50;
             }
 
         }
@@ -214,40 +225,46 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         return this.cartepioche3;
     }
 
-    public void initialize(boolean modeAvance) {
+    public void initialize(boolean modeAvance, boolean modePlateauLibre) {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 700);
 
+        if (!modePlateauLibre) {
+            this.delta = 0;
+        } else {
+            this.delta = 200;
+        }
+
         this.boutton_piocher = new JButton("Piocher");
-        this.boutton_piocher.setBounds(20, 300, 125, 25);
+        this.boutton_piocher.setBounds(20, 300 + delta, 125, 25);
         this.frame.getContentPane().add(this.boutton_piocher);
 
         this.nom_joueur = new JLabel("Joueur : ");
-        this.nom_joueur.setBounds(20, 350, 125, 75);
+        this.nom_joueur.setBounds(20, 350 + delta, 125, 75);
         this.frame.getContentPane().add(this.nom_joueur);
 
         this.changer_joueur = new JButton("Fin du tour");
-        this.changer_joueur.setBounds(300, 300, 125, 25);
+        this.changer_joueur.setBounds(300, 300 + delta, 125, 25);
         this.frame.getContentPane().add(this.changer_joueur);
 
-        this.panel1 = new ImagePanel("vide");
-        this.panel1.setBounds(20, 500, 50, 50);
+        this.panel1 = new ImagePanel("vide", this.modePlateauLibre);
+        this.panel1.setBounds(20, 500 + delta, 50, 50);
         this.frame.getContentPane().add(this.panel1);
 
-        this.panel2 = new ImagePanel("vide");
-        this.panel2.setBounds(300, 500, 50, 50);
+        this.panel2 = new ImagePanel("vide", this.modePlateauLibre);
+        this.panel2.setBounds(300, 500 + delta, 50, 50);
         this.frame.getContentPane().add(this.panel2);
 
         this.label_panel1 = new JLabel("Joueur1");
-        this.label_panel1.setBounds(20, 480, 125, 25);
+        this.label_panel1.setBounds(20, 480 + delta, 125, 25);
         this.frame.getContentPane().add(this.label_panel1);
 
         this.label_panel2 = new JLabel("Joueur2");
-        this.label_panel2.setBounds(300, 480, 125, 25);
+        this.label_panel2.setBounds(300, 480 + delta, 125, 25);
         this.frame.getContentPane().add(this.label_panel2);
 
         this.boutton_bouger = new JButton("Bouger");
-        this.boutton_bouger.setBounds(20, 330, 125, 25);
+        this.boutton_bouger.setBounds(20, 330 + delta, 125, 25);
         this.frame.getContentPane().add(this.boutton_bouger);
         /*
          * panel = new ImagePanel("carre_rouge_plein"); panel.setBounds(0,700,50,50);
@@ -259,23 +276,21 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
          * panel2.setVisible(true); this.frame.getContentPane().add(panel2);
          */
 
-         //emplacement pour le choix des carte dans le mode avance
-        if (modeAvance){
+        // emplacement pour le choix des carte dans le mode avance
+        if (modeAvance) {
             this.cartepioche1 = new JPanel();
-            this.cartepioche1.setBounds(200,300,50,50);
-            this.cartepioche1.setBackground(new Color(0,0,0,25));
+            this.cartepioche1.setBounds(200, 300, 50, 50);
+            this.cartepioche1.setBackground(new Color(0, 0, 0, 25));
             this.frame.getContentPane().add(this.cartepioche1);
 
-            
             this.cartepioche2 = new JPanel();
-            this.cartepioche2.setBounds(200,350,50,50);
-            this.cartepioche2.setBackground(new Color(0,0,0,25));
+            this.cartepioche2.setBounds(200, 350, 50, 50);
+            this.cartepioche2.setBackground(new Color(0, 0, 0, 25));
             this.frame.getContentPane().add(this.cartepioche2);
 
-            
             this.cartepioche3 = new JPanel();
-            this.cartepioche3.setBounds(200,400,50,50);
-            this.cartepioche3.setBackground(new Color(0,0,0,25));
+            this.cartepioche3.setBounds(200, 400, 50, 50);
+            this.cartepioche3.setBackground(new Color(0, 0, 0, 25));
             this.frame.getContentPane().add(this.cartepioche3);
         }
 

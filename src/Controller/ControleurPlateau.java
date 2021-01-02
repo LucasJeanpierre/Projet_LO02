@@ -59,6 +59,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private boolean tourOrdinateur;
     private boolean modeAvance;
+    private boolean modePlateauLibre;
+    private int size;
 
     private PropertyChangeSupport pcs;
 
@@ -79,7 +81,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private int intEtatDuJeu = 0;
 
-    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau, boolean modeAvance) {
+    public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau, boolean modeAvance,
+            boolean modePlateauLibre) {
         this.scanner = new Scanner(System.in);
         this.plateau = plateau;
         this.paquet = this.plateau.getPaquet();
@@ -92,7 +95,15 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bougerChoixCoord = false;
         this.tourOrdinateur = false;
         this.modeAvance = modeAvance;
+        this.modePlateauLibre = modePlateauLibre;
+
+        if (modePlateauLibre) {
+            this.size = 50;
+        } else {
+            this.size = 100;
+        }
         this.t = new Thread(this);
+
         Iterator<Coordonee> it = this.plateau.getListeCoord().iterator();
 
         while (it.hasNext()) {
@@ -102,18 +113,18 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 public void mousePressed(MouseEvent e) {
                     JPanel panel = (JPanel) e.getSource();
                     if (!ControleurPlateau.this.bougerChoixCarte) {
-                        ControleurPlateau.this.placer(panel.getX() / 100, panel.getY() / 100);
+                        ControleurPlateau.this.placer(panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.fini = ControleurPlateau.this.plateau
                                 .isFini(ControleurPlateau.this.modeAvance);
                     } else if ((ControleurPlateau.this.bougerChoixCarte)
                             && (!ControleurPlateau.this.bougerChoixCoord)) {
                         ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau
-                                .recupererCoord(panel.getX() / 100, panel.getY() / 100);
+                                .recupererCoord(panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.bougerChoixCoord = true;
                     } else if ((ControleurPlateau.this.bougerChoixCarte) && (ControleurPlateau.this.bougerChoixCoord)) {
                         ControleurPlateau.this.bouger(ControleurPlateau.this.coordCarteABouger.getPositionX(),
-                                ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / 100,
-                                panel.getY() / 100);
+                                ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / ControleurPlateau.this.size,
+                                panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.bougerChoixCarte = false;
                         ControleurPlateau.this.bougerChoixCoord = false;
                     }
@@ -412,7 +423,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         if (arg != null) {
             if (o instanceof VuePlateau) {
                 if (arg.toString().equals("positionCoordPlacerCarte")) {
-                    this.placerLaCarte("0,0", new Carte("a", "a", false, null));
+                    this.placerLaCarte("0,0", new Carte("a", "a", false, null, false));
                 }
             }
         }

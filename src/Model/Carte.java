@@ -18,6 +18,7 @@ public class Carte extends Observable{
 	private String couleur;
 	public ImagePanel image;
 	private JFrame frame;
+	private boolean modePlateauLibre;
 	
 	public void poser() {
 		
@@ -73,6 +74,10 @@ public class Carte extends Observable{
 		this.image.setBounds(x,y,50,50);
 	}
 
+	public boolean getModePlateauLibre() {
+		return this.modePlateauLibre;
+	}
+
 
 	
 	public Carte(String forme, String couleur, boolean rempli) {
@@ -87,18 +92,19 @@ public class Carte extends Observable{
 			tempnom = "vide";
 		}
 		String name = forme + "_" + couleur + "_" + tempnom;
-		this.image = new ImagePanel(name);
+		//this.image = new ImagePanel(name);
 		System.out.println(rand.nextInt(500));
         this.image.setBounds(rand.nextInt(500), rand.nextInt(500),500, 700);
 		//this.image.setVisible(true);
 	}
 
-	public Carte(String forme, String couleur, boolean rempli, JFrame frame) {
+	public Carte(String forme, String couleur, boolean rempli, JFrame frame, boolean modePlateauLibre) {
 		this.frame = frame;
 		Random rand = new Random();
 		this.forme = forme;
 		this.rempli = rempli;
 		this.couleur = couleur;
+		this.modePlateauLibre = modePlateauLibre;
 		String tempnom;
 		if (this.rempli) {
 			tempnom = "plein";
@@ -106,11 +112,16 @@ public class Carte extends Observable{
 			tempnom = "vide";
 		}
 		String name = forme + "_" + couleur + "_" + tempnom;
-		this.image = new ImagePanel(name);
+		this.image = new ImagePanel(name, modePlateauLibre);
 		//System.out.println(rand.nextInt(500));
 		//int x = rand.nextInt(500);
 		//this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
-		this.image.setBounds(250,250,50,50);
+		if (this.modePlateauLibre) {
+			this.image.setBounds(250,250,25,25);
+		} else {
+			this.image.setBounds(250,250,50,50);
+		}
+		
         this.image.setVisible(false);
 		this.frame.getContentPane().add(this.image);
 	}

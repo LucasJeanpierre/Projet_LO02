@@ -57,14 +57,18 @@ public class Coordonee {
 		this.carte = null;
 	}
 
-	public Coordonee(int x, int y, JFrame frame) {
+	public Coordonee(int x, int y, JFrame frame, boolean modePlateauLibre) {
 		this.positionX = x;
 		this.positionY = y;
 		this.carte = null;
 		this.frame = frame;
 		//this.panel = new ImagePanel("vide");
 		this.panel = new JPanel();
-		this.panel.setBounds(x * 100, y * 100, 50, 50);
+		if (!modePlateauLibre) {
+			this.panel.setBounds(x * 100, y * 100, 50, 50);
+		} else {
+			this.panel.setBounds(x * 50, y * 50, 25, 25);
+		}
 		this.panel.setVisible(true);
 		this.panel.setBackground(new Color(0,0,0,25));
 		this.frame.getContentPane().add(this.panel);

@@ -525,10 +525,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return this.paquet;
 	}
 
-	public Plateau(Shared shared, VuePlateau vuePlateau) {
+	public Plateau(Shared shared, VuePlateau vuePlateau, boolean modePlateauLibre) {
 		// cr�ation du paquet
 		this.shared = shared;
-		this.paquet = new Paquet(vuePlateau);
+		this.paquet = new Paquet(vuePlateau, modePlateauLibre);
 		this.listeJoueur = new LinkedList<Joueur>();
 
 		// listeJoueur.add(new Joueur("Patrick"));
@@ -555,16 +555,23 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		// Cr�ation du plateau
 		int nblong;
 		int nblarge;
-		if (!this.formePlateauLibre) {
+
+		/*
+		 * if (!this.formePlateauLibre) { nblong = 5; nblarge = 3; } else { nblong = 16;
+		 * nblarge = 16; }
+		 */
+
+		if (modePlateauLibre) {
+			nblong = 10;
+			nblarge = 10;
+		} else {
 			nblong = 5;
 			nblarge = 3;
-		} else {
-			nblong = 16;
-			nblarge = 16;
 		}
+
 		for (int x = 0; x < nblong; x++) {
 			for (int y = 0; y < nblarge; y++) {
-				listeCoord.add(new Coordonee(x, y, vuePlateau.getFrame()));
+				listeCoord.add(new Coordonee(x, y, vuePlateau.getFrame(), modePlateauLibre));
 			}
 		}
 
@@ -729,6 +736,8 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	}
 
 	public boolean isFini(boolean modeAvance) {
+		Visiteur v = new Visiteur();
+		v.visit(this);
 		if (!modeAvance) {
 			// System.out.println(this.isPlateauRempli());
 			if ((this.paquet.getNombreDeCarte() > 0) && (!this.isPlateauRempli())) {
@@ -745,31 +754,34 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					this.shared.setJoueur(joueur);
-					this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					//this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur));
 					this.setProperty("plateau-montrer-score-joueur");
 				}
 
 				return true;
 			}
 		} else {
-			//si il reste des carte dans les mains de joueurs ou si la partie vien de commence (pour eviter le moment on l'on pose les carte cache et que les main sont vide)
-			//quand 5 cartes sont posée c'est que toutes les cartes caché sont posée et que les mains des joueur sont pleines
-			if ( ( ((this.nombreDeCarteDansMains() > 0) && (!this.isPlateauRempli())) ) || (this.nbCartePosee() < 5) ) {
+			// si il reste des carte dans les mains de joueurs ou si la partie vien de
+			// commence (pour eviter le moment on l'on pose les carte cache et que les main
+			// sont vide)
+			// quand 5 cartes sont posée c'est que toutes les cartes caché sont posée et que
+			// les mains des joueur sont pleines
+			if ((((this.nombreDeCarteDansMains() > 0) && (!this.isPlateauRempli()))) || (this.nbCartePosee() < 5)) {
 				return false;
 			} else {
-				//on donne les carte victoire -> la denière carte de la leur main
+				// on donne les carte victoire -> la denière carte de la leur main
 				Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
 
 				while (itjoueur.hasNext()) {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					joueur.choisirCarteVictoire();
-					
+
 				}
 
 				this.shared.setListJoueur(this.listeJoueur);
 				this.setProperty("plateau-donner-carte-victoire");
-
 
 				// devoiler les cartes cachee
 				this.shared.setListCoord(this.getListeCoord());
@@ -781,7 +793,8 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					this.shared.setJoueur(joueur);
-					this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					//this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
+					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur));
 					this.setProperty("plateau-montrer-score-joueur");
 				}
 

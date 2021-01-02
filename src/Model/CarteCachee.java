@@ -11,8 +11,8 @@ public class CarteCachee extends Carte {
 	private ImagePanel dos;
 	
 	public CarteCachee(Carte carte) {
-		super(carte.getForme(), carte.getCouleur(), carte.isRempli(), carte.getFrame());
-		this.dos = new ImagePanel("dos");
+		super(carte.getForme(), carte.getCouleur(), carte.isRempli(), carte.getFrame(), carte.getModePlateauLibre());
+		this.dos = new ImagePanel("dos",carte.getModePlateauLibre());
 		//this.dos.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
 		this.dos.setBounds(250,250,50,50);
         this.dos.setVisible(false);
@@ -37,7 +37,12 @@ public class CarteCachee extends Carte {
 	}
 
 	public void setImageDevoileCoord(int x, int y) {
-		super.image.setBounds(x,y,50,50);
+		if (super.getModePlateauLibre()) {
+			super.image.setBounds(x,y,25,25);
+		} else {
+			super.image.setBounds(x,y,50,50);
+		}
+		;
 	}
 	
 	public void reveler() {
@@ -45,9 +50,5 @@ public class CarteCachee extends Carte {
 	}
 
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 }
