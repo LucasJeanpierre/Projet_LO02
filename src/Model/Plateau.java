@@ -232,10 +232,17 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			Coordonee oldCoord = trouverCoordoneeDUneDarte(carte);
 			// puis on la place au nouvelle endroit
 			Coordonee coord = recupererCoord(x, y);
+			//oldCoord.enleverLaCarte();
 			if (oldCoord.enleverLaCarte() && (coord.getCarte() == null)) {
 
 				// si l'emplacement ou bouge la carte est vide
-				coord.poserUneCarte(carte);
+				//oldCoord.enleverLaCarte();
+				if (this.peutPoserUneCarte(carte, x, y)) {
+					coord.poserUneCarte(carte);
+				} else {
+					oldCoord.poserUneCarte(carte);
+					return false;
+				}
 				this.montrerLesCartesPosees();
 				oldCoord.getPanel().setVisible(true);
 				return true;
