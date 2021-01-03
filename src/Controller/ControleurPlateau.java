@@ -48,6 +48,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     public static String PIOCHER = "piocher";
     public static String BOUGER = "bouger";
     public static String CHANGEMENT_JOUEUR = "changer_de_joueur";
+    public static String CHOISIR = "choisir";
 
     private boolean aUneCarteEnMain;
     private boolean aJoue;
@@ -113,18 +114,19 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 public void mousePressed(MouseEvent e) {
                     JPanel panel = (JPanel) e.getSource();
                     if (!ControleurPlateau.this.bougerChoixCarte) {
-                        ControleurPlateau.this.placer(panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
+                        ControleurPlateau.this.placer(panel.getX() / ControleurPlateau.this.size,
+                                panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.fini = ControleurPlateau.this.plateau
                                 .isFini(ControleurPlateau.this.modeAvance);
                     } else if ((ControleurPlateau.this.bougerChoixCarte)
                             && (!ControleurPlateau.this.bougerChoixCoord)) {
-                        ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau
-                                .recupererCoord(panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
+                        ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau.recupererCoord(
+                                panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.bougerChoixCoord = true;
                     } else if ((ControleurPlateau.this.bougerChoixCarte) && (ControleurPlateau.this.bougerChoixCoord)) {
                         ControleurPlateau.this.bouger(ControleurPlateau.this.coordCarteABouger.getPositionX(),
-                                ControleurPlateau.this.coordCarteABouger.getPositionY(), panel.getX() / ControleurPlateau.this.size,
-                                panel.getY() / ControleurPlateau.this.size);
+                                ControleurPlateau.this.coordCarteABouger.getPositionY(),
+                                panel.getX() / ControleurPlateau.this.size, panel.getY() / ControleurPlateau.this.size);
                         ControleurPlateau.this.bougerChoixCarte = false;
                         ControleurPlateau.this.bougerChoixCoord = false;
                     }
@@ -457,6 +459,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     quitter = true;
                 } else if (commande[0].equals(ControleurPlateau.CHANGEMENT_JOUEUR)) {
                     this.changerDeJoueur();
+                } else if (commande[0].equals(ControleurPlateau.CHOISIR)) {
+                    this.choisirCarteAPlacer(Integer.parseInt(commande[1]));
                 } else if (commande[0].equals(ControleurPlateau.BOUGER)) {
                     if (commande[4] != null) {
                         this.bouger(Integer.parseInt(commande[1]), Integer.parseInt(commande[2]),
@@ -583,6 +587,18 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     private void choisirCarteAPlacer(int y) {
+
+        // if input come from console
+        if (y < 5) {
+            if (y == 0) {
+                y = 300;
+            } else if (y == 1) {
+                y = 350;
+            } else if (y == 2) {
+                y = 400;
+            }
+        }
+
         if (y == 300) {
             this.shared.setCarte(this.plateau.getListJoueur().element().getMain().get(0));
         } else if (y == 350) {
