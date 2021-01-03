@@ -190,10 +190,20 @@ public class Visiteur {
         return score;
     }
 
-    public int compterLesPointsAlternatif(Joueur j) {
-        int nbcartes = 10;
+    public int compterLesPointsAlternatif(Joueur j, boolean modePlateauLibre) {
+        int nbcartesx;
+        int nbcartesy;
+        if (modePlateauLibre) {
+            nbcartesx = 10;
+            nbcartesy = 10;
+        } else {
+            nbcartesx = 5;
+            nbcartesy = 3;
+        }
+        
 
         this.getCarteVictoire(j);
+        //System.out.println(this.carteVictoire);
 
         // on récupère les caractéristique de la carte victoire
         String forme = this.carteVictoire.getForme();
@@ -219,7 +229,7 @@ public class Visiteur {
         // nombre de carte d'affill� possedant une caract�ritique de la carte victoire
 
         // calcul du score pour toute les lignes
-        for (int y = 0; y < nbcartes; y++) {
+        for (int y = 0; y < nbcartesy; y++) {
             nbRecurenceForme = 0;
             nbRecurenceCouleur = 0;
             nbRecurenceRempli = 0;
@@ -228,7 +238,7 @@ public class Visiteur {
             nbRecurenceCouleurMax = 0;
             nbRecurenceRempliMax = 0;
 
-            for (int x = 0; x < nbcartes; x++) {
+            for (int x = 0; x < nbcartesx; x++) {
                 Coordonee coord = recupererCoord(x, y);
                 if (coord.getCarte() != null) {
                     Carte carte = coord.getCarte();
@@ -285,7 +295,7 @@ public class Visiteur {
 
         // calculer score colonnes
 
-        for (int x = 0; x < nbcartes; x++) {
+        for (int x = 0; x < nbcartesx; x++) {
             nbRecurenceForme = 0;
             nbRecurenceCouleur = 0;
             nbRecurenceRempli = 0;
@@ -294,7 +304,7 @@ public class Visiteur {
             nbRecurenceCouleurMax = 0;
             nbRecurenceRempliMax = 0;
 
-            for (int y = 0; y < nbcartes; y++) {
+            for (int y = 0; y < nbcartesy; y++) {
                 Coordonee coord = recupererCoord(x, y);
                 if (coord.getCarte() != null) {
                     Carte carte = coord.getCarte();
@@ -348,7 +358,8 @@ public class Visiteur {
             }
             /* System.out.println("score : " + score); */
         }
-
+        //System.out.println(score);
+        //System.out.println("-----------------");
         return score;
     }
 

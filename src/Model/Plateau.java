@@ -18,6 +18,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	private PropertyChangeSupport pcs;
 	private Shared shared;
+	private boolean modePlateauLibre;
 
 	public void addObserver(PropertyChangeListener l) {
 		this.pcs.addPropertyChangeListener(l);
@@ -528,6 +529,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	public Plateau(Shared shared, VuePlateau vuePlateau, boolean modePlateauLibre) {
 		// cr�ation du paquet
 		this.shared = shared;
+		this.modePlateauLibre = modePlateauLibre;
 		this.paquet = new Paquet(vuePlateau, modePlateauLibre);
 		this.listeJoueur = new LinkedList<Joueur>();
 
@@ -750,13 +752,17 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 				Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
 
+				String i = "0";
+
 				while (itjoueur.hasNext()) {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					this.shared.setJoueur(joueur);
 					//this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
-					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur));
+					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur, this.modePlateauLibre));
+					this.shared.setString(i);
 					this.setProperty("plateau-montrer-score-joueur");
+					i = "1";
 				}
 
 				return true;
@@ -767,7 +773,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			// sont vide)
 			// quand 5 cartes sont posée c'est que toutes les cartes caché sont posée et que
 			// les mains des joueur sont pleines
-			if ((((this.nombreDeCarteDansMains() > 0) && (!this.isPlateauRempli()))) || (this.nbCartePosee() < 5)) {
+			if ((((this.nombreDeCarteDansMains() > 2) && (!this.isPlateauRempli()))) || (this.nbCartePosee() < 5)) {
 				return false;
 			} else {
 				// on donne les carte victoire -> la denière carte de la leur main
@@ -789,13 +795,16 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 				itjoueur = this.listeJoueur.iterator();
 
+				String i = "0";
 				while (itjoueur.hasNext()) {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					this.shared.setJoueur(joueur);
 					//this.shared.setIntShared(this.compterLesPoints(joueur.getCarteVictoire()));
-					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur));
+					this.shared.setString(i);
+					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur, modePlateauLibre));
 					this.setProperty("plateau-montrer-score-joueur");
+					i = "1";
 				}
 
 				return true;
