@@ -26,6 +26,10 @@ public class Paquet {
 				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], false, vuePlateau.getFrame(),modePlateauLibre));
 			}
 		}
+
+		//suppresion d'un des cartes (pour respecter les regles)
+		Random rand = new Random();
+		paquetDeCarte.remove(rand.nextInt(paquetDeCarte.size()));
 	}
 
 

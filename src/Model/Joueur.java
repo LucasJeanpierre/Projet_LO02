@@ -26,7 +26,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 	public String toString() {
-		return "Joueur : " + this.nom;
+		return this.nom;
 	}
 
 	public Joueur(String nom, Shared shared) {
@@ -44,6 +44,10 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	public String getNom() {
 		return this.nom;
+	}
+
+	public int getNbCarteEnMain() {
+		return this.main.size();
 	}
 
 

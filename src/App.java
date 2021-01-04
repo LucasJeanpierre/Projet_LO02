@@ -11,8 +11,8 @@ import java.awt.EventQueue;
 
 public class App {
 
-    public static void start(Shared shared, VuePlateau vuePlateau, boolean modeAvance, boolean modePlateauLibre) {
-        Plateau plateau = new Plateau(shared, vuePlateau, modePlateauLibre);
+    public static void start(Shared shared, VuePlateau vuePlateau, boolean modeAvance, boolean modePlateauLibre, boolean modeTroisJoueur) {
+        Plateau plateau = new Plateau(shared, vuePlateau, modePlateauLibre, modeTroisJoueur);
         ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame(), vuePlateau, modeAvance, modePlateauLibre);
 
         plateau.addObserver(controleurPlateau);
@@ -45,15 +45,16 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         Shared shared = new Shared();
-        boolean modeAvance = true;
+        boolean modeAvance = false;
         boolean modePlateauLibre = false;
+        boolean modeTroisJoueur = false;
 
         // VuePlateau vuePlateau = new VuePlateau(shared);
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VuePlateau vuePlateau = new VuePlateau(shared, modeAvance, modePlateauLibre);
-                    start(shared, vuePlateau, modeAvance, modePlateauLibre);
+                    VuePlateau vuePlateau = new VuePlateau(shared, modeAvance, modePlateauLibre, modeTroisJoueur);
+                    start(shared, vuePlateau, modeAvance, modePlateauLibre, modeTroisJoueur);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

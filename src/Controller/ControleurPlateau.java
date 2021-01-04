@@ -63,6 +63,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     private boolean modePlateauLibre;
     private int size;
 
+    private int nbCarteJoue;
+
     private PropertyChangeSupport pcs;
 
     public void addObserver(PropertyChangeListener l) {
@@ -97,6 +99,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.tourOrdinateur = false;
         this.modeAvance = modeAvance;
         this.modePlateauLibre = modePlateauLibre;
+        this.nbCarteJoue = 0;
 
         if (modePlateauLibre) {
             this.size = 50;
@@ -139,7 +142,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonPiocher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.piocher();
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
+                //ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -489,7 +492,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                 // Carte carte = (Carte) carteCachee;
                 System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
                 Carte carte;
-                if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                //if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                if (this.nbCarteJoue != 0) {
                     carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
                 } else {
                     carte = new CarteCachee(this.plateau.getPaquet().getRandomCarte());
@@ -504,8 +508,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         } else {
             if ((!this.aUneCarteEnMain) && (!this.aJoue) && (this.plateau.getPaquet().getNombreDeCarte() > 0)) {
                 Carte carte;
-                if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
-                    if (plateau.getListJoueur().element().getNbCarteJoue() == 1) {
+                //if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
+                if (this.nbCarteJoue != 0) {
+                    if ( (plateau.getListJoueur().element().getNbCarteJoue() <= 1) && (plateau.getListJoueur().element().getNbCarteEnMain() == 0) )  {
+                    //if (this.nbCarteJoue == 1) {
                         this.plateau.donnerDeuxCarteAuJoueur(plateau.getListJoueur().element());
                         carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
                     } else {
@@ -543,6 +549,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     /* Integer.parseInt(commande[2]) */y)) {
                 this.aUneCarteEnMain = false;
                 this.aJoue = true;
+                this.nbCarteJoue++;
             }
 
             // this.setProperty("controleur-montrer-les-cartes");

@@ -19,6 +19,7 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	private PropertyChangeSupport pcs;
 	private Shared shared;
 	private boolean modePlateauLibre;
+	private boolean modeTroisJoueur;
 
 	public void addObserver(PropertyChangeListener l) {
 		this.pcs.addPropertyChangeListener(l);
@@ -533,10 +534,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return this.paquet;
 	}
 
-	public Plateau(Shared shared, VuePlateau vuePlateau, boolean modePlateauLibre) {
+	public Plateau(Shared shared, VuePlateau vuePlateau, boolean modePlateauLibre, boolean modeTroisJoueur) {
 		// cr�ation du paquet
 		this.shared = shared;
 		this.modePlateauLibre = modePlateauLibre;
+		this.modeTroisJoueur = modeTroisJoueur;
 		this.paquet = new Paquet(vuePlateau, modePlateauLibre);
 		this.listeJoueur = new LinkedList<Joueur>();
 
@@ -544,15 +546,26 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		// listeJoueur.add(new Joueur("Julien", this.shared));
 		// listeJoueur.add(new JoueurIA(this, this.shared));
 
-		Joueur julien = new Joueur("Julien", this.shared);
-		Joueur mathieu = new Joueur("Mathieu", this.shared);
-		// Joueur thierry = new Joueur("Thierry", this.shared);
-		JoueurIA ordinateur = new JoueurIA(this, this.shared);
+		if (!modeTroisJoueur) {
+			Joueur j1 = new Joueur("Joueur 1", this.shared);
+			Joueur j2 = new Joueur("Joueur 2", this.shared);
+			Joueur ordi = new JoueurIA(this, this.shared);
+	
+			listeJoueur.add(j1);
+			listeJoueur.add(j2);
+			// listeJoueur.add(mathieu);
+			// listeJoueur.add(thierry);
+		} else {
+			Joueur j1 = new Joueur("Joueur 1", this.shared);
+			Joueur j2 = new Joueur("Joueur 2", this.shared);
+			Joueur j3 = new Joueur("Joueur 3", this.shared);
+	
+			listeJoueur.add(j1);
+			listeJoueur.add(j2);
+			listeJoueur.add(j3);
+		}
 
-		listeJoueur.add(julien);
-		listeJoueur.add(mathieu);
-		// listeJoueur.add(mathieu);
-		// listeJoueur.add(thierry);
+		
 
 		// System.out.println(listeJoueur.element().toString());
 
@@ -769,7 +782,12 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur, this.modePlateauLibre));
 					this.shared.setString(i);
 					this.setProperty("plateau-montrer-score-joueur");
-					i = "1";
+					if (i == "0") {
+						i = "1";
+					} else {
+						i = "2";
+					}
+					
 				}
 
 				return true;
@@ -785,16 +803,20 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			} else {
 				// on donne les carte victoire -> la denière carte de la leur main
 				Iterator<Joueur> itjoueur = this.listeJoueur.iterator();
+				this.shared.setString("0");
 
 				while (itjoueur.hasNext()) {
 					// montrer les scores
 					Joueur joueur = itjoueur.next();
 					joueur.choisirCarteVictoire();
+					this.shared.setJoueur(joueur);
+					this.shared.setCarte(joueur.getCarteVictoire());
+					this.setProperty("plateau-donner-carte-victoire");
 
 				}
 
-				this.shared.setListJoueur(this.listeJoueur);
-				this.setProperty("plateau-donner-carte-victoire");
+				//this.shared.setListJoueur(this.listeJoueur);
+				//this.setProperty("plateau-donner-carte-victoire");
 
 				// devoiler les cartes cachee
 				this.shared.setListCoord(this.getListeCoord());
@@ -811,7 +833,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 					this.shared.setString(i);
 					this.shared.setIntShared(v.compterLesPointsAlternatif(joueur, modePlateauLibre));
 					this.setProperty("plateau-montrer-score-joueur");
-					i = "1";
+
+					//gerer affichage score
+					if (i == "0") {
+						i = "1";
+					} else {
+						i = "2";
+					}
 				}
 
 				return true;
@@ -1166,15 +1194,19 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	public void donnerCarteVictoire() {
 		// on donne les cartes victoire des joueurs
 		Iterator<Joueur> it = this.getListJoueur().iterator();
+		this.shared.setString("0");
 
 		while (it.hasNext()) {
 			Joueur joueur = it.next();
 			joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
+			this.shared.setCarte(joueur.getCarteVictoire());
+			this.shared.setJoueur(joueur);
+			this.setProperty("plateau-donner-carte-victoire");
 		}
 
 		this.changementDeTour();
-		this.shared.setListJoueur(this.listeJoueur);
-		this.setProperty("plateau-donner-carte-victoire");
+		//this.shared.setListJoueur(this.listeJoueur);
+		//this.setProperty("plateau-donner-carte-victoire");
 	}
 
 	public static void main(String[] args) {
