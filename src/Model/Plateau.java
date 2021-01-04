@@ -552,17 +552,18 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			Joueur ordi = new JoueurIA(this, this.shared);
 	
 			listeJoueur.add(j1);
-			listeJoueur.add(j2);
-			// listeJoueur.add(mathieu);
-			// listeJoueur.add(thierry);
+			//listeJoueur.add(j2);
+			listeJoueur.add(ordi);
 		} else {
 			Joueur j1 = new Joueur("Joueur 1", this.shared);
 			Joueur j2 = new Joueur("Joueur 2", this.shared);
 			Joueur j3 = new Joueur("Joueur 3", this.shared);
+			Joueur ordi = new JoueurIA(this, this.shared);
 	
 			listeJoueur.add(j1);
 			listeJoueur.add(j2);
-			listeJoueur.add(j3);
+			//listeJoueur.add(j3);
+			listeJoueur.add(ordi);
 		}
 
 		
@@ -798,7 +799,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 			// sont vide)
 			// quand 5 cartes sont posée c'est que toutes les cartes caché sont posée et que
 			// les mains des joueur sont pleines
-			if ((((this.nombreDeCarteDansMains() > 2) && (!this.isPlateauRempli()))) || (this.nbCartePosee() < 5)) {
+			int nbcarteMin;
+			if (this.modeTroisJoueur) {
+				nbcarteMin = 3;
+			} else {
+				nbcarteMin = 2;
+			}
+			if ((((this.nombreDeCarteDansMains() > nbcarteMin) && (!this.isPlateauRempli()))) || (this.nbCartePosee() < 5)) {
 				return false;
 			} else {
 				// on donne les carte victoire -> la denière carte de la leur main

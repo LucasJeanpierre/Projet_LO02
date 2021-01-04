@@ -586,6 +586,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
             this.aJoue = false;
             this.aBouger = false;
 
+            this.plateau.isFini(this.modeAvance);
+
             if (this.plateau.getListJoueur().element() instanceof JoueurIA) {
                 this.tourOrdinateur = true;
                 this.faireJouerOrdi();
