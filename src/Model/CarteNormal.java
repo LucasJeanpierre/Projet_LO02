@@ -2,8 +2,17 @@ package Model;
 
 import View.ImagePanel;
 
+/**
+ * Class Carte normal
+ * Hérite de la class Carte
+ * Permet de dissocié la carte du paquet et les carte qui sont sur le plateau
+ */
 public class CarteNormal extends Carte {
 
+  /**
+   * Constructeur
+   * @param carte
+   */
   public CarteNormal(Carte carte) {
     super(carte.getForme(), carte.getCouleur(), carte.isRempli(), carte.getFrame(), carte.getModePlateauLibre());
   }

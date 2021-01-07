@@ -2,19 +2,36 @@ package Model;
 
 import java.util.*;
 
+/**
+ * Class visiteur
+ */
 public class Visiteur {
 
     private ArrayList<Coordonee> listeCoord;
     private Carte carteVictoire;
 
+    /**
+     * Visite le plateau 
+     * @param p le plateau
+     */
     public void visit(Plateau p) {
         this.listeCoord = p.getListeCoord();
     }
 
+    /**
+     * visite le joueur
+     * @param j le joueur
+     */
     public void visit(Joueur j) {
         this.carteVictoire = j.getCarteVictoire();
     }
 
+    /**
+     * Recupere une coord en fonction de sa position
+     * @param x coord x 
+     * @param y coord y
+     * @return la coord
+     */
     private Coordonee recupererCoord(int x, int y) {
         Iterator<Coordonee> it = listeCoord.iterator();
 
@@ -28,7 +45,11 @@ public class Visiteur {
         System.out.println(x +"  "+y);
         return null;
     }
-
+    /**
+     * 
+     * @param j le joueur
+     * @return la carte victoire du joueur
+     */
     private void getCarteVictoire(Joueur j) {
         this.visit(j);
     }
@@ -190,6 +211,12 @@ public class Visiteur {
         return score;
     }
 
+    /**
+     * Compte les points d'un joueur
+     * @param j le joueur
+     * @param modePlateauLibre le mode de jeu
+     * @return le score du joueur
+     */
     public int compterLesPointsAlternatif(Joueur j, boolean modePlateauLibre) {
         int nbcartesx;
         int nbcartesy;

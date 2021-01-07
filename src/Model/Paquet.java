@@ -6,7 +6,9 @@ import java.util.Random;
 
 import View.VuePlateau;
 
-
+/**
+ * Class paquet
+ */
 public class Paquet {
 
 	private ArrayList<Carte> paquetDeCarte;
@@ -15,7 +17,15 @@ public class Paquet {
 
 	
 
-
+	/**
+	 * Constructeur
+	 * @param vuePlateau la vue
+	 * @param modePlateauLibre le mode du plateau
+	 * 
+	 * le contructeur creer les carte du jeu
+	 * 
+	 * et enleve une pour respecter les règles du jeu
+	 */
 	public Paquet(VuePlateau vuePlateau, boolean modePlateauLibre) {
 		this.paquetDeCarte = new ArrayList<Carte>();
 
@@ -32,22 +42,36 @@ public class Paquet {
 		paquetDeCarte.remove(rand.nextInt(paquetDeCarte.size()));
 	}
 
-
+	/**
+	 * revoie la liste des cartes du paquet
+	 * @return la liste des carte <ArrayList>
+	 */
 	public ArrayList<Carte> getPaquetDeCarte() {
 		return paquetDeCarte;
 	}
 
+	/**
+	 * Renvoie le nombre de carte restante dans le paquet
+	 * @return nombre de carte
+	 */
 	public int getNombreDeCarte() {
 		return paquetDeCarte.size();
 	}
 
 
 
-
+	/**
+	 * Definie le paquet de carte
+	 * @param paquetDeCarte
+	 */
 	public void setPaquetDeCarte(ArrayList<Carte> paquetDeCarte) {
 		this.paquetDeCarte = paquetDeCarte;
 	}
 
+	/**
+	 * Renvoie une carte aléatoirement choisie dans le paquet
+	 * @return un carte
+	 */
 	public Carte getRandomCarte() {
 		if (paquetDeCarte.size() > 0) {
 			Random rand = new Random();
@@ -63,6 +87,10 @@ public class Paquet {
 		return null;
 	}
 
+	/**
+	 * Recupère une carte du paquet en fonction de ces caractéristiques
+	 * @return la carte voulue
+	 */
 	public Carte recupererCarte(String forme, String couleur, boolean rempli) {
 		Iterator<Carte> it = paquetDeCarte.iterator();
 
@@ -75,14 +103,6 @@ public class Paquet {
 			}
 		}
 		return null;
-	}
-
-
-
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

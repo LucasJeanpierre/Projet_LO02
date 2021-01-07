@@ -5,6 +5,10 @@ import java.beans.*;
 import Shared.Shared;
 import View.VuePlateau;
 
+
+/**
+ * Class Plateau
+ */
 public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	// private String aQuiLeTour;
@@ -21,10 +25,18 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	private boolean modePlateauLibre;
 	private boolean modeTroisJoueur;
 
+	/**
+	 * Ajoute un observer
+	 * @param l l'observer
+	 */
 	public void addObserver(PropertyChangeListener l) {
 		this.pcs.addPropertyChangeListener(l);
 	}
 
+	/**
+	 * notifie les observers
+	 * @param name le nom de la notification
+	 */
 	public void setProperty(String name) {
 		this.pcs.firePropertyChange(name, 0, 1);
 	}
@@ -33,10 +45,22 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * Accepte la viste du visiteur
+	 * @param v le visiteur
+	 */
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
 	}
 
+	/**
+	 * Pose une carte sur le plateau
+	 * @param carte la carte a poser
+	 * @param x la coord x
+	 * @param y la coord y
+	 * 
+	 * @return la carte a bien été posé (boolean)
+	 */
 	public boolean poserUneCarte(Carte carte, int x, int y) {
 		// recup�re la coordonee correspondante a la position demand�
 		// appel la m�thode poser une carte de la coordonee qui va associ� l'attribut
@@ -73,14 +97,28 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * Renvoie la liste des coordonee du plateau
+	 * @return liste de coordonee
+	 */
 	public ArrayList<Coordonee> getListeCoord() {
 		return this.listeCoord;
 	}
 
+	/**
+	 * Renvoie la liste des joueurs
+	 * @return liste de joueurs
+	 */
 	public Queue<Joueur> getListJoueur() {
 		return this.listeJoueur;
 	}
 
+	/**
+	 * Revoie un boolean pour savoir si l'on peut poser une carte a une coordonee
+	 * @param carte la carte a poser
+	 * @param x coord x
+	 * @param y coord y
+	 */
 	public boolean peutPoserUneCarte(Carte carte, int x, int y) {
 		if (carte instanceof CarteCachee) {
 			// si la coordonee est valide on cherche l'objet coordonee qui correspond
@@ -114,6 +152,12 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		}
 	}
 
+	/**
+	 * Renvoie un boolean en fonction de si la coordonee est adjacente a une carte
+	 * @param x coord x
+	 * @param y coord y
+	 * @return vrai si adjacent et faux si non
+	 */
 	public boolean isAdjacent(int x, int y) {
 
 		if (this.getNombreDeCarteEnJeu() == 0) {
@@ -145,6 +189,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return false;
 	}
 
+	/**
+	 * Permet de decaler toutes les cartes du plateau
+	 * @param deltax le decalage selon x
+	 * @param deltay le decalage selon y
+	 */
 	public void decalerPlateau(int deltax, int deltay) {
 		// on parcour le plateau en partant le la fin pour ne pas elimnier des pi�ces
 
@@ -226,6 +275,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * Bouge une carte aux position en parametres
+	 * @param carte la carte a bouger
+	 * @param x coord x
+	 * @param y coord y
+	 * @return vrai si la carte a ete bouger sinon faux
+	 */
 	public boolean bougerUneCarte(Carte carte, int x, int y) {
 
 		// on enleve d'abord la carte de la ou elle �tait
@@ -256,6 +312,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * Montre les cartes poser sur le plateau
+	 */
 	public void montrerLesCartesPosees() {
 		Iterator<Coordonee> it = listeCoord.iterator();
 
@@ -277,6 +336,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * revoie vrai si le plateau est rempli sinon faux
+	 * @return boolean
+	 */
 	public boolean isPlateauRempli() {
 		Iterator<Coordonee> it = listeCoord.iterator();
 
@@ -290,6 +353,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return true;
 	}
 
+	/**
+	 * Renvoie le nombre de carte posee
+	 * @return le nombre de carte posee
+	 */
 	public int nbCartePosee() {
 		int nb = 0;
 
@@ -306,6 +373,12 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	}
 
 	// permet de r�cup�rer un objet coordon�e a partir de sa position
+	/**
+	 * Recupère l'objet coordonee en fonction de sa postion
+	 * @param x coord x
+	 * @param y coord y
+	 * @return la coord demande
+	 */
 	public Coordonee recupererCoord(int x, int y) {
 		Iterator<Coordonee> it = listeCoord.iterator();
 
@@ -319,6 +392,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return null;
 	}
 
+	/**
+	 * Renvoie la coordonnee d'un carte
+	 * @param carte la carte d'on on chercher la coord
+	 * @return
+	 */
 	private Coordonee trouverCoordoneeDUneDarte(Carte carte) {
 		Iterator<Coordonee> it = listeCoord.iterator();
 
@@ -337,6 +415,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	}
 
 	// renvoie le nombre de carte pos�es sur la plateau
+	/**
+	 * @return le nombre de carte en jeu
+	 */
 	public int getNombreDeCarteEnJeu() {
 		int nombreDeCarte = 0;
 		Iterator<Coordonee> it = listeCoord.iterator();
@@ -351,6 +432,11 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return nombreDeCarte;
 	}
 
+	/**
+	 * @param carteVictoire la carteVictoire d'on on veut le score
+	 * @return les points marquer par une carte victoire
+	 * 
+	 */
 	public int compterLesPoints(Carte carteVictoire) {
 		// on r�cup�re les caract�ristique de la carte victoire
 		String forme = carteVictoire.getForme();
@@ -505,6 +591,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return score;
 	}
 
+	/**
+	 * Change de joueur
+	 */
 	public void changementDeTour() {
 
 		Joueur dernierJoueur = listeJoueur.element();
@@ -516,6 +605,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		this.setProperty("plateau-changement-de-tour");
 	}
 
+	/**
+	 * @return la somme des cartes en main des joueurs
+	 */
 	public int nombreDeCarteDansMains() {
 		int nombre = 0;
 		Iterator<Joueur> it = this.listeJoueur.iterator();
@@ -530,10 +622,23 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		return nombre;
 	}
 
+	/**
+	 * @return le paquet de carte
+	 */
 	public Paquet getPaquet() {
 		return this.paquet;
 	}
 
+
+	/**
+	 * Constructeur du Plateau
+	 * @param shared l'objet partage
+	 * @param vuePlateau la vue
+	 * @param modePlateauLibre mode de jeu
+	 * @param modeTroisJoueur mode de jeu
+	 * 
+	 * le constructeur creer les, les coordonee et les cartes
+	 */
 	public Plateau(Shared shared, VuePlateau vuePlateau, boolean modePlateauLibre, boolean modeTroisJoueur) {
 		// cr�ation du paquet
 		this.shared = shared;
@@ -562,8 +667,8 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 	
 			listeJoueur.add(j1);
 			listeJoueur.add(j2);
-			//listeJoueur.add(j3);
-			listeJoueur.add(ordi);
+			listeJoueur.add(j3);
+			//listeJoueur.add(ordi);
 		}
 
 		
@@ -600,6 +705,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * Donne 2 cartes a	chaque joueurs
+	 */ 
 	public void donnerDeuxCarteAuxJoueurs() {
 		// distribution des cartes pour le mode avance
 		Iterator<Joueur> it = this.listeJoueur.iterator();
@@ -614,6 +722,10 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		}
 	}
 
+	/**
+	 * Donne 2 carte a un joueur
+	 * @param joueur
+	 */
 	public void donnerDeuxCarteAuJoueur(Joueur joueur) {
 		for (int i = 0; i < 2; i++) {
 			joueur.piocherUneCarte(new CarteNormal(this.paquet.getRandomCarte()));
@@ -758,6 +870,13 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 
 	}
 
+	/**
+	 * 
+	 * @param modeAvance le mode de jeu
+	 * @return vrai si la partie est fini
+	 * 
+	 * Si elle est fini elle appelle les method de fin de partie
+	 */
 	public boolean isFini(boolean modeAvance) {
 		Visiteur v = new Visiteur();
 		v.visit(this);
@@ -1198,6 +1317,9 @@ public class Plateau implements ObjetVisite, PropertyChangeListener {
 		this.changementDeTour();
 	}
 
+	/**
+	 * Donne les cartes victoires aux joueurs
+	 */
 	public void donnerCarteVictoire() {
 		// on donne les cartes victoire des joueurs
 		Iterator<Joueur> it = this.getListJoueur().iterator();

@@ -3,15 +3,30 @@ package Model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import Shared.Shared;
+
+/**
+ * Class joueur IA
+ * Hérite de Joueur
+ */
 public class JoueurIA extends Joueur implements ComportementJoueur{
 
 	private Plateau plat;
 
+	/**
+	 * Contructeur
+	 * @param plat le plateau de jeu
+	 * @param shared l'objet partage
+	 */
 	public JoueurIA(Plateau plat, Shared shared) {
 		super("Ordinateur", shared);
 		this.plat = plat;
 	}
 
+	/**
+	 * Choisie la coordonee ou placer la carte
+	 * @param carte la carte a placer
+	 * @return l'emplacement ou poser la carte (String)
+	 */
 	public String choisirCoordoneeAPlacer(Carte carte) {
 		//return "0,0";
 		ArrayList<Coordonee> listeCoord = this.plat.getListeCoord();

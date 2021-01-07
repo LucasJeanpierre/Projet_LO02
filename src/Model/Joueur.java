@@ -9,6 +9,10 @@ import View.Observable;
 import java.util.Iterator;
 import java.beans.*;
 
+/**
+ * Class Joueur
+ * 
+ */
 public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	private String nom;
@@ -21,14 +25,27 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	private Shared shared;
 	private int nbCarteJoue;
 
+	/**
+	 * Accepte la visite du visiteur
+	 * @param visiteur
+	 */
 	public void acceptVisit(Visiteur v) {
 		v.visit(this);
 	}
 
+	/**
+	 * Method toString
+	 * retourne une chaine de caractère avec le nom du joueur
+	 */
 	public String toString() {
 		return this.nom;
 	}
 
+	/**
+	 * Constructeur de la class
+	 * @param nom le nom du joueur
+	 * @param shared l'objet partage entre tout les objet pour echanger des informations
+	 */
 	public Joueur(String nom, Shared shared) {
 		this.nom = nom;
 		this.scanner = new Scanner(System.in);
@@ -38,19 +55,34 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		this.nbCarteJoue = 0;
 	}
 
+	/**
+	 * Permet au joueur de piocher une carte
+	 * @param carte la carte a pioche
+	 */
 	public void piocherUneCarte(Carte carte) {
 		this.main.add(carte);
 	}
 
+	/**
+	 * Permet de récuperer le nom du joueur
+	 * @return nom (String)
+	 */
 	public String getNom() {
 		return this.nom;
 	}
 
+	/**
+	 * Permet de connaitre le nombre de carte dans la main du joueur
+	 * @return nbCarteEnMain (int)
+	 */
 	public int getNbCarteEnMain() {
 		return this.main.size();
 	}
 
-
+	/**
+	 * Method bouger une carte
+	 * Permet au joueur de prendre un décision pour bouger une carte
+	 */
 	public String bougerUneCarte() {
 		/*System.out.print("> ");
 		String positionBouger = scanner.nextLine();
@@ -59,30 +91,54 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		return this.shared.getString();
 	}
 
+	/**
+	 * Permet au joueur de choisir de bouger une carte
+	 * @return
+	 */
 	public String choisirCarteABouger() {
 		System.out.print("> ");
 		String choixCarte = scanner.nextLine();
 		return choixCarte;
 	}
 
+	/**
+	 * Permet de joueur de poser une carte
+	 * @param carte la carte a poser
+	 */
 	public void poserUneCarte(Carte carte) {
 		main.remove(carte);
 		this.nbCarteJoue++;
 	}
 
+	/**
+	 * Permet d'obtenir la nombre de carte que le joueur a joue
+	 * @return
+	 */
 	public int getNbCarteJoue() {
 		return this.nbCarteJoue;
 	}
 
+	/**
+	 * Permet au joueur de piocher une carte Victoire
+	 * @param carte la carte victoire
+	 */
 	public void piocherUneCarteVictoire(Carte carte) {
 		this.carteVictoire = carte;
 	}
 
+	/**
+	 * Permet de recupere la carte victoire du joueur
+	 * @return CarteVictoire
+	 */
 	public Carte getCarteVictoire() {
 		return this.carteVictoire;
 	}
 
-
+	/**
+	 * Permet au joueur de choisir a quelle coordonee placer une carte
+	 * @param carte la carte ca placer
+	 * @return une chaine de caratère definissant la coordonee
+	 */
 	public String choisirCoordoneeAPlacer(Carte carte) {
 		/*System.out.print("> ");
 		String positionPoser = scanner.nextLine();
@@ -90,7 +146,12 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		this.setProperty("joueur-demande-coord");
 		return this.shared.getString();
 	}
-	
+
+	/**
+	 * Permet au joueur de choisir une carte a bouger
+	 * 
+	 * @return une chaine de caratère definissant la coordonee
+	 */
 	public String choisirCoordoneeCarteABouger() {
 		/*System.out.print("> ");
 		String positionPoser = scanner.nextLine();
@@ -100,6 +161,10 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 
+	/**
+	 * Permet au joueur de choisir une carte placer
+	 * @param modeAvance si le jeu est en mode avance (boolean)
+	 */
 	public Carte choisirCarteAPlacer(boolean modeAvance) {
 		if (modeAvance) {
 			boolean bonneValeur = false;
@@ -139,14 +204,27 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		return carte;
 	}
 
+	/**
+	 * Recupere la main de joueur
+	 * @return la main du joueur
+	 */
 	public ArrayList<Carte> getMain() {
 		return this.main;
 	}
 	
+	/**
+	 * Definie la carte victoire du joueur
+	 * @param carte la carte victoire
+	 */
 	public void setCarteVictoire(Carte carte) {
 		this.carteVictoire = carte;
 	}
 
+	/**
+	 * Permet au joueur de choisir de bouger une carte
+	 * 
+	 * @return une chaine de caratère definissant la coordonee
+	 */
 	public String decisionBougerCarte() {
 		/*System.out.print("> ");
 		String decision = scanner.nextLine();
@@ -155,6 +233,9 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		return this.shared.getString();
 	}
 
+	/**
+	 * Montre la main du joueur
+	 */
 	public void montrerLaMain() {
 		/*Iterator<Carte> it = main.iterator();
 
@@ -171,6 +252,10 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 		this.setProperty("joueur-montrer-la-main");
 	}
 
+	/**
+	 * Recuperer l'objet partagé
+	 * @return l'objet partagé
+	 */
 	public Shared getShared() {
 		return this.shared;
 	}
@@ -178,10 +263,18 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 	}
 
+	/**
+	 * Ajoute un observer au joueur
+	 * @param l l'observer
+	 */
 	public void addObserver(PropertyChangeListener l) {
 		this.pcs.addPropertyChangeListener(l);
 	}
 
+	/**
+	 * notifie les observers
+	 * @param name le nom de la notification
+	 */
 	public void setProperty(String name) {
 		this.pcs.firePropertyChange(name, 0, 1);
 	}

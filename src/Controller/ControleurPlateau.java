@@ -22,6 +22,15 @@ import javax.swing.event.MouseInputListener;
 import java.io.BufferedReader;
 import java.io.*;
 
+/**
+ * Le Controleur du Jeu,
+ * C'est un observateur du Model et de la vue,
+ * Il reçoit les input du joueur via les bouttons ou la console et interagie avec le modele et la vue
+ * 
+ * @author Lucas JEANPIERRE
+ * 
+ */
+
 public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private Scanner scanner;
@@ -67,13 +76,27 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private PropertyChangeSupport pcs;
 
+    /**
+     * Ajoute un observateur a l'objet
+     * @param l
+     *          l'observateur
+     */
+
     public void addObserver(PropertyChangeListener l) {
         this.pcs.addPropertyChangeListener(l);
     }
 
+    /**
+     * 
+     */
     public void propertyChange(PropertyChangeEvent evt) {
     }
 
+    /**
+     * notifie les observateur de l'objet
+     * @param name
+     *          le nom du changement
+     */
     public void setProperty(String name) {
         this.pcs.firePropertyChange(name, 0, 1);
     }
@@ -84,6 +107,17 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private int intEtatDuJeu = 0;
 
+    /**
+     * Constructeur du Controleur
+     * @param plateau
+     * @param shared
+     * @param frame
+     * @param vuePlateau
+     * @param modeAvance
+     * @param modePlateauLibre
+     * 
+     * Dans le constructeur sont compris les fonction d'écoutes des bouttons
+     */
     public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau, boolean modeAvance,
             boolean modePlateauLibre) {
         this.scanner = new Scanner(System.in);
@@ -434,6 +468,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Methode a appeler au début de jeu
+     * Elle fait commance le jeu et l'écoute des boutton par le controleur
+     */
     public void jouer() {
         if (!this.modeAvance) {
             this.plateau.donnerCarteVictoire();
@@ -446,6 +484,11 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Methode run
+     * cette methode gère les commande faites par la console 
+     * 
+     */
     public void run() {
         // this.plateau.placerCarteCachee();
         // this.plateau.jouerModeNormal();
@@ -481,6 +524,9 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     }
 
+    /**
+     * Methode qui pioche un carte et la donne au joueur qui l'a pioché
+     */
     private void piocher() {
         if (!this.modeAvance) {
             if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
@@ -541,6 +587,11 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Place une carte au coordonnee donnee en argument
+     * @param x
+     * @param y
+     */
     private void placer(int x, int y) {
         if ((this.aUneCarteEnMain) && (!this.aJoue)) {
             // this.inter.appuyer();
@@ -558,6 +609,13 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     }
 
+    /**
+     * Bouge la carte donnee par les première coordonee puis la place a l'endroit indiquer par les deuxieme coordonee
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     */
     private void bouger(int x1, int y1, int x2, int y2) {
         if ((this.aJoue) && (!this.aBouger)) {
             System.out.println("bouger");
@@ -569,6 +627,12 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Methode qui change de tour
+     * Si le prochain joueur est un ordinateur elle appelle la methode faireJouerOrdi
+     * N'est exectuer que si le joueur précédant a au moins placer une carte
+     * 
+     */
     private void changerDeJoueur() {
         if (this.aJoue) {
 
@@ -595,6 +659,12 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Methode choisirCarteAPlacer
+     * permet (en mode avance uniquement) de choisir la carte que l'on veut placer
+     * @param y
+     *         la coord de la carte que l'on veut jouer
+     */
     private void choisirCarteAPlacer(int y) {
 
         // if input come from console
@@ -617,6 +687,9 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Fait jouer l'IA
+     */
     private void faireJouerOrdi() {
         if (this.tourOrdinateur) {
             Joueur j = this.plateau.getListJoueur().element();
@@ -628,6 +701,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
+    /**
+     * Retourne la chaine de caratère qu'a préciser l'utilisateur
+     * @return
+     */
     private String lireChaine() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String resultat = null;
