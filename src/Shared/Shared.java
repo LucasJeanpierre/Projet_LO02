@@ -3,6 +3,13 @@ package Shared;
 import Model.*;
 import java.util.*;
 
+
+/***
+ * Class Shared
+ * Shared est un objet avec une régérence a chaque type d'ojbet utiliser dans le programe
+ * Shared est utilisé pour transférer des objet et/ou et listes d'objets lors de la communication entre les partie du model MVC
+ * 
+ */
 public class Shared {
     private Carte carte;
     private CarteNormal carteNormal;

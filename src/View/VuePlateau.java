@@ -16,6 +16,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class VuePlateau
+ */
+
 public class VuePlateau extends Observable implements Observer, PropertyChangeListener {
 
     private JFrame frame;
@@ -46,6 +50,14 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
     private boolean modePlateauLibre;
     private boolean modeTroisJoueur;
 
+    /**
+     * Constructeur
+     * 
+     * @param shared
+     * @param modeAvance
+     * @param modePlateauLibre
+     * @param modeTroisJoueur
+     */
     public VuePlateau(Shared shared, boolean modeAvance, boolean modePlateauLibre, boolean modeTroisJoueur) {
         this.scanner = new Scanner(System.in);
         this.pcs = new PropertyChangeSupport(this);
@@ -61,14 +73,29 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.frame.setVisible(true);
     }
 
+    /**
+     * Renvoie la frame de la vue
+     * 
+     * @return la frame
+     */
     public JFrame getFrame() {
         return this.frame;
     }
 
+    /**
+     * Ajoute un Observer a la vue
+     * 
+     * @param l oberver
+     */
     public void addObserver(PropertyChangeListener l) {
         this.pcs.addPropertyChangeListener(l);
     }
 
+    /**
+     * Notifie les obsersers
+     * 
+     * @param name le nom de la notification
+     */
     public void setProperty(String name) {
         this.pcs.firePropertyChange(name, 0, 1);
     }
@@ -77,6 +104,9 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
 
     }
 
+    /**
+     * Equivalent method update pour le model observer/observable
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("plateau-revelerCarte")) {
             System.out.println("Une carte cachee a ete revele");
@@ -218,30 +248,57 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         }
     }
 
+    /**
+     * @return bouttonPiocher
+     */
     public JButton getButtonPiocher() {
         return this.boutton_piocher;
     }
 
+    /**
+     * @return bouttonChanger
+     */
     public JButton getButtonChanger() {
         return this.changer_joueur;
     }
 
+    /**
+     * @return bouttonBouger
+     */
     public JButton getButtonBouger() {
         return this.boutton_bouger;
     }
 
+    /**
+     * 
+     * @return l'emplacement 1 pour le choix des cartes en mode Avance
+     */
     public JPanel getCartePioche1() {
         return this.cartepioche1;
     }
 
+    /**
+     * 
+     * @return l'emplacement 2 pour le choix des cartes en mode Avance
+     */
     public JPanel getCartePioche2() {
         return this.cartepioche2;
     }
 
+    /**
+     * 
+     * @return l'emplacement 2 pour le choix des cartes en mode Avance
+     */
     public JPanel getCartePioche3() {
         return this.cartepioche3;
     }
 
+    /**
+     * Method initialize
+     * Creer et ajoutes les différent élément visible de la vue
+     * @param modeAvance
+     * @param modePlateauLibre
+     */
     public void initialize(boolean modeAvance, boolean modePlateauLibre) {
         this.frame = new JFrame();
         this.frame.setBounds(50, 50, 500, 700);

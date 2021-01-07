@@ -8,7 +8,10 @@ import View.*;
 import Shared.Shared;
 import java.awt.EventQueue;
 
-
+/**
+ * Class App
+ * 
+ */
 public class App {
 
     public static void start(Shared shared, VuePlateau vuePlateau, boolean modeAvance, boolean modePlateauLibre, boolean modeTroisJoueur) {
@@ -43,6 +46,13 @@ public class App {
         controleurPlateau.jouer();
     }
 
+  /**
+   * Main Method
+   * Cette method creer l'objet shared et donne sa référence a tout les objets qui en auront besoins
+   * Elle definie les paramètres du jeu (avance, trois joueur, plateauLibre)
+   * @param args
+   * @throws Exception
+   */
     public static void main(String[] args) throws Exception {
         Shared shared = new Shared();
         boolean modeAvance = false;
