@@ -18,14 +18,14 @@ public class App {
         Plateau plateau = new Plateau(shared, vuePlateau, modePlateauLibre, modeTroisJoueur);
         ControleurPlateau controleurPlateau = new ControleurPlateau(plateau, shared, vuePlateau.getFrame(), vuePlateau, modeAvance, modePlateauLibre);
 
-        plateau.addObserver(controleurPlateau);
+        //plateau.addObserver(controleurPlateau);
         plateau.addObserver(vuePlateau);
 
-        vuePlateau.addObserver(controleurPlateau);
-        vuePlateau.addObserver(plateau);
+        //vuePlateau.addObserver(controleurPlateau);
+        //vuePlateau.addObserver(plateau);
 
         controleurPlateau.addObserver(vuePlateau);
-        controleurPlateau.addObserver(plateau);
+        //controleurPlateau.addObserver(plateau);
 
         /*ImagePanel panel = new ImagePanel("vide");
         panel.setVisible(true);
@@ -37,7 +37,7 @@ public class App {
         while (it.hasNext()) {
             Joueur j = it.next();
             j.addObserver(vuePlateau);
-            j.addObserver(controleurPlateau);
+            //j.addObserver(controleurPlateau);
         }
 
 

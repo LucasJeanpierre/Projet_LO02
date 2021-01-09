@@ -1,10 +1,6 @@
 package Model;
 
-import View.*;
-import View.ImagePanel;
-
 import java.awt.Color;
-
 import javax.swing.*;
 
 /**
@@ -18,7 +14,6 @@ public class Coordonee {
 
 	private Carte carte;
 	private JFrame frame;
-	//private ImagePanel panel;
 	private JPanel panel;
 
 	/**
@@ -96,7 +91,7 @@ public class Coordonee {
 	}
 
 	/**
-	 * Constructeur pour affichagge dans une frame
+	 * Constructeur pour affichage dans une frame
 	 * @param x x
 	 * @param y y
 	 * @param frame la frame ou elle sera afficher
@@ -130,7 +125,7 @@ public class Coordonee {
 
 	/**
 	 * Method toString
-	 * retounr une chaine de caractère avec les information de la coordonee
+	 * retounr une chaine de caractere avec les information de la coordonee
 	 */
 	public String toString() {
 		// return "Je une coordonee plac� en -> <x:" + this.positionX + ">,<y:" +

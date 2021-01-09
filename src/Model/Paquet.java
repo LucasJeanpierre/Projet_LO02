@@ -24,12 +24,12 @@ public class Paquet {
 	 * 
 	 * le contructeur creer les carte du jeu
 	 * 
-	 * et enleve une pour respecter les règles du jeu
+	 * et enleve une pour respecter les regles du jeu
 	 */
 	public Paquet(VuePlateau vuePlateau, boolean modePlateauLibre) {
 		this.paquetDeCarte = new ArrayList<Carte>();
 
-		//cr�ation des cartes
+		//creation des cartes
 		for (int icouleur = 0; icouleur < listeCouleur.length; icouleur ++) {
 			for (int iforme = 0; iforme < listeForme.length; iforme ++) {
 				paquetDeCarte.add(new Carte(listeForme[iforme], listeCouleur[icouleur], true, vuePlateau.getFrame(),modePlateauLibre));
@@ -69,7 +69,7 @@ public class Paquet {
 	}
 
 	/**
-	 * Renvoie une carte aléatoirement choisie dans le paquet
+	 * Renvoie une carte aleatoirement choisie dans le paquet
 	 * @return un carte
 	 */
 	public Carte getRandomCarte() {
@@ -88,7 +88,7 @@ public class Paquet {
 	}
 
 	/**
-	 * Recupère une carte du paquet en fonction de ces caractéristiques
+	 * Recupere une carte du paquet en fonction de ces caracteristiques
 	 * @return la carte voulue
 	 */
 	public Carte recupererCarte(String forme, String couleur, boolean rempli) {

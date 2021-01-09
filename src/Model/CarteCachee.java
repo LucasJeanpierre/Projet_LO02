@@ -3,15 +3,11 @@ package Model;
 import View.ImagePanel;
 /**
  * Class CarteCachee
- * Hérite de carte
+ * Herite de carte
  * redefini l'affichage carte la carte doit être afficher de dos
  */
 public class CarteCachee extends Carte {
 	
-	/*public CarteCachee(String forme, String couleur, boolean rempli) {
-		super(forme, couleur, rempli);
-	}*/
-
 	private ImagePanel dos;
 	
 	/**
@@ -36,7 +32,7 @@ public class CarteCachee extends Carte {
 	}
 
 	/**
-	 * redefinition de la mothod mère
+	 * redefinition de la mothod mere
 	 * cette fois ci on revoie le dos de la carte pour qu'elle reste cachee
 	 * @return ImagePanel dos
 	 */
@@ -71,7 +67,7 @@ public class CarteCachee extends Carte {
 	}
 	
 	/**
-	 * Revele les caractéristque de la carte dans la console
+	 * Revele les caracteristque de la carte dans la console
 	 */
 	public void reveler() {
 		System.out.println("<carte:forme="+super.getForme() +",couleur="+ super.getCouleur() + ",rempli=" + super.isRempli() + ">");

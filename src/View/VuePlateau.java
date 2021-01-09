@@ -1,7 +1,5 @@
 package View;
 
-import Controller.ControleurPlateau;
-import Controller.*;
 import Model.*;
 import Shared.Shared;
 
@@ -9,10 +7,7 @@ import java.util.Scanner;
 import java.util.Iterator;
 
 import java.beans.*;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +15,7 @@ import java.awt.*;
  * Class VuePlateau
  */
 
-public class VuePlateau extends Observable implements Observer, PropertyChangeListener {
+public class VuePlateau implements PropertyChangeListener {
 
     private JFrame frame;
     private JButton boutton_piocher;
@@ -100,9 +95,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.pcs.firePropertyChange(name, 0, 1);
     }
 
-    public void update(Observable o, Object arg) {
-
-    }
 
     /**
      * Equivalent method update pour le model observer/observable
@@ -116,21 +108,15 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         } else if (evt.getPropertyName().equals("joueur-demande-coord")) {
             this.shared.setString(this.demanderString());
         } else if (evt.getPropertyName().equals("plateau-donner-carte-victoire")) {
-            // System.out.println(this.shared.getJoueur().toString() + " votre carte
-            // victoire est : "
-            // + this.shared.getJoueur().getCarteVictoire().toString());
             Joueur j = this.shared.getJoueur();
             System.out.println(j.toString() + " votre carte victoire est : " + j.getCarteVictoire().toString());
-
             String tempnom;
             if (j.getCarteVictoire().isRempli()) {
                 tempnom = "plein";
             } else {
                 tempnom = "vide";
             }
-
             String name = j.getCarteVictoire().getForme() + "_" + j.getCarteVictoire().getCouleur() + "_" + tempnom;
-
             if (this.shared.getString().equals("0")) {
                 this.panel1.changeImage(name);
                 this.label_panel1.setText(j.getNom());
@@ -143,7 +129,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 this.panel3.changeImage(name);
                 this.label_panel3.setText(j.getNom());
             }
-
         } else if (evt.getPropertyName().equals("plateau-montrer-carte-poser")) {
             System.out.println("vous avez piocher la carte " + this.shared.getCarte());
         } else if (evt.getPropertyName().equals("plateau-demande-ou-poser")) {
@@ -152,19 +137,9 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
             this.shared.getCoordonee().afficher();
             this.shared.getCoordonee().getCarte().afficher();
             System.out.println("------");
-            // this.shared.getCoordonee().getCarte().setImageCoord(this.shared.getCoordonee().getPositionX()
-            // * 100,
-            // this.shared.getCoordonee().getPositionY() * 100);
-            // this.shared.getCarte().getImage().setVisible(false);
             this.shared.getCarte().setImageCoord(this.shared.getCoordonee().getPositionX() * this.size,
                     this.shared.getCoordonee().getPositionY() * this.size);
-
-            // this.shared.getCarte().setImageCoord(20, 20);
             this.shared.getCarte().getImage().setVisible(true);
-            // this.shared.getCoordonee().getPanel().setVisible(false);
-            // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());
-            // this.frame.getContentPane().add(this.shared.getCoordonee().getCarte().getImage());;
-            // SwingUtilities.updateComponentTreeUI(frame);
         } else if (evt.getPropertyName().equals("plateau-demande-bouger-carte")) {
             System.out.println("Voulez vous bouger une carte ?");
         } else if (evt.getPropertyName().equals("joueur-demande-bouger")) {
@@ -176,7 +151,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         } else if (evt.getPropertyName().equals("plateau-montrer-score-joueur")) {
             System.out.println(this.shared.getJoueur().toString() + " "
                     + this.shared.getJoueur().getCarteVictoire().toString() + " " + this.shared.getIntShared());
-
             if (this.shared.getString().equals("0")) {
                 this.label_panel1
                         .setText(this.shared.getJoueur().toString() + " score : " + this.shared.getIntShared());
@@ -187,11 +161,9 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 this.label_panel3
                         .setText(this.shared.getJoueur().toString() + " score : " + this.shared.getIntShared());
             }
-
         } else if (evt.getPropertyName().equals("controleur-montrer-carte-pioche")) {
             System.out.println("Vous avez pioche une carte");
             System.out.println(this.shared.getCarte().toString());
-
             this.shared.getCarte().setImageCoord(200, 300 + this.delta);
             this.shared.getCarte().getImage().setVisible(true);
         } else if (evt.getPropertyName().equals("plateau-changement-de-tour")) {
@@ -203,8 +175,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
 
             this.nom_joueur.setText(this.shared.getJoueur().toString());
         } else if (evt.getPropertyName().equals("plateau-devoiler-cartes")) {
-            System.out.println("Revelation---------------");
-
             Iterator<Coordonee> it = this.shared.getListCoord().iterator();
 
             while (it.hasNext()) {
@@ -231,7 +201,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                     }
                 }
             }
-
         } else if (evt.getPropertyName().equals("joueur-montrer-la-main")) {
             Iterator<Carte> it = this.shared.getListCarte().iterator();
             int y = 300;
@@ -244,7 +213,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
                 carte.getImage().setVisible(true);
                 y += 50;
             }
-
         }
     }
 
@@ -351,15 +319,6 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         this.boutton_bouger = new JButton("Bouger");
         this.boutton_bouger.setBounds(20, 330 + delta, 125, 25);
         this.frame.getContentPane().add(this.boutton_bouger);
-        /*
-         * panel = new ImagePanel("carre_rouge_plein"); panel.setBounds(0,700,50,50);
-         * panel.setVisible(true); this.frame.getContentPane().add(panel);
-         */
-
-        /*
-         * panel2 = new ImagePanel("carre_bleu_plein"); panel2.setBounds(10,250,50,50);
-         * panel2.setVisible(true); this.frame.getContentPane().add(panel2);
-         */
 
         // emplacement pour le choix des carte dans le mode avance
         if (modeAvance) {
@@ -388,11 +347,5 @@ public class VuePlateau extends Observable implements Observer, PropertyChangeLi
         System.out.print("> ");
         return this.scanner.nextLine();
     }
-    /*
-     * public static void main(String[] args) { EventQueue.invokeLater(new
-     * Runnable() { public void run() { try { VuePlateau vuePlateau = new
-     * VuePlateau(new Shared()); //start(plateau, shared, vuePlateau); } catch
-     * (Exception e) { e.printStackTrace(); } } }); }
-     */
 
 }

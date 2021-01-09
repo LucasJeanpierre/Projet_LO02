@@ -8,19 +8,18 @@ package Model;
 import View.*;
 
 import javax.swing.*;
-import java.util.Random;
 
 /**
  * Class carte
  * Les cartes sont les obets que l'on va poser sur le plateau
- * elles sont caractériser par :
+ * elles sont caracteriser par :
  * une couleur
  * une forme 
  * si elle sont rempli ou non
  * 
  */
 
-public class Carte extends Observable{
+public class Carte {
 	
 	
 	private String forme;
@@ -30,13 +29,6 @@ public class Carte extends Observable{
 	private JFrame frame;
 	private boolean modePlateauLibre;
 	
-	public void poser() {
-		
-	}
-	
-	public void estPosee() {
-		
-	}
 
 	/**
 	 * Methode pour recuperer la frame sur laquel la carte est afficher
@@ -55,7 +47,7 @@ public class Carte extends Observable{
 	}
 
 	/**
-	 * Methode pour définire la forme de la carte
+	 * Methode pour definire la forme de la carte
 	 * @param forme
 	 */
 	public void setForme(String forme) {
@@ -78,7 +70,7 @@ public class Carte extends Observable{
 		this.rempli = rempli;
 	}
 	/**
-	 * Methode pour récuperer la couleur de la carte
+	 * Methode pour recuperer la couleur de la carte
 	 * @return String couleur
 	 */
 	public String getCouleur() {
@@ -95,7 +87,7 @@ public class Carte extends Observable{
 	
 	/**
 	 * Method to String
-	 * retourn un String avce les caractéristiques de la carte
+	 * retourn un String avce les caracteristiques de la carte
 	 */
 	public String toString() {
 		//return "Je suis une carte avec les parametres suivant -> <couleur:" + this.couleur + ">,<rempli:" + this.rempli + ">,<forme:" + this.forme + ">";
@@ -110,7 +102,7 @@ public class Carte extends Observable{
 	}
 
 	/**
-	 * Permet de récuperer l'image de la carte
+	 * Permet de recuperer l'image de la carte
 	 * @return image l'image de la carte
 	 */
 	public ImagePanel getImage() {
@@ -136,30 +128,6 @@ public class Carte extends Observable{
 
 
 	/**
-	 * Constructeur de la class Carte sans affichage avec swing
-	 * @param forme
-	 * @param couleur
-	 * @param rempli
-	 */
-	public Carte(String forme, String couleur, boolean rempli) {
-		Random rand = new Random();
-		this.forme = forme;
-		this.rempli = rempli;
-		this.couleur = couleur;
-		String tempnom;
-		if (this.rempli) {
-			tempnom = "plein";
-		} else {
-			tempnom = "vide";
-		}
-		String name = forme + "_" + couleur + "_" + tempnom;
-		//this.image = new ImagePanel(name);
-		System.out.println(rand.nextInt(500));
-        this.image.setBounds(rand.nextInt(500), rand.nextInt(500),500, 700);
-		//this.image.setVisible(true);
-	}
-
-	/**
 	 * Constructeur de la carte
 	 * @param forme la forme
 	 * @param couleur la couleur
@@ -167,11 +135,10 @@ public class Carte extends Observable{
 	 * @param frame la frame dans laquelle la carte sera afficher
 	 * @param modePlateauLibre mode du Plateau
 	 * 
-	 * le contructeur gère le récupération de l'image associé a la carte et a son ajout dans la frame
+	 * le contructeur gere le recuperation de l'image associe a la carte et a son ajout dans la frame
 	 */
 	public Carte(String forme, String couleur, boolean rempli, JFrame frame, boolean modePlateauLibre) {
 		this.frame = frame;
-		Random rand = new Random();
 		this.forme = forme;
 		this.rempli = rempli;
 		this.couleur = couleur;
@@ -184,9 +151,6 @@ public class Carte extends Observable{
 		}
 		String name = forme + "_" + couleur + "_" + tempnom;
 		this.image = new ImagePanel(name, modePlateauLibre);
-		//System.out.println(rand.nextInt(500));
-		//int x = rand.nextInt(500);
-		//this.image.setBounds(rand.nextInt(500), rand.nextInt(500),50, 50);
 		if (this.modePlateauLibre) {
 			this.image.setBounds(250,250,25,25);
 		} else {

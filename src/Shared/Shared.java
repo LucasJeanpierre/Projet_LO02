@@ -14,7 +14,6 @@ public class Shared {
     private Carte carte;
     private CarteNormal carteNormal;
     private CarteCachee carteCachee;
-    private CarteVictoire cartreVictoire;
     private Joueur joueur;
     private Coordonee coordonee;
     private ArrayList<Coordonee> listCoord;
@@ -50,14 +49,6 @@ public class Shared {
 
     public void setString(String string) {
         this.string = string;
-    }
-
-    public CarteVictoire getCartreVictoire() {
-        return this.cartreVictoire;
-    }
-
-    public void setCartreVictoire(CarteVictoire cartreVictoire) {
-        this.cartreVictoire = cartreVictoire;
     }
 
     public Joueur getJoueur() {

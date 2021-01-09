@@ -1,5 +1,5 @@
 /**
- * Shape Up game implementation in JAVA
+ * Package View du jeu ShapeUp en JAVA
  * 
  * @author Lucas JEANPIERRE
  * 

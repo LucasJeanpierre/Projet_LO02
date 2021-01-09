@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Shared.Shared;
-import View.Observable;
-
-import java.util.Iterator;
 import java.beans.*;
 
 /**
  * Class Joueur
  * 
  */
-public class Joueur implements ObjetVisite, PropertyChangeListener {
+public class Joueur implements ObjetVisite {
 
 	private String nom;
-	//temporaire
-	public Carte carteVictoire;
-	//private Carte carteVictoire;
+	private Carte carteVictoire;
 	private Scanner scanner;
 	private ArrayList<Carte> main;
 	private PropertyChangeSupport pcs;
@@ -35,7 +30,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	/**
 	 * Method toString
-	 * retourne une chaine de caractère avec le nom du joueur
+	 * retourne une chaine de caractere avec le nom du joueur
 	 */
 	public String toString() {
 		return this.nom;
@@ -64,7 +59,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 	/**
-	 * Permet de récuperer le nom du joueur
+	 * Permet de recuperer le nom du joueur
 	 * @return nom (String)
 	 */
 	public String getNom() {
@@ -81,7 +76,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 
 	/**
 	 * Method bouger une carte
-	 * Permet au joueur de prendre un décision pour bouger une carte
+	 * Permet au joueur de prendre un decision pour bouger une carte
 	 */
 	public String bougerUneCarte() {
 		/*System.out.print("> ");
@@ -137,7 +132,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	/**
 	 * Permet au joueur de choisir a quelle coordonee placer une carte
 	 * @param carte la carte ca placer
-	 * @return une chaine de caratère definissant la coordonee
+	 * @return une chaine de caratere definissant la coordonee
 	 */
 	public String choisirCoordoneeAPlacer(Carte carte) {
 		/*System.out.print("> ");
@@ -150,7 +145,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	/**
 	 * Permet au joueur de choisir une carte a bouger
 	 * 
-	 * @return une chaine de caratère definissant la coordonee
+	 * @return une chaine de caratere definissant la coordonee
 	 */
 	public String choisirCoordoneeCarteABouger() {
 		/*System.out.print("> ");
@@ -185,21 +180,12 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	}
 
 
+	/**
+	 * Retourne la premiere carte de la main du joueur
+	 * pour donner sa carte victoire a la fin du jeu en mode Avance
+	 * @return
+	 */
 	public Carte choisirCarteVictoire() {
-		/*boolean bonneValeur = false;
-		while (!bonneValeur) {
-			System.out.print("> ");
-			String carteVictoireString = scanner.nextLine();
-			try {
-				int carteVictoire = Integer.parseInt(carteVictoireString);
-				this.carteVictoire = this.main.get(carteVictoire);
-				bonneValeur = true;
-			} catch (Exception e) {
-				System.out.println("Saisi non correct");
-			}
-
-		}
-		return null;*/
 		Carte carte = this.carteVictoire = this.main.get(0);
 		return carte;
 	}
@@ -223,7 +209,7 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	/**
 	 * Permet au joueur de choisir de bouger une carte
 	 * 
-	 * @return une chaine de caratère definissant la coordonee
+	 * @return une chaine de caratere definissant la coordonee
 	 */
 	public String decisionBougerCarte() {
 		/*System.out.print("> ");
@@ -237,31 +223,18 @@ public class Joueur implements ObjetVisite, PropertyChangeListener {
 	 * Montre la main du joueur
 	 */
 	public void montrerLaMain() {
-		/*Iterator<Carte> it = main.iterator();
-
-		while (it.hasNext()) {
-			Carte carte = it.next();
-			System.out.println(carte.toString());
-
-			//MVC 
-			this.shared.setCarte(it.next());
-			this.setProperty("joueur-montrer-la-carte-de-la-main");
-		}*/
-
 		this.shared.setListCarte(main);
 		this.setProperty("joueur-montrer-la-main");
 	}
 
 	/**
-	 * Recuperer l'objet partagé
-	 * @return l'objet partagé
+	 * Recuperer l'objet partage
+	 * @return l'objet partage
 	 */
 	public Shared getShared() {
 		return this.shared;
 	}
 	
-	public void propertyChange(PropertyChangeEvent evt) {
-	}
 
 	/**
 	 * Ajoute un observer au joueur

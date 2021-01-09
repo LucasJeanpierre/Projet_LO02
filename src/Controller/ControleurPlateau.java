@@ -1,10 +1,7 @@
 package Controller;
 
-import java.util.Scanner;
 
 import Model.*;
-import View.Observable;
-import View.Observer;
 import View.VuePlateau;
 
 import java.awt.event.ActionListener;
@@ -17,33 +14,27 @@ import java.util.Iterator;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 
 import java.io.BufferedReader;
 import java.io.*;
 
 /**
- * Le Controleur du Jeu,
- * C'est un observateur du Model et de la vue,
- * Il reçoit les input du joueur via les bouttons ou la console et interagie avec le modele et la vue
+ * Le Controleur du Jeu, C'est un observateur du Model et de la vue, Il reçoit
+ * les input du joueur via les bouttons ou la console et interagie avec le
+ * modele et la vue
  * 
  * @author Lucas JEANPIERRE
  * 
  */
 
-public class ControleurPlateau implements PropertyChangeListener, Runnable {
+public class ControleurPlateau implements Runnable {
 
-    private Scanner scanner;
     private Plateau plateau;
-    private Paquet paquet;
-    private VuePlateau view;
     private Shared shared;
-    private JFrame frame;
     private Thread t;
     private String saisie;
     private String[] commande;
     private boolean quitter;
-    private boolean fini;
     private JButton bouttonPiocher;
     private JButton bouttonChanger;
     private JButton bouttonBouger;
@@ -69,7 +60,6 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     private boolean tourOrdinateur;
     private boolean modeAvance;
-    private boolean modePlateauLibre;
     private int size;
 
     private int nbCarteJoue;
@@ -78,8 +68,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     /**
      * Ajoute un observateur a l'objet
-     * @param l
-     *          l'observateur
+     * 
+     * @param l l'observateur
      */
 
     public void addObserver(PropertyChangeListener l) {
@@ -94,21 +84,16 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     /**
      * notifie les observateur de l'objet
-     * @param name
-     *          le nom du changement
+     * 
+     * @param name le nom du changement
      */
     public void setProperty(String name) {
         this.pcs.firePropertyChange(name, 0, 1);
     }
 
-    private enum etatDuJeu {
-        PLACER_CARTE, CHOIX_BOUGER_CARTE, BOUGER_CARTE
-    };
-
-    private int intEtatDuJeu = 0;
-
     /**
      * Constructeur du Controleur
+     * 
      * @param plateau
      * @param shared
      * @param frame
@@ -116,23 +101,19 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
      * @param modeAvance
      * @param modePlateauLibre
      * 
-     * Dans le constructeur sont compris les fonction d'écoutes des bouttons
+     *                         Dans le constructeur sont compris les fonction
+     *                         d'ecoutes des bouttons
      */
     public ControleurPlateau(Plateau plateau, Shared shared, JFrame frame, VuePlateau vuePlateau, boolean modeAvance,
             boolean modePlateauLibre) {
-        this.scanner = new Scanner(System.in);
         this.plateau = plateau;
-        this.paquet = this.plateau.getPaquet();
         this.pcs = new PropertyChangeSupport(this);
         this.shared = shared;
-        this.frame = frame;
         this.aJoue = true;
-        this.fini = false;
         this.bougerChoixCarte = false;
         this.bougerChoixCoord = false;
         this.tourOrdinateur = false;
         this.modeAvance = modeAvance;
-        this.modePlateauLibre = modePlateauLibre;
         this.nbCarteJoue = 0;
 
         if (modePlateauLibre) {
@@ -153,8 +134,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     if (!ControleurPlateau.this.bougerChoixCarte) {
                         ControleurPlateau.this.placer(panel.getX() / ControleurPlateau.this.size,
                                 panel.getY() / ControleurPlateau.this.size);
-                        ControleurPlateau.this.fini = ControleurPlateau.this.plateau
-                                .isFini(ControleurPlateau.this.modeAvance);
+                        ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
                     } else if ((ControleurPlateau.this.bougerChoixCarte)
                             && (!ControleurPlateau.this.bougerChoixCoord)) {
                         ControleurPlateau.this.coordCarteABouger = ControleurPlateau.this.plateau.recupererCoord(
@@ -176,7 +156,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonPiocher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.piocher();
-                //ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
+                // ControleurPlateau.this.fini =
+                // ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -185,7 +166,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonChanger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.changerDeJoueur();
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
+                ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -194,7 +175,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         this.bouttonBouger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.bougerChoixCarte = true;
-                ControleurPlateau.this.fini = ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
+                ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
         if (this.modeAvance) {
@@ -227,250 +208,9 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         }
     }
 
-    public void ControllerJeu2() {
-        boolean joue = false;
-
-        // on donne les cartes victoire des joueurs
-        Iterator<Joueur> it = this.plateau.getListJoueur().iterator();
-
-        while (it.hasNext()) {
-            Joueur joueur = it.next();
-            joueur.piocherUneCarteVictoire(this.paquet.getRandomCarte());
-            System.out
-                    .println(joueur.toString() + " votre carte victoire est : " + joueur.getCarteVictoire().toString());
-        }
-
-        // tant qu'il reste des cartes a placer et que le plateau n'est pas rempli
-        while ((this.paquet.getNombreDeCarte() > 0) && (!this.plateau.isPlateauRempli())) {
-            this.plateau.changementDeTour();
-            joue = false;
-
-            Carte cartePioche = this.paquet.getRandomCarte();
-            // poser une carte
-            while (!joue) {
-
-                String positionPoser;
-                Carte carteJoue;
-                // on donne la carte dans la main du joueur
-                if (cartePioche != null) {
-                    this.plateau.getListJoueur().element().piocherUneCarte(cartePioche);
-                }
-                // System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
-
-                this.plateau.montrerLesCartesPosees();
-
-                System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
-                carteJoue = this.plateau.getListJoueur().element().choisirCarteAPlacer(false);
-
-                System.out.println("Ou voulez vous la poser ? ");
-                // String positionPoser = scanner.nextLine();
-                positionPoser = this.plateau.getListJoueur().element().choisirCoordoneeAPlacer(carteJoue);
-
-                // le format �tant position = "x,y"
-                // on r�cup�re s�par�ment les coordon�es en splitant la chaine de caract�re a la
-                // virgule et ron r�cup�re chacune des 2 parties dans des variables
-                try {
-                    int x = Integer.parseInt(positionPoser.split(",")[0]);
-                    int y = Integer.parseInt(positionPoser.split(",")[1]);
-                    joue = this.plateau.poserUneCarte(carteJoue, x, y);
-                } catch (Exception Error) {
-                    System.out.println("Veuillez saisir des coordonee valides");
-                }
-
-                // System.out.println("Liste des cartes pos�e : ");
-
-                if (!joue) {
-                    // System.out.println("L'emplacement n'�tait pas vide la carte n'a pas pu �tre
-                    // pos�e");
-                    System.out.println("La carte n'a pas �tait pos�e");
-                } else {
-                    this.plateau.getListJoueur().element().poserUneCarte(carteJoue);
-                }
-            }
-
-            this.plateau.montrerLesCartesPosees();
-
-            joue = false;
-
-            // bouger une carte
-            while ((!joue) && (!this.plateau.isPlateauRempli())) {
-                System.out.println("Voulez vous bouger une carte?");
-                // String bouger = scanner.nextLine();
-                String bouger = this.plateau.getListJoueur().element().decisionBougerCarte();
-
-                if (bouger.equals("oui")) {
-                    System.out.println("Donnez les coordonn� de la carte que vous voulez bouger");
-                    // String positioneCarte = scanner.nextLine();
-                    String positionCarte = this.plateau.getListJoueur().element().choisirCoordoneeCarteABouger();
-                    int xPremiere = Integer.parseInt(positionCarte.split(",")[0]);
-                    int yPremiere = Integer.parseInt(positionCarte.split(",")[1]);
-
-                    Carte carteABouger = this.plateau.recupererCoord(xPremiere, yPremiere).getCarte();
-
-                    System.out.println("Donnez les coordonn� de l'emplacement ou vous voulez la bouger");
-                    // String positionFinal = scanner.nextLine();
-                    String positionFinal = this.plateau.getListJoueur().element().bougerUneCarte();
-                    int xFinal = Integer.parseInt(positionFinal.split(",")[0]);
-                    int yFinal = Integer.parseInt(positionFinal.split(",")[1]);
-
-                    joue = this.plateau.bougerUneCarte(carteABouger, xFinal, yFinal);
-
-                    if (!joue) {
-                        // System.out.println("L'emplacement n'�tait pas vide la carte n'a pas pu �tre
-                        // boug�e");
-                        System.out.println("La carte n'a pas �tait pos�e");
-                    }
-
-                } else {
-                    joue = true;
-                }
-            }
-        }
-
-        // calcul des scores
-        Iterator<Joueur> itjoueur = this.plateau.getListJoueur().iterator();
-
-        while (itjoueur.hasNext()) {
-            Joueur joueur = itjoueur.next();
-            // chaque joueur prend 2 carte puis a chaque tour il en pioche une nouvelle il
-            // aura donc le choix entre 3 cartes a chaque tours
-            // System.out.println(joueur.toString() + " " +
-            // joueur.getCarteVictoire().toString() + " " +
-            // this.compterLesPoints(joueur.getCarteVictoire()));
-        }
-
-    }
-
-    public void placerLaCarte(String positionPoser, Carte carteJoue) {
-        boolean joue = false;
-        try {
-            int x = Integer.parseInt(positionPoser.split(",")[0]);
-            int y = Integer.parseInt(positionPoser.split(",")[1]);
-            joue = this.plateau.poserUneCarte(carteJoue, x, y);
-        } catch (Exception Error) {
-            System.out.println("Veuillez saisir des coordonee valides");
-        }
-
-        // System.out.println("Liste des cartes pos�e : ");
-
-        if (!joue) {
-            // System.out.println("L'emplacement n'�tait pas vide la carte n'a pas pu �tre
-            // pos�e");
-            System.out.println("La carte n'a pas �tait pos�e");
-        } else {
-            this.plateau.getListJoueur().element().poserUneCarte(carteJoue);
-        }
-    }
-
-    public void controllerJeu() {
-        boolean joue = false;
-        this.intEtatDuJeu = 0;
-
-        this.plateau.placerCarteCachee();
-        this.plateau.donnerCarteVictoire();
-
-        while ((this.paquet.getNombreDeCarte() > 0) && (!this.plateau.isPlateauRempli())) {
-            this.plateau.changementDeTour();
-            joue = false;
-
-            Carte cartePioche = this.paquet.getRandomCarte();
-            // poser une carte
-            while (!joue) {
-
-                String positionPoser;
-                Carte carteJoue;
-                // on donne la carte dans la main du joueur
-                if (cartePioche != null) {
-                    this.plateau.getListJoueur().element().piocherUneCarte(cartePioche);
-                }
-                // System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
-
-                // this.plateau.montrerLesCartesPosees();
-
-                // System.out.println("Vous avez piochez la carte : " + cartePioche.toString());
-
-                carteJoue = this.plateau.getListJoueur().element().choisirCarteAPlacer(false);
-
-                System.out.println("Ou voulez vous la poser ? ");
-                positionPoser = this.scanner.nextLine();
-
-                positionPoser = this.plateau.getListJoueur().element().choisirCoordoneeAPlacer(carteJoue);
-
-                // le format �tant position = "x,y"
-                // on r�cup�re s�par�ment les coordon�es en splitant la chaine de caract�re a la
-                // virgule et ron r�cup�re chacune des 2 parties dans des variables
-                try {
-                    int x = Integer.parseInt(positionPoser.split(",")[0]);
-                    int y = Integer.parseInt(positionPoser.split(",")[1]);
-                    joue = this.plateau.poserUneCarte(carteJoue, x, y);
-                } catch (Exception Error) {
-                    System.out.println("Veuillez saisir des coordonee valides");
-                }
-
-                // System.out.println("Liste des cartes pos�e : ");
-
-                if (!joue) {
-                    // System.out.println("L'emplacement n'�tait pas vide la carte n'a pas pu �tre
-                    // pos�e");
-                    System.out.println("La carte n'a pas �tait pos�e");
-                } else {
-                    this.plateau.getListJoueur().element().poserUneCarte(carteJoue);
-                }
-            }
-
-            this.plateau.montrerLesCartesPosees();
-
-            joue = false;
-
-            // bouger une carte
-            while ((!joue) && (!this.plateau.isPlateauRempli())) {
-                System.out.println("Voulez vous bouger une carte?");
-                // String bouger = scanner.nextLine();
-                String bouger = this.plateau.getListJoueur().element().decisionBougerCarte();
-
-                if (bouger.equals("oui")) {
-                    System.out.println("Donnez les coordonn� de la carte que vous voulez bouger");
-                    // String positioneCarte = scanner.nextLine();
-                    String positionCarte = this.plateau.getListJoueur().element().choisirCoordoneeCarteABouger();
-                    int xPremiere = Integer.parseInt(positionCarte.split(",")[0]);
-                    int yPremiere = Integer.parseInt(positionCarte.split(",")[1]);
-
-                    Carte carteABouger = this.plateau.recupererCoord(xPremiere, yPremiere).getCarte();
-
-                    System.out.println("Donnez les coordonn� de l'emplacement ou vous voulez la bouger");
-                    // String positionFinal = scanner.nextLine();
-                    String positionFinal = this.plateau.getListJoueur().element().bougerUneCarte();
-                    int xFinal = Integer.parseInt(positionFinal.split(",")[0]);
-                    int yFinal = Integer.parseInt(positionFinal.split(",")[1]);
-
-                    joue = this.plateau.bougerUneCarte(carteABouger, xFinal, yFinal);
-
-                    if (!joue) {
-                        // System.out.println("L'emplacement n'�tait pas vide la carte n'a pas pu �tre
-                        // boug�e");
-                        System.out.println("La carte n'a pas �tait pos�e");
-                    }
-
-                } else {
-                    joue = true;
-                }
-            }
-        }
-    }
-
-    public void update(Observable o, Object arg) {
-        if (arg != null) {
-            if (o instanceof VuePlateau) {
-                if (arg.toString().equals("positionCoordPlacerCarte")) {
-                    this.placerLaCarte("0,0", new Carte("a", "a", false, null, false));
-                }
-            }
-        }
-    }
-
     /**
-     * Methode a appeler au début de jeu
-     * Elle fait commance le jeu et l'écoute des boutton par le controleur
+     * Methode a appeler au debut de jeu Elle fait commance le jeu et l'ecoute des
+     * boutton par le controleur
      */
     public void jouer() {
         if (!this.modeAvance) {
@@ -485,8 +225,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     /**
-     * Methode run
-     * cette methode gère les commande faites par la console 
+     * Methode run cette methode gere les commande faites par la console
      * 
      */
     public void run() {
@@ -514,7 +253,7 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
                     }
                 }
             }
-            this.fini = this.plateau.isFini(this.modeAvance);
+            this.plateau.isFini(this.modeAvance);
         } while ((quitter == false));
         // this.shared.setListCoord(this.plateau.getListeCoord());
         // System.out.println("Bientot la revelation");
@@ -525,20 +264,13 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     /**
-     * Methode qui pioche un carte et la donne au joueur qui l'a pioché
+     * Methode qui pioche un carte et la donne au joueur qui l'a pioche
      */
     private void piocher() {
         if (!this.modeAvance) {
             if ((!this.aUneCarteEnMain) && (!this.aJoue)) {
-                // Carte carte = (this.plateau.getPaquet().getRandomCarte());
-                // CarteNormal carte = new
-                // CarteNormal(this.plateau.getPaquet().getRandomCarte());
-                // CarteCachee carte = new
-                // CarteCachee(this.plateau.getPaquet().getRandomCarte());
-                // Carte carte = (Carte) carteCachee;
                 System.out.println(plateau.getListJoueur().element().getNbCarteJoue());
                 Carte carte;
-                //if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
                 if (this.nbCarteJoue != 0) {
                     carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
                 } else {
@@ -554,10 +286,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
         } else {
             if ((!this.aUneCarteEnMain) && (!this.aJoue) && (this.plateau.getPaquet().getNombreDeCarte() > 0)) {
                 Carte carte;
-                //if (plateau.getListJoueur().element().getNbCarteJoue() != 0) {
                 if (this.nbCarteJoue != 0) {
-                    if ( (plateau.getListJoueur().element().getNbCarteJoue() <= 1) && (plateau.getListJoueur().element().getNbCarteEnMain() == 0) )  {
-                    //if (this.nbCarteJoue == 1) {
+                    if ((plateau.getListJoueur().element().getNbCarteJoue() <= 1)
+                            && (plateau.getListJoueur().element().getNbCarteEnMain() == 0)) {
+                        // if (this.nbCarteJoue == 1) {
                         this.plateau.donnerDeuxCarteAuJoueur(plateau.getListJoueur().element());
                         carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
                     } else {
@@ -568,10 +300,6 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
                 }
 
-                /*
-                 * this.shared.setCarte(carte);
-                 * this.setProperty("controleur-montrer-carte-pioche");
-                 */
                 this.shared.setJoueur(plateau.getListJoueur().element());
                 this.shared.getJoueur().piocherUneCarte(carte);
                 this.shared.getJoueur().montrerLaMain();
@@ -589,28 +317,27 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
 
     /**
      * Place une carte au coordonnee donnee en argument
+     * 
      * @param x
      * @param y
      */
     private void placer(int x, int y) {
         if ((this.aUneCarteEnMain) && (!this.aJoue)) {
-            // this.inter.appuyer();
             // Si la carte a pu être poser on ne peut plus poser de carte durant ce tour
-            if (this.plateau.poserUneCarte(this.shared.getCarte(), /* Integer.parseInt(commande[1]) */ x,
-                    /* Integer.parseInt(commande[2]) */y)) {
+            if (this.plateau.poserUneCarte(this.shared.getCarte(), x, y)) {
                 this.aUneCarteEnMain = false;
                 this.aJoue = true;
                 this.nbCarteJoue++;
             }
-
-            // this.setProperty("controleur-montrer-les-cartes");
 
         }
 
     }
 
     /**
-     * Bouge la carte donnee par les première coordonee puis la place a l'endroit indiquer par les deuxieme coordonee
+     * Bouge la carte donnee par les premiere coordonee puis la place a l'endroit
+     * indiquer par les deuxieme coordonee
+     * 
      * @param x1
      * @param y1
      * @param x2
@@ -628,9 +355,9 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     /**
-     * Methode qui change de tour
-     * Si le prochain joueur est un ordinateur elle appelle la methode faireJouerOrdi
-     * N'est exectuer que si le joueur précédant a au moins placer une carte
+     * Methode qui change de tour Si le prochain joueur est un ordinateur elle
+     * appelle la methode faireJouerOrdi N'est exectuer que si le joueur precedant a
+     * au moins placer une carte
      * 
      */
     private void changerDeJoueur() {
@@ -660,10 +387,10 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     /**
-     * Methode choisirCarteAPlacer
-     * permet (en mode avance uniquement) de choisir la carte que l'on veut placer
-     * @param y
-     *         la coord de la carte que l'on veut jouer
+     * Methode choisirCarteAPlacer permet (en mode avance uniquement) de choisir la
+     * carte que l'on veut placer
+     * 
+     * @param y la coord de la carte que l'on veut jouer
      */
     private void choisirCarteAPlacer(int y) {
 
@@ -702,7 +429,8 @@ public class ControleurPlateau implements PropertyChangeListener, Runnable {
     }
 
     /**
-     * Retourne la chaine de caratère qu'a préciser l'utilisateur
+     * Retourne la chaine de caratere qu'a preciser l'utilisateur
+     * 
      * @return
      */
     private String lireChaine() {
