@@ -156,8 +156,6 @@ public class ControleurPlateau implements Runnable {
         this.bouttonPiocher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ControleurPlateau.this.piocher();
-                // ControleurPlateau.this.fini =
-                // ControleurPlateau.this.plateau.isFini(ControleurPlateau.this.modeAvance);
             }
         });
 
@@ -229,8 +227,6 @@ public class ControleurPlateau implements Runnable {
      * 
      */
     public void run() {
-        // this.plateau.placerCarteCachee();
-        // this.plateau.jouerModeNormal();
 
         do {
             saisie = this.lireChaine();
@@ -255,10 +251,6 @@ public class ControleurPlateau implements Runnable {
             }
             this.plateau.isFini(this.modeAvance);
         } while ((quitter == false));
-        // this.shared.setListCoord(this.plateau.getListeCoord());
-        // System.out.println("Bientot la revelation");
-        // this.setProperty("controleur-devoiler-cartes");
-        // this.setProperty("plateau-montrer-score-joueurs");
         System.exit(0);
 
     }
@@ -289,7 +281,6 @@ public class ControleurPlateau implements Runnable {
                 if (this.nbCarteJoue != 0) {
                     if ((plateau.getListJoueur().element().getNbCarteJoue() <= 1)
                             && (plateau.getListJoueur().element().getNbCarteEnMain() == 0)) {
-                        // if (this.nbCarteJoue == 1) {
                         this.plateau.donnerDeuxCarteAuJoueur(plateau.getListJoueur().element());
                         carte = new CarteNormal(this.plateau.getPaquet().getRandomCarte());
                     } else {
@@ -394,7 +385,6 @@ public class ControleurPlateau implements Runnable {
      */
     private void choisirCarteAPlacer(int y) {
 
-        // if input come from console
         if (y < 5) {
             if (y == 0) {
                 y = 300;
