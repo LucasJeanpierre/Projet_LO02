@@ -41,6 +41,14 @@ Ce mode permet de joueur à 3.
 
 
 
-## Liste de ce qui fonctionne :
+## Etat du jeu :
 
-* Mode normal du jeu : OUI `#f03c15`
+* Mode normal du jeu : OUI ![green](https://via.placeholder.com/15/c5f015/000000?text=+)
+* Mode avance du jeu : OUI ![green](https://via.placeholder.com/15/c5f015/000000?text=+)
+* Mode 3 joueurs : OUI ![green](https://via.placeholder.com/15/c5f015/000000?text=+)
+* Possibilité de jouer contre l'ordinateur : OUI ![green](https://via.placeholder.com/15/c5f015/000000?text=+)
+* Jouable depuis d'invite de commande : OUI ![green](https://via.placeholder.com/15/c5f015/000000?text=+)
+* Résistant a des actions non prévue : MOYEN ![orange]https://via.placeholder.com/15/f37c20/000000?text=+
+* Possibilité de choisir le niveau de l'ordinateur : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
+* Possibilité de revenir sur un coup joué : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
+* 1 interface différente par joueur : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
