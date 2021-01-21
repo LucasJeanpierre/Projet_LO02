@@ -51,4 +51,4 @@ Ce mode permet de joueur à 3.
 * Résistant a des actions non prévue : MOYEN ![orange](https://via.placeholder.com/15/f37c20/000000?text=+)
 * Possibilité de choisir le niveau de l'ordinateur : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
 * Possibilité de revenir sur un coup joué : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
-* 1 interface différente par joueur : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
+* Une interface différente par joueur : NON ![red](https://via.placeholder.com/15/f03c15/000000?text=+)
