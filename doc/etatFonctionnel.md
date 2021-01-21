@@ -1,4 +1,4 @@
-# Etat fonctionel
+# Etat fonctionnel
 
 Le programme a été réalisé avec le système d'exploitation Windows.
 
