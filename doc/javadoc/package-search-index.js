@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"fr.utt.sit.lo02.projet.app"},{"l":"fr.utt.sit.lo02.projet.controller"},{"l":"fr.utt.sit.lo02.projet.model"},{"l":"fr.utt.sit.lo02.projet.shared"},{"l":"fr.utt.sit.lo02.projet.view"}]
